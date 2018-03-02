@@ -36,7 +36,7 @@ public class PointerSelect : MonoBehaviour
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.transform);
+                hit.transform.SendMessage("Triggered", SendMessageOptions.DontRequireReceiver);
             }
         }
     }
