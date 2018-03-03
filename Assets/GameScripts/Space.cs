@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Space : MonoBehaviour
 {
-    private GameObject pieceObject;
-    private Piece piece;
+    private GameObject _pieceObject;
+    private Piece _piece;
+    private GameObject _touchBox;
+    private bool _active;
     // Use this for initialization
     void Start()
     {
-
+        _touchBox = GetComponentInChildren<TouchTarget>().gameObject;
+        _piece = null;
     }
 
     // Update is called once per frame
@@ -33,16 +36,31 @@ public class Space : MonoBehaviour
 
     public void ApplyPiece(Piece newPiece)
     {
-        piece = newPiece;
-        if(pieceObject != null){
-            Destroy(pieceObject);
+        _piece = newPiece;
+        if (_pieceObject != null)
+        {
+            Destroy(_pieceObject);
         }
-        pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/"+piece.type.ToString()) as GameObject);
-        pieceObject.transform.SetParent(this.transform, false);
-        pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
+        _pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/" + _piece.type.ToString()) as GameObject);
+        _pieceObject.transform.SetParent(this.transform, false);
+        _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
     }
 
-    public void ClearPiece(){
-        Destroy(pieceObject);
+    public void ClearPiece()
+    {
+        Destroy(_pieceObject);
+    }
+
+    public void SetActive(bool active)
+    {
+        if (active)
+        {
+            _touchBox.GetComponent<Renderer>().material = Resources.Load("Spaces/Materials/SpaceTargetActive") as Material;
+        }
+        else
+        {
+            _touchBox.GetComponent<Renderer>().material = Resources.Load("Spaces/Materials/SpaceTarget") as Material;
+        }
+        _active = active;
     }
 }

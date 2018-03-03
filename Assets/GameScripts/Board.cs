@@ -20,13 +20,12 @@ public class Board : MonoBehaviour
         int i = Array.IndexOf(layers, layer);
         Vector3Int fullCoord = new Vector3Int(coordinates.x, coordinates.y, i);
         Debug.Log("Space Selected: " + fullCoord);
-        // Messenger<Vector3Int>.Broadcast(GameEvent.SPACE_SELECTED, fullCoord);
+        Messenger<Vector3Int>.Broadcast(GameEvent.SPACE_SELECTED, fullCoord);
     }
-
-    public void applyPiece(Piece piece, Vector3Int coordinates)
+    public Space GetSpace(Vector3Int coordinates)
     {
         BoardLayer layer = layers[coordinates.z].GetComponent<BoardLayer>();
         Space space = layer.GetSpace(new Vector2Int(coordinates.x, coordinates.y)).GetComponent<Space>();
-        space.ApplyPiece(piece);
+        return space;
     }
 }

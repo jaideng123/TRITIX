@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(PlayerManager))]
 public class Managers : MonoBehaviour
 {
+    public static PlayerManager Player;
     private List<IGameManager> _startSequence;
+
 
     void Awake()
     {
-
+        Player = GetComponent<PlayerManager>();
         _startSequence = new List<IGameManager>();
+        _startSequence.Add(Player);
         StartCoroutine(StartupManagers());
 
     }
