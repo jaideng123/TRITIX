@@ -59,16 +59,21 @@ public class PlayerManager : MonoBehaviour, IGameManager
         piece.playerNum = playerNum;
         players[playerNum - 1].bank[type]--;
         return piece;
-
     }
 
-    public IReadOnlyDictionary<PieceType, int> GetPieceBank(int playerNum)
+    public Dictionary<PieceType, int> GetPieceBank(int playerNum)
     {
         if (playerNum != 1 && playerNum != 2)
         {
             Debug.LogWarning("Player Does Not Exist!");
             return null;
         }
-        return players[playerNum - 1].bank.ToReadOnlyDictionary();
+        //Copy to a new Dictionary so that we cant mutate the values of the bank
+        Dictionary<PieceType, int> dict = new Dictionary<PieceType, int>();
+        foreach (PieceType key in players[playerNum - 1].bank.Keys)
+        {
+            dict.Add(key, players[playerNum - 1].bank[key]);
+        }
+        return dict;
     }
 }

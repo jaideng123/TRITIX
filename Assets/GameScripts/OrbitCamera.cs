@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class OrbitCamera : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class OrbitCamera : MonoBehaviour
         {
             if (Input.touchCount > 0)
             {
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                if (Input.GetTouch(0).phase == TouchPhase.Moved && !EventSystem.current.IsPointerOverGameObject())
                 {
                     // Get movement of the finger since last frame
                     Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
@@ -60,7 +61,7 @@ public class OrbitCamera : MonoBehaviour
                     vertInput = .00000001f;
                 }
             }
-            else if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 horInput = Input.GetAxis("Mouse X") * 3 + .00000001f;
                 vertInput = Input.GetAxis("Mouse Y") * 3 + .00000001f;

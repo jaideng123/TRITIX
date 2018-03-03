@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 [RequireComponent(typeof(Camera))]
 public class PointerSelect : MonoBehaviour
 {
@@ -17,7 +19,7 @@ public class PointerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             if (Input.touchCount == 0 && (Input.GetAxis("Mouse Y") > 0 || Input.GetAxis("Mouse X") > 0))
             {
