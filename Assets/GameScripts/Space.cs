@@ -34,6 +34,7 @@ public class Space : MonoBehaviour
     {
         GameObject piece = Instantiate(piecePrefab);
         piece.transform.SetParent(this.transform, false);
+        piece.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
 
     }
 }
