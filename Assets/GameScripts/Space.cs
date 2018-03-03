@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Space : MonoBehaviour
 {
-
+    private GameObject pieceObject;
+    private Piece piece;
     // Use this for initialization
     void Start()
     {
@@ -30,11 +31,18 @@ public class Space : MonoBehaviour
         }
     }
 
-    public void ApplyPiece(GameObject piecePrefab)
+    public void ApplyPiece(Piece newPiece)
     {
-        GameObject piece = Instantiate(piecePrefab);
-        piece.transform.SetParent(this.transform, false);
-        piece.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
+        piece = newPiece;
+        if(pieceObject != null){
+            Destroy(pieceObject);
+        }
+        pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/"+piece.type.ToString()) as GameObject);
+        pieceObject.transform.SetParent(this.transform, false);
+        pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
+    }
 
+    public void ClearPiece(){
+        Destroy(pieceObject);
     }
 }

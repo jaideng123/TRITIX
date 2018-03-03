@@ -4,6 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public struct Piece
 {
-    PieceType type;
-    int playerID;
+    public PieceType type;
+    public int playerID;
 }

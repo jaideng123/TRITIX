@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
         // Messenger<Vector3Int>.Broadcast(GameEvent.SPACE_SELECTED, fullCoord);
     }
 
-    public void applyPiece(GameObject piece, Vector3Int coordinates)
+    public void applyPiece(Piece piece, Vector3Int coordinates)
     {
         BoardLayer layer = layers[coordinates.z].GetComponent<BoardLayer>();
         Space space = layer.GetSpace(new Vector2Int(coordinates.x, coordinates.y)).GetComponent<Space>();
