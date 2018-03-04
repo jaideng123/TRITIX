@@ -18,43 +18,53 @@ public class OrthoToggle : MonoBehaviour
     private bool _active;
     // Use this for initialization
 
+    void Awake()
+    {
+        Messenger.AddListener(GameEvent.TOGGLE_VIEW, OnToggleView);
+    }
+    void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.TOGGLE_VIEW, OnToggleView);
+    }
     void Start()
     {
         aspect = (float)Screen.width / (float)Screen.height;
         _matrixBlender = GetComponent<MatrixBlender>();
         _orbitCamera = GetComponent<OrbitCamera>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+    }
+
+    private void OnToggleView()
+    {
+        if (!_active)
         {
-            if (!_active)
-            {
-                Vector3 midPos = mid.transform.position;
-                midPos.z += 2;
-                mid.transform.position = midPos;
-                Vector3 topPos = top.transform.position;
-                topPos.z += 4;
-                top.transform.position = topPos;
-                _orbitCamera.moveToAngle(60, 0);
-                _orbitCamera.enabled = false;
-                _matrixBlender.BlendToMatrix(Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far), .5f);
-            }
-            if (_active)
-            {
-                Vector3 midPos = mid.transform.position;
-                midPos.z -= 2;
-                mid.transform.position = midPos;
-                Vector3 topPos = top.transform.position;
-                topPos.z -= 4;
-                top.transform.position = topPos;
-                _orbitCamera.enabled = true;
-                _orbitCamera.moveToAngle(0, 0);
-                _matrixBlender.BlendToMatrix(Matrix4x4.Perspective(fov, aspect, near, far), .5f);
-            }
-            _active = !_active;
+            Vector3 midPos = mid.transform.position;
+            midPos.z += 2;
+            mid.transform.position = midPos;
+            Vector3 topPos = top.transform.position;
+            topPos.z += 4;
+            top.transform.position = topPos;
+            _orbitCamera.moveToAngle(60, 0);
+            _orbitCamera.enabled = false;
+            _matrixBlender.BlendToMatrix(Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far), .5f);
         }
+        if (_active)
+        {
+            Vector3 midPos = mid.transform.position;
+            midPos.z -= 2;
+            mid.transform.position = midPos;
+            Vector3 topPos = top.transform.position;
+            topPos.z -= 4;
+            top.transform.position = topPos;
+            _orbitCamera.enabled = true;
+            _orbitCamera.moveToAngle(0, 0);
+            _matrixBlender.BlendToMatrix(Matrix4x4.Perspective(fov, aspect, near, far), .5f);
+        }
+        _active = !_active;
     }
 }
