@@ -7,6 +7,15 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private PieceDrawer pieceDrawer;
+
+    void Awake()
+    {
+        Messenger<bool>.AddListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+    }
+    void OnDestroy()
+    {
+        Messenger<bool>.RemoveListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+    }
     void Start()
     {
 
@@ -21,5 +30,22 @@ public class UIController : MonoBehaviour
     public void OnToggleView()
     {
         Messenger.Broadcast(GameEvent.TOGGLE_VIEW);
+    }
+
+    public void OnPieceSelect(PieceType type)
+    {
+        Messenger<PieceType>.Broadcast(GameEvent.PIECE_SELECTED, type);
+    }
+
+    private void OnPieceDrawerToggle(bool active)
+    {
+        if (active)
+        {
+            pieceDrawer.Open();
+        }
+        else
+        {
+            pieceDrawer.Close();
+        }
     }
 }

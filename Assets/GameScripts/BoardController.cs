@@ -15,10 +15,12 @@ public class BoardController : MonoBehaviour
     void Awake()
     {
         Messenger<Vector3Int>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
+        Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
     }
     void OnDestroy()
     {
         Messenger<Vector3Int>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
+        Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
     }
     void Start()
     {
@@ -47,5 +49,15 @@ public class BoardController : MonoBehaviour
         }
         selectedDestSpace = board.GetSpace(coordinates);
         selectedDestSpace.SetActive(true);
+    }
+
+    private void OnPieceSelected(PieceType type)
+    {
+        if (Managers.Player.GetPieceBank(currentPlayer)[type] <= 0)
+        {
+            Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + currentPlayer);
+            return;
+        }
+        Debug.Log(type.ToString());
     }
 }
