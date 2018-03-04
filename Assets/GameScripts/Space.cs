@@ -5,14 +5,14 @@ using UnityEngine;
 public class Space : MonoBehaviour
 {
     private GameObject _pieceObject;
-    private Piece _piece;
+    public Piece piece { get; private set; }
     private GameObject _touchBox;
     private bool _active;
     // Use this for initialization
     void Start()
     {
         _touchBox = GetComponentInChildren<TouchTarget>().gameObject;
-        _piece = null;
+        piece = null;
     }
 
     // Update is called once per frame
@@ -36,18 +36,20 @@ public class Space : MonoBehaviour
 
     public void ApplyPiece(Piece newPiece)
     {
-        _piece = newPiece;
+        piece = newPiece;
         if (_pieceObject != null)
         {
             Destroy(_pieceObject);
         }
-        _pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/" + _piece.type.ToString()) as GameObject);
+        _pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/" + piece.type.ToString()) as GameObject);
         _pieceObject.transform.SetParent(this.transform, false);
-        _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/Piece-White") as Material;
+        string pieceMat = Managers.Player.GetPlayer(piece.playerNum).pieceMaterialName;
+        _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
     }
 
     public void ClearPiece()
     {
+        piece = null;
         Destroy(_pieceObject);
     }
 

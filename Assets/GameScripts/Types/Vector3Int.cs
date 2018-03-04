@@ -1,4 +1,4 @@
-public struct Vector3Int
+public class Vector3Int
 {
     public int x, y, z;
 

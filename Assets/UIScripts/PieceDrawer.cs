@@ -5,11 +5,13 @@ using UnityEngine;
 public class PieceDrawer : MonoBehaviour
 {
 
-    public float hiddenOffset;
+    private float hiddenOffset;
     private bool visible;
     // Use this for initialization
     void Start()
     {
+        var rectTransform = GetComponent<RectTransform>();
+        hiddenOffset = rectTransform.rect.height;
         Vector3 pos = transform.position;
         pos.y -= hiddenOffset;
         transform.position = pos;

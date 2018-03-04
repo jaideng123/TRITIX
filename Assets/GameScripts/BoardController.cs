@@ -8,9 +8,10 @@ public class BoardController : MonoBehaviour
     [SerializeField]
     private GameObject boardObject;
     private Board board;
-    private Space selectedDestSpace;
-    private Space selectedOriginSpace;
+    private Vector3Int selectedDestSpace;
+    private Vector3Int selectedOriginSpace;
     private int currentPlayer = 1;
+    private List<Move> moves;
     // Use this for initialization
     void Awake()
     {
@@ -25,6 +26,7 @@ public class BoardController : MonoBehaviour
     void Start()
     {
         board = boardObject.GetComponent<Board>();
+        moves = new List<Move>();
         Player p = new Player();
         p.id = "Jaiden";
         p.pieceMaterialName = "Piece-White";
@@ -45,10 +47,11 @@ public class BoardController : MonoBehaviour
     {
         if (selectedDestSpace != null)
         {
-            selectedDestSpace.SetActive(false);
+            board.GetSpace(selectedDestSpace).SetActive(false);
         }
-        selectedDestSpace = board.GetSpace(coordinates);
-        selectedDestSpace.SetActive(true);
+        selectedDestSpace = coordinates;
+        board.GetSpace(selectedDestSpace).SetActive(true);
+        Messenger<bool>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true);
     }
 
     private void OnPieceSelected(PieceType type)
@@ -59,5 +62,35 @@ public class BoardController : MonoBehaviour
             return;
         }
         Debug.Log(type.ToString());
+        Move move = new Move();
+        move.pieceType = type;
+        move.from = null;
+        move.to = selectedDestSpace;
+        move.playerNum = currentPlayer;
+        ApplyMove(move);
+        Messenger<bool>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false);
+        board.GetSpace(selectedDestSpace).SetActive(false);
+        selectedDestSpace = null;
+    }
+
+    public void ApplyMove(Move move)
+    {
+        if (move.playerNum != currentPlayer)
+        {
+            Debug.LogWarning("currentPlayer, playernum mismatch");
+        }
+        Piece p;
+        if (move.from == null)
+        {
+            p = Managers.Player.GetPieceFromBank(move.playerNum, move.pieceType);
+        }
+        else
+        {
+            p = board.GetSpace(move.from).piece;
+            board.GetSpace(move.from).ClearPiece();
+        }
+        board.GetSpace(move.to).ApplyPiece(p);
+        currentPlayer = (currentPlayer % 2) + 1;
+        moves.Add(move);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,9 +33,10 @@ public class UIController : MonoBehaviour
         Messenger.Broadcast(GameEvent.TOGGLE_VIEW);
     }
 
-    public void OnPieceSelect(PieceType type)
+    public void OnPieceSelect(string type)
     {
-        Messenger<PieceType>.Broadcast(GameEvent.PIECE_SELECTED, type);
+        PieceType realType = (PieceType)Enum.Parse(typeof(PieceType), type);
+        Messenger<PieceType>.Broadcast(GameEvent.PIECE_SELECTED, realType);
     }
 
     private void OnPieceDrawerToggle(bool active)
