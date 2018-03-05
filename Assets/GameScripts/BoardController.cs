@@ -129,12 +129,25 @@ public class BoardController : MonoBehaviour
         move.playerNum = currentPlayer;
         ApplyMove(move);
 
+
         Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, false);
         board.GetSpace(selectedDestSpace).SetActive(false);
         board.GetSpace(selectedOriginSpace).SetActive(false);
         board.GetSpace(selectedDestSpace).ClearPieceTemp();
         selectedDestSpace = null;
         selectedOriginSpace = null;
+    }
+    public void CheckMatches(int playerNum)
+    {
+        Piece[,,] b = board.GetBoardModel();
+        List<PieceType> matches = new List<PieceType>();
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+
+            }
+        }
     }
 
     public void ApplyMove(Move move)

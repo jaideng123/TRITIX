@@ -7,14 +7,17 @@ public class PieceButton : MonoBehaviour
 {
 
     public PieceType pieceType;
+    public int matchedAlpha = 80;
     private Text quantityLabel;
     private Button button;
+    private Image image;
     private int pieceValue;
     // Use this for initialization
     void Start()
     {
         quantityLabel = GetComponentInChildren<Text>();
         button = GetComponent<Button>();
+        image = GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -42,5 +45,19 @@ public class PieceButton : MonoBehaviour
         {
             button.interactable = false;
         }
+    }
+
+    public void SetMatched(bool active)
+    {
+        Color c = image.color;
+        if (active)
+        {
+            c.a = matchedAlpha;
+        }
+        else
+        {
+            c.a = 0;
+        }
+        image.color = c;
     }
 }

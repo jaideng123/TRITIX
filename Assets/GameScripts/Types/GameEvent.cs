@@ -8,4 +8,6 @@ public static class GameEvent
     public const string TOGGLE_VIEW = "TOGGLE_VIEW";
     public const string ACTIVE_PLAYER_CHANGED = "ACTIVE_PLAYER_CHANGED";
     public const string ALL_MANAGERS_STARTED = "ALL_MANAGERS_STARTED";
+    public const string PIECES_MATCHED = "PIECES_MATCHED";
+
 }

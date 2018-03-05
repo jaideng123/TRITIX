@@ -28,6 +28,8 @@ public class UIController : MonoBehaviour
         Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
+        Messenger<PieceType[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+
     }
     void OnDestroy()
     {
@@ -35,6 +37,8 @@ public class UIController : MonoBehaviour
         Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
+        Messenger<PieceType[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+
     }
     void Start()
     {
@@ -121,5 +125,37 @@ public class UIController : MonoBehaviour
         p2Name.SetName(Managers.Player.GetPlayer(2).id);
         UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
         UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+    }
+
+    private void onPiecesMatched(PieceType[] types, int playerNum)
+    {
+        if (playerNum == 1)
+        {
+            foreach (PieceButton pieceIndicator in p1Pieces)
+            {
+                if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
+                {
+                    pieceIndicator.SetMatched(true);
+                }
+                else
+                {
+                    pieceIndicator.SetMatched(false);
+                }
+            }
+        }
+        else if (playerNum == 2)
+        {
+            foreach (PieceButton pieceIndicator in p2Pieces)
+            {
+                if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
+                {
+                    pieceIndicator.SetMatched(true);
+                }
+                else
+                {
+                    pieceIndicator.SetMatched(false);
+                }
+            }
+        }
     }
 }
