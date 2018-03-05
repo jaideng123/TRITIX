@@ -7,11 +7,17 @@ public class OrthoToggle : MonoBehaviour
     public float fov = 60f,
                         near = .3f,
                         far = 1000f,
-                        orthographicSize = 5f;
+                        orthographicSize = 5f,
+                        transitionTime = .5f,
+                        smoothingFactor = 1f;
     [SerializeField]
     private GameObject top;
     [SerializeField]
     private GameObject mid;
+    [SerializeField]
+    private Transform targetPosition;
+    [SerializeField]
+    private Transform viewTarget;
     private float aspect;
     private MatrixBlender _matrixBlender;
     private OrbitCamera _orbitCamera;
@@ -37,6 +43,12 @@ public class OrthoToggle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_active)
+        {
+            this.transform.position += (targetPosition.position - transform.position) * smoothingFactor;
+            this.transform.LookAt(viewTarget);
+
+        }
     }
 
     private void OnToggleView()
@@ -49,9 +61,8 @@ public class OrthoToggle : MonoBehaviour
             Vector3 topPos = top.transform.position;
             topPos.z += 4;
             top.transform.position = topPos;
-            _orbitCamera.moveToAngle(60, 0);
             _orbitCamera.enabled = false;
-            _matrixBlender.BlendToMatrix(Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far), .5f);
+            _matrixBlender.BlendToMatrix(Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far), transitionTime);
         }
         if (_active)
         {
@@ -63,7 +74,7 @@ public class OrthoToggle : MonoBehaviour
             top.transform.position = topPos;
             _orbitCamera.enabled = true;
             _orbitCamera.moveToAngle(0, 0);
-            _matrixBlender.BlendToMatrix(Matrix4x4.Perspective(fov, aspect, near, far), .5f);
+            _matrixBlender.BlendToMatrix(Matrix4x4.Perspective(fov, aspect, near, far), transitionTime);
         }
         _active = !_active;
     }

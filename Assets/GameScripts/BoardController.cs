@@ -17,11 +17,13 @@ public class BoardController : MonoBehaviour
     {
         Messenger<Vector3Int>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
+        Messenger.AddListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
     }
     void OnDestroy()
     {
         Messenger<Vector3Int>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
+        Messenger.RemoveListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
     }
     void Start()
     {
@@ -45,13 +47,53 @@ public class BoardController : MonoBehaviour
 
     private void OnSpaceSelected(Vector3Int coordinates)
     {
-        if (selectedDestSpace != null)
+        Space selectedSpace = board.GetSpace(coordinates);
+        if (Managers.Player.PieceBankEmpty(currentPlayer))
         {
-            board.GetSpace(selectedDestSpace).SetActive(false);
+            if (selectedSpace.piece == null)
+            {
+                if (selectedDestSpace != null)
+                {
+                    board.GetSpace(selectedDestSpace).SetActive(false);
+                    board.GetSpace(selectedDestSpace).ClearPieceTemp();
+                }
+                selectedDestSpace = coordinates;
+                selectedSpace.SetActive(true);
+            }
+            else
+            {
+                if (selectedSpace.piece.playerNum != currentPlayer)
+                {
+                    return;
+                }
+                if (selectedOriginSpace != null)
+                {
+                    board.GetSpace(selectedOriginSpace).SetActive(false);
+                }
+                selectedOriginSpace = coordinates;
+                selectedSpace.SetActive(true);
+            }
+            if (selectedDestSpace != null && selectedOriginSpace != null)
+            {
+                PieceType tempType = board.GetSpace(selectedOriginSpace).piece.type;
+                board.GetSpace(selectedDestSpace).ApplyPieceTemp(tempType);
+                Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, true);
+            }
         }
-        selectedDestSpace = coordinates;
-        board.GetSpace(selectedDestSpace).SetActive(true);
-        Messenger<bool>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true);
+        else
+        {
+            if (selectedSpace.piece != null)
+            {
+                return;
+            }
+            if (selectedDestSpace != null)
+            {
+                board.GetSpace(selectedDestSpace).SetActive(false);
+            }
+            selectedDestSpace = coordinates;
+            selectedSpace.SetActive(true);
+            Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true, currentPlayer);
+        }
     }
 
     private void OnPieceSelected(PieceType type)
@@ -68,9 +110,30 @@ public class BoardController : MonoBehaviour
         move.to = selectedDestSpace;
         move.playerNum = currentPlayer;
         ApplyMove(move);
-        Messenger<bool>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false);
+        Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, currentPlayer);
         board.GetSpace(selectedDestSpace).SetActive(false);
         selectedDestSpace = null;
+    }
+
+    private void OnMoveConfirmed()
+    {
+        if (selectedDestSpace == null || selectedOriginSpace == null)
+        {
+            Debug.LogWarning("Destination and Origin not selected");
+            return;
+        }
+        Move move = new Move();
+        move.from = selectedOriginSpace;
+        move.to = selectedDestSpace;
+        move.playerNum = currentPlayer;
+        ApplyMove(move);
+
+        Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, false);
+        board.GetSpace(selectedDestSpace).SetActive(false);
+        board.GetSpace(selectedOriginSpace).SetActive(false);
+        board.GetSpace(selectedDestSpace).ClearPieceTemp();
+        selectedDestSpace = null;
+        selectedOriginSpace = null;
     }
 
     public void ApplyMove(Move move)

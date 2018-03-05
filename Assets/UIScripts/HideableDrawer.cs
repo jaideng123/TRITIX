@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PieceDrawer : MonoBehaviour
+public class HideableDrawer : MonoBehaviour
 {
-
+    public float duration = 1f;
     private float hiddenOffset;
-    private bool visible;
+    public bool visible { get; private set; }
+    private Vector3 targetPos;
     // Use this for initialization
     void Start()
     {
@@ -15,13 +16,13 @@ public class PieceDrawer : MonoBehaviour
         Vector3 pos = transform.position;
         pos.y -= hiddenOffset;
         transform.position = pos;
+        targetPos = pos;
         visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void Open()
@@ -30,7 +31,8 @@ public class PieceDrawer : MonoBehaviour
         {
             Vector3 pos = transform.position;
             pos.y += hiddenOffset;
-            transform.position = pos;
+            targetPos = pos;
+            StartCoroutine(SmoothMove(transform.position, targetPos, duration));
         }
         visible = true;
     }
@@ -41,8 +43,21 @@ public class PieceDrawer : MonoBehaviour
         {
             Vector3 pos = transform.position;
             pos.y -= hiddenOffset;
-            transform.position = pos;
+            targetPos = pos;
+            StartCoroutine(SmoothMove(transform.position, targetPos, duration));
         }
         visible = false;
     }
+
+    private IEnumerator SmoothMove(Vector3 startpos, Vector3 endpos, float seconds)
+    {
+        float t = 0f;
+        while (t <= 1.0)
+        {
+            t += Time.deltaTime / seconds;
+            transform.position = Vector3.Lerp(startpos, endpos, Mathf.SmoothStep(0.0f, 1.0f, t));
+            yield return null;
+        }
+    }
+
 }

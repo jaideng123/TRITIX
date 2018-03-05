@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4360748359700766}
   - component: {fileID: 33958142479185328}
   - component: {fileID: 23036057726568198}
-  - component: {fileID: 64335168129717776}
   - component: {fileID: 114087809498574134}
   m_Layer: 0
   m_Name: POINT
@@ -83,20 +82,6 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1307784523457326}
-  m_Mesh: {fileID: 4300000, guid: bbb6a9bd708084b389aad050fa0b6890, type: 2}
---- !u!64 &64335168129717776
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1307784523457326}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: bbb6a9bd708084b389aad050fa0b6890, type: 2}
 --- !u!114 &114087809498574134
 MonoBehaviour:

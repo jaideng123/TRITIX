@@ -42,7 +42,7 @@ public class OrbitCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        float horInput = Input.GetAxis("Horizontal");
+        float horInput = Input.GetAxis("Horizontal") * -1;
         float vertInput = Input.GetAxis("Vertical");
         if (horInput == 0 && vertInput == 0)
         {

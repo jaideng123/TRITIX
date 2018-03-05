@@ -76,4 +76,21 @@ public class PlayerManager : MonoBehaviour, IGameManager
         }
         return dict;
     }
+
+    public bool PieceBankEmpty(int playerNum)
+    {
+        if (playerNum != 1 && playerNum != 2)
+        {
+            Debug.LogWarning("Player Does Not Exist!");
+            return false;
+        }
+        foreach (PieceType key in players[playerNum - 1].bank.Keys)
+        {
+            if (players[playerNum - 1].bank[key] > 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

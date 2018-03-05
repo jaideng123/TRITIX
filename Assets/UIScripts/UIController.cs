@@ -7,15 +7,21 @@ public class UIController : MonoBehaviour
 {
 
     [SerializeField]
-    private PieceDrawer pieceDrawer;
+    private HideableDrawer pieceDrawer;
+    [SerializeField]
+    private HideableDrawer confirmDrawer;
+    [SerializeField]
+    private PieceButton[] pieceButtons;
 
     void Awake()
     {
-        Messenger<bool>.AddListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+        Messenger<bool, int>.AddListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+        Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
     }
     void OnDestroy()
     {
-        Messenger<bool>.RemoveListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+        Messenger<bool, int>.RemoveListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
+        Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
     }
     void Start()
     {
@@ -39,15 +45,41 @@ public class UIController : MonoBehaviour
         Messenger<PieceType>.Broadcast(GameEvent.PIECE_SELECTED, realType);
     }
 
-    private void OnPieceDrawerToggle(bool active)
+    public void OnConfirmMove()
+    {
+        Messenger.Broadcast(GameEvent.MOVE_CONFIRMED);
+    }
+
+    private void UpdateBankValues(Dictionary<PieceType, int> bank)
+    {
+        foreach (PieceButton btn in pieceButtons)
+        {
+            btn.SetQuantity(bank[btn.pieceType]);
+        }
+    }
+
+    private void OnPieceDrawerToggle(bool active, int activePlayer)
     {
         if (active)
         {
+            UpdateBankValues(Managers.Player.GetPieceBank(activePlayer));
             pieceDrawer.Open();
         }
         else
         {
             pieceDrawer.Close();
+        }
+    }
+
+    private void OnConfirmDrawerToggle(bool active)
+    {
+        if (active)
+        {
+            confirmDrawer.Open();
+        }
+        else
+        {
+            confirmDrawer.Close();
         }
     }
 }

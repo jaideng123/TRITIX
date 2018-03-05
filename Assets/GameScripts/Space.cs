@@ -5,6 +5,7 @@ using UnityEngine;
 public class Space : MonoBehaviour
 {
     private GameObject _pieceObject;
+    private GameObject _pieceTempObject;
     public Piece piece { get; private set; }
     private GameObject _touchBox;
     private bool _active;
@@ -45,6 +46,24 @@ public class Space : MonoBehaviour
         _pieceObject.transform.SetParent(this.transform, false);
         string pieceMat = Managers.Player.GetPlayer(piece.playerNum).pieceMaterialName;
         _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
+    }
+
+    public void ApplyPieceTemp(PieceType type)
+    {
+        if (_pieceTempObject != null)
+        {
+            Destroy(_pieceTempObject);
+        }
+        _pieceTempObject = Instantiate(Resources.Load("Pieces/Prefabs/" + type.ToString()) as GameObject);
+        _pieceTempObject.transform.SetParent(this.transform, false);
+        _pieceTempObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/TempPieceMat") as Material;
+    }
+    public void ClearPieceTemp()
+    {
+        if (_pieceTempObject != null)
+        {
+            Destroy(_pieceTempObject);
+        }
     }
 
     public void ClearPiece()

@@ -14,8 +14,9 @@ public class Player
         PieceType[] pieces = Enum.GetValues(typeof(PieceType)) as PieceType[];
         foreach (PieceType type in pieces)
         {
-            bank.Add(type, 3);
+            bank.Add(type, 0);
         }
         bank[PieceType.WILD] = 1;
+        bank[PieceType.ROUND] = 1;
     }
 }
