@@ -30,11 +30,11 @@ public class BoardController : MonoBehaviour
         board = boardObject.GetComponent<Board>();
         moves = new List<Move>();
         Player p = new Player();
-        p.id = "Jaiden";
+        p.id = "Player 1";
         p.pieceMaterialName = "Piece-White";
         Managers.Player.SetPlayer(1, p);
         p = new Player();
-        p.id = "Sydney";
+        p.id = "Player 2";
         p.pieceMaterialName = "Piece-Black";
         Managers.Player.SetPlayer(2, p);
         Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);

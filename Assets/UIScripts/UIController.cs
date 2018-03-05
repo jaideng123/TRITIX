@@ -120,6 +120,6 @@ public class UIController : MonoBehaviour
         p1Name.SetName(Managers.Player.GetPlayer(1).id);
         p2Name.SetName(Managers.Player.GetPlayer(2).id);
         UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
-        UpdateBankValues(Managers.Player.GetPieceBank(2), p1Pieces);
+        UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
     }
 }
