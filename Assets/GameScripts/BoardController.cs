@@ -37,6 +37,7 @@ public class BoardController : MonoBehaviour
         p.id = "Sydney";
         p.pieceMaterialName = "Piece-Black";
         Managers.Player.SetPlayer(2, p);
+        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
     }
 
     // Update is called once per frame
@@ -155,5 +156,6 @@ public class BoardController : MonoBehaviour
         board.GetSpace(move.to).ApplyPiece(p);
         currentPlayer = (currentPlayer % 2) + 1;
         moves.Add(move);
+        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
     }
 }

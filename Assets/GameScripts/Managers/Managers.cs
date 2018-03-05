@@ -48,6 +48,7 @@ public class Managers : MonoBehaviour
             yield return null;
         }
         Debug.Log("All Managers Started!");
+        Messenger.Broadcast(GameEvent.ALL_MANAGERS_STARTED);
 
     }
 }

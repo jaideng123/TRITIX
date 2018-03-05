@@ -25,14 +25,22 @@ public class PieceButton : MonoBehaviour
 
     public void SetQuantity(int value)
     {
-        if (value <= 0)
+        if (button)
         {
-            button.interactable = false;
+            SetActive(value > 0);
         }
-        else
+        quantityLabel.text = value.ToString();
+    }
+
+    private void SetActive(bool active)
+    {
+        if (active)
         {
             button.interactable = true;
         }
-        quantityLabel.text = value.ToString();
+        else
+        {
+            button.interactable = false;
+        }
     }
 }

@@ -6,4 +6,6 @@ public static class GameEvent
     public const string TOGGLE_PIECE_DRAWER = "TOGGLE_PIECE_DRAWER";
     public const string TOGGLE_CONFIRM_DRAWER = "TOGGLE_CONFIRM_DRAWER";
     public const string TOGGLE_VIEW = "TOGGLE_VIEW";
+    public const string ACTIVE_PLAYER_CHANGED = "ACTIVE_PLAYER_CHANGED";
+    public const string ALL_MANAGERS_STARTED = "ALL_MANAGERS_STARTED";
 }

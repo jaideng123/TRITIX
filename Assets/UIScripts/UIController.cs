@@ -11,21 +11,33 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private HideableDrawer confirmDrawer;
     [SerializeField]
+    private PlayerName p1Name;
+    [SerializeField]
+    private PieceButton[] p1Pieces;
+    [SerializeField]
+    private PlayerName p2Name;
+    [SerializeField]
+    private PieceButton[] p2Pieces;
+
+    [SerializeField]
     private PieceButton[] pieceButtons;
 
     void Awake()
     {
         Messenger<bool, int>.AddListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
         Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
+        Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
+        Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
     void OnDestroy()
     {
         Messenger<bool, int>.RemoveListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
         Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
+        Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
+        Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -50,9 +62,9 @@ public class UIController : MonoBehaviour
         Messenger.Broadcast(GameEvent.MOVE_CONFIRMED);
     }
 
-    private void UpdateBankValues(Dictionary<PieceType, int> bank)
+    private void UpdateBankValues(Dictionary<PieceType, int> bank, PieceButton[] pieces)
     {
-        foreach (PieceButton btn in pieceButtons)
+        foreach (PieceButton btn in pieces)
         {
             btn.SetQuantity(bank[btn.pieceType]);
         }
@@ -62,7 +74,7 @@ public class UIController : MonoBehaviour
     {
         if (active)
         {
-            UpdateBankValues(Managers.Player.GetPieceBank(activePlayer));
+            UpdateBankValues(Managers.Player.GetPieceBank(activePlayer), pieceButtons);
             pieceDrawer.Open();
         }
         else
@@ -81,5 +93,33 @@ public class UIController : MonoBehaviour
         {
             confirmDrawer.Close();
         }
+    }
+
+    private void OnActivePlayerChanged(int playerNum)
+    {
+        if (playerNum == 1)
+        {
+            p1Name.SetActive(true);
+            p2Name.SetActive(false);
+        }
+        else if (playerNum == 2)
+        {
+            p2Name.SetActive(true);
+            p1Name.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Active Player Is Not 1 or 2");
+        }
+        UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
+        UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+    }
+
+    private void OnManagersStarted()
+    {
+        p1Name.SetName(Managers.Player.GetPlayer(1).id);
+        p2Name.SetName(Managers.Player.GetPlayer(2).id);
+        UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
+        UpdateBankValues(Managers.Player.GetPieceBank(2), p1Pieces);
     }
 }
