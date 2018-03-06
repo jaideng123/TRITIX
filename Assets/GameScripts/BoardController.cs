@@ -47,12 +47,6 @@ public class BoardController : MonoBehaviour
         Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnSpaceSelected(Vector3Int coordinates)
     {
         Space selectedSpace = board.GetSpace(coordinates);
@@ -146,82 +140,18 @@ public class BoardController : MonoBehaviour
     public void CheckMatches(int playerNum)
     {
         Piece[][][] b = board.GetBoardModel();
-        HashSet<PieceType> matches = new HashSet<PieceType>();
-        Debug.Log("Checking For " + playerNum);
-        for (int i = 0; i < 3; i++)
-        {
-            //Check vertically
-            Piece[][] layer = b[i];
-            for (int j = 0; j < 3; j++)
-            {
-                Debug.Log("Checking Column " + j);
-                if (Array.IndexOf(layer[j], null) != -1)
-                {
-                    Debug.Log("Null Piece");
-                    continue;
-                }
-                if (Array.Find(layer[j], p => p.playerNum != playerNum) != null)
-                {
-                    Debug.Log("MisMatched Players");
-                    continue;
-                }
-                PieceType type = Array.Find(layer[j], p => p.type != PieceType.WILD).type;
-                if (Array.Find(layer[j], p => (p.type != type && p.type != PieceType.WILD)) != null)
-                {
-                    Debug.Log("Pieces Dont Match");
-                    continue;
-                }
-                Debug.Log("Found Vertically!");
-                matches.Add(type);
-            }
-            // check horizontally
-            layer = transposeLayer(layer);
-            for (int j = 0; j < 3; j++)
-            {
-                Debug.Log("Checking Row " + j);
-                if (Array.IndexOf(layer[j], null) != -1)
-                {
-                    Debug.Log("Null Piece");
-                    continue;
-                }
-                if (Array.Find(layer[j], p => p.playerNum != playerNum) != null)
-                {
-                    Debug.Log("MisMatched Players");
-                    continue;
-                }
-                PieceType type = Array.Find(layer[j], p => p.type != PieceType.WILD).type;
-                if (Array.Find(layer[j], p => (p.type != type && p.type != PieceType.WILD)) != null)
-                {
-                    Debug.Log("Pieces Dont Match");
-                    continue;
-                }
-                Debug.Log("Found Horizontally!");
-                matches.Add(type);
-            }
-        }
-
-        PieceType[] matchArray = new PieceType[matches.Count];
-        matches.CopyTo(matchArray);
+        PieceType[] matchArray = BoardChecker.FindMatches(b, playerNum);
         foreach (PieceType match in matchArray)
         {
             Debug.Log("Match Found For " + playerNum + " " + match.ToString());
         }
         Messenger<PieceType[], int>.Broadcast(GameEvent.PIECES_MATCHED, matchArray, playerNum);
-    }
-
-    private Piece[][] transposeLayer(Piece[][] layer)
-    {
-        Piece[][] newLayer = { new Piece[layer[0].Length], new Piece[layer[0].Length], new Piece[layer[0].Length] };
-        for (int i = 0; i < layer.Length; i++)
+        if (matchArray.Length == 3)
         {
-            for (int j = 0; j < layer[i].Length; j++)
-            {
-                newLayer[i][j] = layer[j][i];
-            }
+            Debug.Log("All Pieces Matched!");
+            Messenger<int>.Broadcast(GameEvent.GAME_OVER, playerNum);
         }
-        return newLayer;
     }
-
 
     public void ApplyMove(Move move)
     {

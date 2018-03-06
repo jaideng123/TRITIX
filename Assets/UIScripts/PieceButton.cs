@@ -49,6 +49,10 @@ public class PieceButton : MonoBehaviour
 
     public void SetMatched(bool active)
     {
+        if (image == null)
+        {
+            return;
+        }
         Color c = image.color;
         if (active)
         {

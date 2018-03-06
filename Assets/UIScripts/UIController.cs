@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
         Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
         Messenger<PieceType[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<int>.AddListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
     void OnDestroy()
@@ -38,6 +39,7 @@ public class UIController : MonoBehaviour
         Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
         Messenger<PieceType[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<int>.RemoveListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
     void Start()
@@ -119,6 +121,7 @@ public class UIController : MonoBehaviour
         UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
     }
 
+    //TODO Add Event for PLAYERS_SET
     private void OnManagersStarted()
     {
         p1Name.SetName(Managers.Player.GetPlayer(1).id);
@@ -130,39 +133,25 @@ public class UIController : MonoBehaviour
     private void onPiecesMatched(PieceType[] types, int playerNum)
     {
         Debug.Log(types.Length);
-        if (playerNum == 1)
+        PieceButton[] pieces = playerNum == 1 ? p1Pieces : p2Pieces;
+        foreach (PieceButton pieceIndicator in pieces)
         {
-            foreach (PieceButton pieceIndicator in p1Pieces)
+            if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
             {
-                if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
+                pieceIndicator.SetMatched(true);
+            }
+            else
+            {
+                if (pieceIndicator.pieceType != PieceType.WILD)
                 {
-                    pieceIndicator.SetMatched(true);
-                }
-                else
-                {
-                    if (pieceIndicator.pieceType != PieceType.WILD)
-                    {
-                        pieceIndicator.SetMatched(false);
-                    }
+                    pieceIndicator.SetMatched(false);
                 }
             }
         }
-        else if (playerNum == 2)
-        {
-            foreach (PieceButton pieceIndicator in p2Pieces)
-            {
-                if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
-                {
-                    pieceIndicator.SetMatched(true);
-                }
-                else
-                {
-                    if (pieceIndicator.pieceType != PieceType.WILD)
-                    {
-                        pieceIndicator.SetMatched(false);
-                    }
-                }
-            }
-        }
+    }
+
+    private void OnGameOver(int winner)
+    {
+        Debug.Log("Winner is " + Managers.Player.GetPlayer(winner).id);
     }
 }
