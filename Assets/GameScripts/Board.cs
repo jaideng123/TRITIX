@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public GameObject[] layers;
+    public BoardLayer[] layers;
     // Use this for initialization
     void Start()
     {
@@ -15,34 +15,27 @@ public class Board : MonoBehaviour
     {
 
     }
-    public void LayerSelected(GameObject layer, Vector2Int coordinates)
+    public void LayerSelected(BoardLayer layer, Vector2Int coordinates)
     {
         int i = Array.IndexOf(layers, layer);
         Vector3Int fullCoord = new Vector3Int(coordinates.x, coordinates.y, i);
         Debug.Log("Space Selected: " + fullCoord);
         Messenger<Vector3Int>.Broadcast(GameEvent.SPACE_SELECTED, fullCoord);
     }
-    public Piece[,,] GetBoardModel()
+    public Piece[][][] GetBoardModel()
     {
-        Piece[,,] board = new Piece[3, 3, 3];
+        Piece[][][] board = new Piece[3][][];
         for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < 3; j++)
-            {
-                for (int k = 0; k < 3; k++)
-                {
-                    Vector3Int v = new Vector3Int(j, k, i);
-                    board[i, j, k] = GetSpace(v).piece;
-                }
-            }
+            board[i] = layers[i].GetLayerModel();
         }
         return board;
 
     }
     public Space GetSpace(Vector3Int coordinates)
     {
-        BoardLayer layer = layers[coordinates.z].GetComponent<BoardLayer>();
-        Space space = layer.GetSpace(new Vector2Int(coordinates.x, coordinates.y)).GetComponent<Space>();
+        BoardLayer layer = layers[coordinates.z];
+        Space space = layer.GetSpace(new Vector2Int(coordinates.x, coordinates.y));
         return space;
     }
 }

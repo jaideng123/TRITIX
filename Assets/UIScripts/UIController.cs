@@ -129,6 +129,7 @@ public class UIController : MonoBehaviour
 
     private void onPiecesMatched(PieceType[] types, int playerNum)
     {
+        Debug.Log(types.Length);
         if (playerNum == 1)
         {
             foreach (PieceButton pieceIndicator in p1Pieces)
@@ -139,7 +140,10 @@ public class UIController : MonoBehaviour
                 }
                 else
                 {
-                    pieceIndicator.SetMatched(false);
+                    if (pieceIndicator.pieceType != PieceType.WILD)
+                    {
+                        pieceIndicator.SetMatched(false);
+                    }
                 }
             }
         }
@@ -153,7 +157,10 @@ public class UIController : MonoBehaviour
                 }
                 else
                 {
-                    pieceIndicator.SetMatched(false);
+                    if (pieceIndicator.pieceType != PieceType.WILD)
+                    {
+                        pieceIndicator.SetMatched(false);
+                    }
                 }
             }
         }

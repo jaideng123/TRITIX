@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoardLayer : MonoBehaviour
 {
-    public GameObject[] spaces;
+    public Space[] spaces;
     // Use this for initialization
     void Start()
     {
@@ -18,13 +18,13 @@ public class BoardLayer : MonoBehaviour
 
     }
 
-    public void SpaceSelected(GameObject space)
+    public void SpaceSelected(Space space)
     {
         int i = Array.IndexOf(spaces, space);
         Board board = transform.GetComponentInParent<Board>();
         if (board != null)
         {
-            board.LayerSelected(this.gameObject, transformLayerIndex(i));
+            board.LayerSelected(this, transformLayerIndex(i));
         }
         else
         {
@@ -32,10 +32,21 @@ public class BoardLayer : MonoBehaviour
         }
     }
 
-    public GameObject GetSpace(Vector2Int coordinates)
+    public Space GetSpace(Vector2Int coordinates)
     {
         int i = transformLayerCoordinate(coordinates);
         return spaces[i];
+    }
+
+    public Piece[][] GetLayerModel()
+    {
+        Piece[][] layer = {new Piece[3], new Piece[3], new Piece[3] };
+        for (int i = 0; i < 9; i++)
+        {
+            Vector2Int v = transformLayerIndex(i);
+            layer[v.x][v.y] = GetSpace(v).piece;
+        }
+        return layer;
     }
 
     private Vector2Int transformLayerIndex(int index)

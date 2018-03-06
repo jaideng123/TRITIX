@@ -27,7 +27,7 @@ public class Space : MonoBehaviour
         BoardLayer layer = transform.GetComponentInParent<BoardLayer>();
         if (layer != null)
         {
-            layer.SpaceSelected(this.gameObject);
+            layer.SpaceSelected(this);
         }
         else
         {
