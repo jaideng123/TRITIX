@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class UIController : MonoBehaviour
     private HideableDrawer pieceDrawer;
     [SerializeField]
     private HideableDrawer confirmDrawer;
+    [SerializeField]
+    private HideableDrawer restartDrawer;
     [SerializeField]
     private PlayerName p1Name;
     [SerializeField]
@@ -153,5 +156,11 @@ public class UIController : MonoBehaviour
     private void OnGameOver(int winner)
     {
         Debug.Log("Winner is " + Managers.Player.GetPlayer(winner).id);
+        restartDrawer.Open();
+    }
+
+    public void OnRestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

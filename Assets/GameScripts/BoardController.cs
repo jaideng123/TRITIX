@@ -13,6 +13,7 @@ public class BoardController : MonoBehaviour
     private Vector3Int selectedOriginSpace;
     private int currentPlayer = 1;
     private List<Move> moves;
+    private bool gameOver = false;
     // Use this for initialization
     void Awake()
     {
@@ -49,6 +50,10 @@ public class BoardController : MonoBehaviour
 
     private void OnSpaceSelected(Vector3Int coordinates)
     {
+        if (gameOver)
+        {
+            return;
+        }
         Space selectedSpace = board.GetSpace(coordinates);
         if (Managers.Player.PieceBankEmpty(currentPlayer))
         {
@@ -149,6 +154,7 @@ public class BoardController : MonoBehaviour
         if (matchArray.Length == 3)
         {
             Debug.Log("All Pieces Matched!");
+            gameOver = true;
             Messenger<int>.Broadcast(GameEvent.GAME_OVER, playerNum);
         }
     }
@@ -173,6 +179,9 @@ public class BoardController : MonoBehaviour
         currentPlayer = (currentPlayer % 2) + 1;
         moves.Add(move);
         CheckMatches(move.playerNum);
-        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
+        if (!gameOver)
+        {
+            Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
+        }
     }
 }
