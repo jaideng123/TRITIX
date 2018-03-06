@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44703114, g: 0.4969263, b: 0.57507443, a: 1}
+  m_IndirectSpecularColor: {r: 0.44703156, g: 0.4969269, b: 0.57507485, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 2
+  pieceType: 3
   matchedAlpha: 80
 --- !u!1 &274486297
 GameObject:
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 2
+  pieceType: 3
   matchedAlpha: 80
 --- !u!114 &342782315
 MonoBehaviour:
@@ -2102,7 +2102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  pieceType: 1
   matchedAlpha: 80
 --- !u!1 &457821479
 GameObject:
@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 1
+  pieceType: 2
   matchedAlpha: 80
 --- !u!114 &568008242
 MonoBehaviour:
@@ -3320,7 +3320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 3
+  pieceType: 4
   matchedAlpha: 80
 --- !u!1 &807818703
 GameObject:
@@ -3992,7 +3992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 3
+  pieceType: 4
   matchedAlpha: 80
 --- !u!1 &1112816245
 GameObject:
@@ -4084,7 +4084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 1
+  pieceType: 2
   matchedAlpha: 80
 --- !u!114 &1140217781
 MonoBehaviour:
@@ -4899,7 +4899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  pieceType: 1
   matchedAlpha: 80
 --- !u!114 &1362343858
 MonoBehaviour:
@@ -5387,7 +5387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 1
+  pieceType: 2
   matchedAlpha: 80
 --- !u!1 &1419103839
 GameObject:
@@ -5696,7 +5696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 3
+  pieceType: 4
   matchedAlpha: 80
 --- !u!1 &1479241980
 GameObject:
@@ -6373,7 +6373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  pieceType: 1
   matchedAlpha: 80
 --- !u!114 &1588155855
 MonoBehaviour:
@@ -6695,7 +6695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c9580bc2f0734aa941130a00b8f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 2
+  pieceType: 3
   matchedAlpha: 80
 --- !u!114 &1620630510
 MonoBehaviour:
