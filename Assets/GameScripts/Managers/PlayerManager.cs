@@ -86,6 +86,10 @@ public class PlayerManager : MonoBehaviour, IGameManager
         }
         foreach (PieceType key in players[playerNum - 1].bank.Keys)
         {
+            if (key == PieceType.NONE)
+            {
+                continue;
+            }
             if (players[playerNum - 1].bank[key] > 0)
             {
                 return false;

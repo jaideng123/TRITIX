@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class UIController : MonoBehaviour
     private HideableDrawer confirmDrawer;
     [SerializeField]
     private HideableDrawer restartDrawer;
+    [SerializeField]
+    private HideablePanel winPanel;
     [SerializeField]
     private PlayerName p1Name;
     [SerializeField]
@@ -47,6 +50,7 @@ public class UIController : MonoBehaviour
     }
     void Start()
     {
+        winPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -84,6 +88,8 @@ public class UIController : MonoBehaviour
         if (active)
         {
             UpdateBankValues(Managers.Player.GetPieceBank(activePlayer), pieceButtons);
+            Color playerColor = Managers.Player.GetPlayer(activePlayer).pieceColor;
+            pieceDrawer.gameObject.GetComponent<PieceColorer>().SetButtonColor(playerColor);
             pieceDrawer.Open();
         }
         else
@@ -156,6 +162,14 @@ public class UIController : MonoBehaviour
     private void OnGameOver(int winner)
     {
         Debug.Log("Winner is " + Managers.Player.GetPlayer(winner).id);
+        Text winText = winPanel.GetComponentInChildren<Text>();
+        winText.text = Managers.Player.GetPlayer(winner).id + "\n Wins!";
+        winPanel.SetActive(true);
+    }
+
+    public void OnViewBoard()
+    {
+        winPanel.SetActive(false);
         restartDrawer.Open();
     }
 
