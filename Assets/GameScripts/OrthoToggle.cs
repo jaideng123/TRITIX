@@ -15,12 +15,13 @@ public class OrthoToggle : MonoBehaviour
     [SerializeField]
     private GameObject mid;
     [SerializeField]
-    private Transform targetPosition;
+    private Transform[] targetPositions;
     [SerializeField]
     private Transform viewTarget;
     private float aspect;
     private MatrixBlender _matrixBlender;
     private OrbitCamera _orbitCamera;
+    private Transform activeTargetPosition;
     private bool _active;
     // Use this for initialization
 
@@ -45,7 +46,7 @@ public class OrthoToggle : MonoBehaviour
     {
         if (_active)
         {
-            this.transform.position += (targetPosition.position - transform.position) * smoothingFactor;
+            this.transform.position += (activeTargetPosition.position - transform.position) * smoothingFactor;
             this.transform.LookAt(viewTarget);
 
         }
@@ -55,27 +56,48 @@ public class OrthoToggle : MonoBehaviour
     {
         if (!_active)
         {
+            activeTargetPosition = FindNearestPosition(targetPositions);
+            float direction = activeTargetPosition.transform.position.z < 0 ? 1 : -1;
             Vector3 midPos = mid.transform.position;
-            midPos.z += 2;
+            midPos.z += 2 * direction;
             mid.transform.position = midPos;
             Vector3 topPos = top.transform.position;
-            topPos.z += 4;
+            topPos.z += 4 * direction;
             top.transform.position = topPos;
             _orbitCamera.enabled = false;
             _matrixBlender.BlendToMatrix(Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far), transitionTime);
         }
         if (_active)
         {
+            float direction = activeTargetPosition.transform.position.z < 0 ? 1 : -1;
             Vector3 midPos = mid.transform.position;
-            midPos.z -= 2;
+            midPos.z -= 2 * direction;
             mid.transform.position = midPos;
             Vector3 topPos = top.transform.position;
-            topPos.z -= 4;
+            topPos.z -= 4 * direction;
             top.transform.position = topPos;
             _orbitCamera.enabled = true;
             _orbitCamera.moveToAngle(0, 0);
             _matrixBlender.BlendToMatrix(Matrix4x4.Perspective(fov, aspect, near, far), transitionTime);
         }
         _active = !_active;
+    }
+
+    private Transform FindNearestPosition(Transform[] positions)
+    {
+        Transform closest = positions[0];
+        float closestDist = float.MaxValue;
+        foreach (Transform pos in positions)
+        {
+            float dist = Vector3.Distance(this.transform.position, pos.position);
+            Debug.Log(dist);
+            if (dist < closestDist)
+            {
+                closest = pos;
+                closestDist = dist;
+            }
+        }
+        Debug.Log(closest);
+        return closest;
     }
 }
