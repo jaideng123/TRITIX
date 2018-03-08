@@ -5,14 +5,17 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     public static PlayerManager Player;
+    public static AudioManager Audio;
     private List<IGameManager> _startSequence;
 
 
     void Awake()
     {
         Player = GetComponent<PlayerManager>();
+        Audio = GetComponent<AudioManager>();
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Player);
+        _startSequence.Add(Audio);
         StartCoroutine(StartupManagers());
 
     }
