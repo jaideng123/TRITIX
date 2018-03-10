@@ -10,5 +10,6 @@ public static class GameEvent
     public const string ALL_MANAGERS_STARTED = "ALL_MANAGERS_STARTED";
     public const string PIECES_MATCHED = "PIECES_MATCHED";
     public const string GAME_OVER = "GAME_OVER";
-
+    public const string GAME_PAUSED = "GAME_PAUSED";
+    public const string MUSIC_MUTED = "MUSIC_MUTED";
 }

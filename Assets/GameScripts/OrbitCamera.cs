@@ -29,7 +29,7 @@ public class OrbitCamera : MonoBehaviour
         _offset = target.position - transform.position;
     }
 
-    public void moveToAngle(float rotX, float rotY)
+    public void SetAngle(float rotX, float rotY)
     {
         _rotX = rotX;
         _rotY = rotY;
@@ -70,7 +70,7 @@ public class OrbitCamera : MonoBehaviour
         if (horInput != 0 || vertInput != 0)
         {
             _yVelocity = Mathf.Clamp(horInput * rotSpeed, -maxVelocity, maxVelocity);
-            _xVelocity = Mathf.Clamp(vertInput * rotSpeed, -maxVelocity, maxVelocity);
+            _xVelocity = Mathf.Clamp(vertInput * rotSpeed * -1, -maxVelocity, maxVelocity);
         }
         _rotY += _yVelocity * Time.deltaTime;
         _rotX += _xVelocity * Time.deltaTime;
