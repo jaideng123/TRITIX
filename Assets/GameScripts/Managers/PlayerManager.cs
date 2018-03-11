@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour, IGameManager
 {
+    public int currentPlayer { get; private set; }
     private Player[] players;
     public ManagerStatus status
     {
@@ -14,6 +15,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Starting Player Manager");
         players = new Player[] { null, null };
+        currentPlayer = 1;
         status = ManagerStatus.Started;
     }
 
@@ -96,5 +98,18 @@ public class PlayerManager : MonoBehaviour, IGameManager
             }
         }
         return true;
+    }
+
+    public void SetActivePlayer(int playerNum)
+    {
+        if (playerNum > 0 && playerNum <= 2)
+        {
+            currentPlayer = playerNum;
+        }
+    }
+
+    public void SwitchActivePlayer()
+    {
+        currentPlayer = (currentPlayer % 2) + 1;
     }
 }

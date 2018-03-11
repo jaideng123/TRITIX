@@ -11,7 +11,6 @@ public class BoardController : MonoBehaviour
     private Board board;
     private Vector3Int selectedDestSpace;
     private Vector3Int selectedOriginSpace;
-    private int currentPlayer = 1;
     private List<Move> moves;
     private bool gameOver = false;
     // Use this for initialization
@@ -50,7 +49,7 @@ public class BoardController : MonoBehaviour
 
     void OnManagersStarted()
     {
-        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
+        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
     }
 
     private void OnSpaceSelected(Vector3Int coordinates)
@@ -60,7 +59,7 @@ public class BoardController : MonoBehaviour
             return;
         }
         Space selectedSpace = board.GetSpace(coordinates);
-        if (Managers.Player.PieceBankEmpty(currentPlayer))
+        if (Managers.Player.PieceBankEmpty(Managers.Player.currentPlayer))
         {
             if (selectedSpace.piece == null)
             {
@@ -74,7 +73,7 @@ public class BoardController : MonoBehaviour
             }
             else
             {
-                if (selectedSpace.piece.playerNum != currentPlayer)
+                if (selectedSpace.piece.playerNum != Managers.Player.currentPlayer)
                 {
                     return;
                 }
@@ -104,15 +103,15 @@ public class BoardController : MonoBehaviour
             }
             selectedDestSpace = coordinates;
             selectedSpace.SetActive(true);
-            Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true, currentPlayer);
+            Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true, Managers.Player.currentPlayer);
         }
     }
 
     private void OnPieceSelected(PieceType type)
     {
-        if (Managers.Player.GetPieceBank(currentPlayer)[type] <= 0)
+        if (Managers.Player.GetPieceBank(Managers.Player.currentPlayer)[type] <= 0)
         {
-            Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + currentPlayer);
+            Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + Managers.Player.currentPlayer);
             return;
         }
         Debug.Log(type.ToString());
@@ -120,9 +119,9 @@ public class BoardController : MonoBehaviour
         move.pieceType = type;
         move.from = null;
         move.to = selectedDestSpace;
-        move.playerNum = currentPlayer;
+        move.playerNum = Managers.Player.currentPlayer;
         ApplyMove(move);
-        Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, currentPlayer);
+        Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, Managers.Player.currentPlayer);
         board.GetSpace(selectedDestSpace).SetActive(false);
         selectedDestSpace = null;
     }
@@ -137,7 +136,7 @@ public class BoardController : MonoBehaviour
         Move move = new Move();
         move.from = selectedOriginSpace;
         move.to = selectedDestSpace;
-        move.playerNum = currentPlayer;
+        move.playerNum = Managers.Player.currentPlayer;
         ApplyMove(move);
 
         Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, false);
@@ -166,9 +165,9 @@ public class BoardController : MonoBehaviour
 
     public void ApplyMove(Move move)
     {
-        if (move.playerNum != currentPlayer)
+        if (move.playerNum != Managers.Player.currentPlayer)
         {
-            Debug.LogWarning("currentPlayer, playernum mismatch");
+            Debug.LogWarning("Managers.Player.currentPlayer, playernum mismatch");
         }
         Piece p;
         if (move.from == null)
@@ -181,12 +180,12 @@ public class BoardController : MonoBehaviour
             board.GetSpace(move.from).ClearPiece();
         }
         board.GetSpace(move.to).ApplyPiece(p);
-        currentPlayer = (currentPlayer % 2) + 1;
+        Managers.Player.SwitchActivePlayer();
         moves.Add(move);
         CheckMatches(move.playerNum);
         if (!gameOver)
         {
-            Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, currentPlayer);
+            Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
         }
     }
 }
