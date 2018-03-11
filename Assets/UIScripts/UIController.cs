@@ -141,7 +141,6 @@ public class UIController : MonoBehaviour
 
     private void onPiecesMatched(PieceType[] types, int playerNum)
     {
-        Debug.Log(types.Length);
         PieceButton[] pieces = playerNum == 1 ? p1Pieces : p2Pieces;
         foreach (PieceButton pieceIndicator in pieces)
         {

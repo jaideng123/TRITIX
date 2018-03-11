@@ -11,13 +11,13 @@ public class BoardController : MonoBehaviour
     private Board board;
     private Vector3Int selectedDestSpace;
     private Vector3Int selectedOriginSpace;
-    private List<Move> moves;
-    private bool gameOver = false;
+    private List<Move> appliedMoves;
     // Use this for initialization
     void Awake()
     {
         Messenger<Vector3Int>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
+        Messenger<Move>.AddListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.AddListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
         Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
@@ -25,26 +25,14 @@ public class BoardController : MonoBehaviour
     {
         Messenger<Vector3Int>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
+        Messenger<Move>.RemoveListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.RemoveListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
         Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
     void Start()
     {
         board = boardObject.GetComponent<Board>();
-        moves = new List<Move>();
-        Player p = new Player();
-        p.id = "Player 1";
-        Color pieceColor = new Color();
-        ColorUtility.TryParseHtmlString("#FFFFFFDC", out pieceColor);
-        p.pieceColor = pieceColor;
-        p.pieceMaterialName = "Piece-White";
-        Managers.Player.SetPlayer(1, p);
-        p = new Player();
-        p.id = "Player 2";
-        ColorUtility.TryParseHtmlString("#000000B4", out pieceColor);
-        p.pieceColor = pieceColor;
-        p.pieceMaterialName = "Piece-Black";
-        Managers.Player.SetPlayer(2, p);
+        appliedMoves = new List<Move>();
     }
 
     void OnManagersStarted()
@@ -54,7 +42,7 @@ public class BoardController : MonoBehaviour
 
     private void OnSpaceSelected(Vector3Int coordinates)
     {
-        if (gameOver)
+        if (Managers.Board.gameOver)
         {
             return;
         }
@@ -120,10 +108,9 @@ public class BoardController : MonoBehaviour
         move.from = null;
         move.to = selectedDestSpace;
         move.playerNum = Managers.Player.currentPlayer;
-        ApplyMove(move);
+        Managers.Board.ApplyMove(move);
         Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, Managers.Player.currentPlayer);
-        board.GetSpace(selectedDestSpace).SetActive(false);
-        selectedDestSpace = null;
+        CleanUpSelections();
     }
 
     private void OnMoveConfirmed()
@@ -137,33 +124,27 @@ public class BoardController : MonoBehaviour
         move.from = selectedOriginSpace;
         move.to = selectedDestSpace;
         move.playerNum = Managers.Player.currentPlayer;
-        ApplyMove(move);
-
+        Managers.Board.ApplyMove(move);
         Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, false);
-        board.GetSpace(selectedDestSpace).SetActive(false);
-        board.GetSpace(selectedOriginSpace).SetActive(false);
-        board.GetSpace(selectedDestSpace).ClearPieceTemp();
+        CleanUpSelections();
+    }
+
+    private void CleanUpSelections()
+    {
+        if (selectedDestSpace != null)
+        {
+            board.GetSpace(selectedDestSpace).SetActive(false);
+            board.GetSpace(selectedDestSpace).ClearPieceTemp();
+        }
+        if (selectedOriginSpace != null)
+        {
+            board.GetSpace(selectedOriginSpace).SetActive(false);
+        }
         selectedDestSpace = null;
         selectedOriginSpace = null;
     }
-    public void CheckMatches(int playerNum)
-    {
-        Piece[][][] b = board.GetBoardModel();
-        PieceType[] matchArray = BoardChecker.FindMatches(b, playerNum);
-        foreach (PieceType match in matchArray)
-        {
-            Debug.Log("Match Found For " + playerNum + " " + match.ToString());
-        }
-        Messenger<PieceType[], int>.Broadcast(GameEvent.PIECES_MATCHED, matchArray, playerNum);
-        if (matchArray.Length == 3)
-        {
-            Debug.Log("All Pieces Matched!");
-            gameOver = true;
-            Messenger<int>.Broadcast(GameEvent.GAME_OVER, playerNum);
-        }
-    }
 
-    public void ApplyMove(Move move)
+    private void ApplyMove(Move move)
     {
         if (move.playerNum != Managers.Player.currentPlayer)
         {
@@ -180,12 +161,5 @@ public class BoardController : MonoBehaviour
             board.GetSpace(move.from).ClearPiece();
         }
         board.GetSpace(move.to).ApplyPiece(p);
-        Managers.Player.SwitchActivePlayer();
-        moves.Add(move);
-        CheckMatches(move.playerNum);
-        if (!gameOver)
-        {
-            Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
-        }
     }
 }

@@ -48,6 +48,7 @@ public static class BoardChecker
         matches.CopyTo(matchArray);
         return matchArray;
     }
+
     private static Piece[][] transposeLayer(Piece[][] layer)
     {
         Piece[][] newLayer = { new Piece[layer[0].Length], new Piece[layer[0].Length], new Piece[layer[0].Length] };

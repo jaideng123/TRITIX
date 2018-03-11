@@ -105,11 +105,13 @@ public class PlayerManager : MonoBehaviour, IGameManager
         if (playerNum > 0 && playerNum <= 2)
         {
             currentPlayer = playerNum;
+            Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
         }
     }
 
     public void SwitchActivePlayer()
     {
         currentPlayer = (currentPlayer % 2) + 1;
+        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
     }
 }

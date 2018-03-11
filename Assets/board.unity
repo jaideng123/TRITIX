@@ -938,6 +938,46 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 154136267}
+--- !u!1 &155392456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 155392458}
+  - component: {fileID: 155392457}
+  m_Layer: 0
+  m_Name: Player Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &155392457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 155392456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e015dc7e7a6ad24cab82300109b153d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &155392458
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 155392456}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.536006, y: 0.8435113, z: 0.089998245}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &163709191
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,6 +5030,7 @@ GameObject:
   - component: {fileID: 1078320608}
   - component: {fileID: 1078320607}
   - component: {fileID: 1078320609}
+  - component: {fileID: 1078320610}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -5045,6 +5086,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 387035537}
   BGMusic: Cleyton RX - Underwater
+--- !u!114 &1078320610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1078320605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc845113ebab1bc4a9d9b0dc098cb781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1112816245
 GameObject:
   m_ObjectHideFlags: 0

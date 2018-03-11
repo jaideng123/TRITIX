@@ -24,6 +24,11 @@ public class AudioManager : MonoBehaviour, IGameManager
     {
         PlayMusic(Resources.Load("Music/" + BGMusic) as AudioClip);
     }
+
+    public void MuteBackgroundMusic(bool mute)
+    {
+        musicSource.mute = mute;
+    }
     private void PlayMusic(AudioClip clip)
     {
         musicSource.clip = clip;
