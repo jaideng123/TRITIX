@@ -7,20 +7,26 @@ public class Managers : MonoBehaviour
     public static PlayerManager Player;
     public static AudioManager Audio;
     public static BoardManager Board;
+    public static GameModeManager GameMode;
+    public static BackdropManager Backdrop;
     private List<IGameManager> _startSequence;
 
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         Player = GetComponent<PlayerManager>();
         Audio = GetComponent<AudioManager>();
         Board = GetComponent<BoardManager>();
+        GameMode = GetComponent<GameModeManager>();
+        Backdrop = GetComponent<BackdropManager>();
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Player);
         _startSequence.Add(Audio);
         _startSequence.Add(Board);
+        _startSequence.Add(GameMode);
+        _startSequence.Add(Backdrop);
         StartCoroutine(StartupManagers());
-
     }
 
     private IEnumerator StartupManagers()

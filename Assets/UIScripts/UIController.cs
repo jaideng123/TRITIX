@@ -174,6 +174,8 @@ public class UIController : MonoBehaviour
 
     public void OnRestartGame()
     {
+        Managers.Board.Reset();
+        Managers.Player.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

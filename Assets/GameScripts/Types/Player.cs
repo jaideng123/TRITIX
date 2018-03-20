@@ -20,7 +20,7 @@ public class Player
             {
                 continue;
             }
-            bank.Add(type, 0);
+            bank.Add(type, 3);
         }
         bank[PieceType.WILD] = 1;
     }

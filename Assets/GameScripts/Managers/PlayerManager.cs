@@ -19,6 +19,12 @@ public class PlayerManager : MonoBehaviour, IGameManager
         status = ManagerStatus.Started;
     }
 
+    public void Reset()
+    {
+        players = new Player[] { null, null };
+        currentPlayer = 1;
+    }
+
     public void SetPlayer(int playerNum, Player player)
     {
         if (playerNum != 1 && playerNum != 2)

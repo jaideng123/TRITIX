@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     public void Startup()
     {
         Debug.Log("Starting Audio Manager");
-        PlayBackgroundMusic();
+        // PlayBackgroundMusic();
         status = ManagerStatus.Started;
     }
 

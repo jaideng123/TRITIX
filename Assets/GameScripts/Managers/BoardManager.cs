@@ -19,6 +19,12 @@ public class BoardManager : MonoBehaviour, IGameManager
         status = ManagerStatus.Started;
     }
 
+    public void Reset()
+    {
+        gameOver = false;
+        _moves = new List<Move>();
+    }
+
     public void ApplyMove(Move move)
     {
         Messenger<Move>.Broadcast(GameEvent.MOVE_APPLIED, move);
