@@ -25,9 +25,10 @@ public class GameModeManager : MonoBehaviour, IGameManager
         currentGameMode = mode;
         if (mode == GameMode.LOCAL)
         {
-            SceneManager.LoadScene("local_game");
+            GetComponent<Fading>().LoadScene("local_game");
         }
     }
+
 
 
 }

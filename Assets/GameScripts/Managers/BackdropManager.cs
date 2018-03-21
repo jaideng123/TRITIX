@@ -23,6 +23,7 @@ public class BackdropManager : MonoBehaviour, IGameManager
 
     public void LoadBackdrop(Backdrop backdrop)
     {
+        GetComponent<Fading>().BeginFade(1);
         if (backdropObject != null)
         {
             Destroy(backdropObject);
@@ -31,6 +32,7 @@ public class BackdropManager : MonoBehaviour, IGameManager
         backdropObject = Instantiate(currentBackdrop.scenePrefab, Vector3.zero, Quaternion.identity);
         DontDestroyOnLoad(backdropObject);
         RenderSettings.skybox = currentBackdrop.skyBox;
+        GetComponent<Fading>().BeginFade(-1);
     }
 
 
