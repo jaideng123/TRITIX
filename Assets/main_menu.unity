@@ -1665,6 +1665,7 @@ GameObject:
   - component: {fileID: 733747524}
   - component: {fileID: 733747523}
   - component: {fileID: 733747529}
+  - component: {fileID: 733747530}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1758,6 +1759,21 @@ MonoBehaviour:
     scenePrefab: {fileID: 1090362852193060, guid: c8a378f678392b84aa833b8ad294a8fe,
       type: 2}
     skyBox: {fileID: 2100000, guid: 8686280ca355b7642afb276b935d0957, type: 2}
+--- !u!114 &733747530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 733747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1130b7a0f0e7ec4985229e03e261b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProgressBar: {fileID: 0}
+  ProgressBarBackground: {fileID: 0}
+  fadeOutTexture: {fileID: 2800000, guid: 06376c1b900b9b44084d355030a2c3a5, type: 3}
+  fadeSpeed: 2
 --- !u!1 &769671931
 GameObject:
   m_ObjectHideFlags: 0
