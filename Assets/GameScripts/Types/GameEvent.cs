@@ -13,4 +13,5 @@ public static class GameEvent
     public const string GAME_PAUSED = "GAME_PAUSED";
     public const string MUSIC_MUTED = "MUSIC_MUTED";
     public const string MOVE_APPLIED = "MOVE_APPLIED";
+    public const string PLAYER_INFO_CHANGED = "PLAYER_INFO_CHANGED";
 }

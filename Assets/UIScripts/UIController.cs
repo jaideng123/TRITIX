@@ -33,7 +33,7 @@ public class UIController : MonoBehaviour
         Messenger<bool, int>.AddListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
         Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
-        Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
+        Messenger<int>.AddListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
         Messenger<PieceType[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.AddListener(GameEvent.GAME_OVER, OnGameOver);
 
@@ -43,7 +43,7 @@ public class UIController : MonoBehaviour
         Messenger<bool, int>.RemoveListener(GameEvent.TOGGLE_PIECE_DRAWER, OnPieceDrawerToggle);
         Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
-        Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
+        Messenger<int>.RemoveListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
         Messenger<PieceType[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.RemoveListener(GameEvent.GAME_OVER, OnGameOver);
 
@@ -130,13 +130,19 @@ public class UIController : MonoBehaviour
         UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
     }
 
-    //TODO Add Event for PLAYERS_SET
-    private void OnManagersStarted()
+    private void OnPlayerInfoChange(int playerNum)
     {
-        p1Name.SetName(Managers.Player.GetPlayer(1).id);
-        p2Name.SetName(Managers.Player.GetPlayer(2).id);
-        UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
-        UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+        if (playerNum == 1)
+        {
+            Debug.Log(Managers.Player.GetPlayer(1).id);
+            p1Name.SetName(Managers.Player.GetPlayer(1).id);
+            UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
+        }
+        else if (playerNum == 2)
+        {
+            p2Name.SetName(Managers.Player.GetPlayer(2).id);
+            UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+        }
     }
 
     private void onPiecesMatched(PieceType[] types, int playerNum)
@@ -177,5 +183,17 @@ public class UIController : MonoBehaviour
         Managers.Board.Reset();
         Managers.Player.Reset();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OnToggleMute(bool value)
+    {
+        if (value)
+        {
+            Managers.Audio.UnMuteBackgroundMusic();
+        }
+        else
+        {
+            Managers.Audio.MuteBackgroundMusic();
+        }
     }
 }

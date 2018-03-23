@@ -16,7 +16,8 @@ public class AudioManager : MonoBehaviour, IGameManager
     public void Startup()
     {
         Debug.Log("Starting Audio Manager");
-        // PlayBackgroundMusic();
+        DontDestroyOnLoad(musicSource);
+        PlayBackgroundMusic();
         status = ManagerStatus.Started;
     }
 
@@ -25,9 +26,13 @@ public class AudioManager : MonoBehaviour, IGameManager
         PlayMusic(Resources.Load("Music/" + BGMusic) as AudioClip);
     }
 
-    public void MuteBackgroundMusic(bool mute)
+    public void MuteBackgroundMusic()
     {
-        musicSource.mute = mute;
+        musicSource.mute = true;
+    }
+    public void UnMuteBackgroundMusic()
+    {
+        musicSource.mute = false;
     }
     private void PlayMusic(AudioClip clip)
     {

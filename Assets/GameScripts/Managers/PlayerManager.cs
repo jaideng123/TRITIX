@@ -37,6 +37,7 @@ public class PlayerManager : MonoBehaviour, IGameManager
             Debug.LogWarning("Player Already Set");
         }
         players[playerNum - 1] = player;
+        Messenger<int>.Broadcast(GameEvent.PLAYER_INFO_CHANGED, playerNum);
         Debug.Log("Player " + player.id + " Registered");
     }
 

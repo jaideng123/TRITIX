@@ -17,6 +17,7 @@ public class BackdropManager : MonoBehaviour, IGameManager
     public void Startup()
     {
         Debug.Log("Starting Backdrop Manager");
+        SceneManager.activeSceneChanged += OnSceneChange;
         LoadBackdrop(availableBackdrops[0]);
         status = ManagerStatus.Started;
     }
@@ -35,5 +36,9 @@ public class BackdropManager : MonoBehaviour, IGameManager
         GetComponent<Fading>().BeginFade(-1);
     }
 
+    private void OnSceneChange(Scene prev, Scene current)
+    {
+        RenderSettings.skybox = currentBackdrop.skyBox;
+    }
 
 }
