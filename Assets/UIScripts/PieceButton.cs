@@ -13,7 +13,7 @@ public class PieceButton : MonoBehaviour
     private Image image;
     private int pieceValue;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         quantityLabel = GetComponentInChildren<Text>();
         button = GetComponent<Button>();

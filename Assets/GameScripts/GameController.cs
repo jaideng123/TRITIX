@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour, IGameManager
+public class GameController : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerController playerController;
     private List<Move> _moves;
     public bool gameOver { get; private set; }
     public ManagerStatus status
@@ -11,15 +13,7 @@ public class BoardManager : MonoBehaviour, IGameManager
         get; private set;
     }
 
-    public void Startup()
-    {
-        Debug.Log("Starting Board Manager");
-        gameOver = false;
-        _moves = new List<Move>();
-        status = ManagerStatus.Started;
-    }
-
-    public void Reset()
+    public void Awake()
     {
         gameOver = false;
         _moves = new List<Move>();
@@ -32,7 +26,7 @@ public class BoardManager : MonoBehaviour, IGameManager
         CheckMatches(move.playerNum);
         if (!gameOver)
         {
-            Managers.Player.SwitchActivePlayer();
+            playerController.SwitchActivePlayer();
         }
     }
 

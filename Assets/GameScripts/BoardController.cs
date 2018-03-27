@@ -7,6 +7,10 @@ public class BoardController : MonoBehaviour
 {
 
     [SerializeField]
+    private PlayerController playerController;
+    [SerializeField]
+    private GameController gameController;
+    [SerializeField]
     private GameObject boardObject;
     private Board board;
     private Vector3Int selectedDestSpace;
@@ -19,7 +23,6 @@ public class BoardController : MonoBehaviour
         Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.AddListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.AddListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
-        Messenger.AddListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
     void OnDestroy()
     {
@@ -27,7 +30,6 @@ public class BoardController : MonoBehaviour
         Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.RemoveListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.RemoveListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
-        Messenger.RemoveListener(GameEvent.ALL_MANAGERS_STARTED, OnManagersStarted);
     }
     void Start()
     {
@@ -35,19 +37,14 @@ public class BoardController : MonoBehaviour
         appliedMoves = new List<Move>();
     }
 
-    void OnManagersStarted()
-    {
-        Messenger<int>.Broadcast(GameEvent.ACTIVE_PLAYER_CHANGED, Managers.Player.currentPlayer);
-    }
-
     private void OnSpaceSelected(Vector3Int coordinates)
     {
-        if (Managers.Board.gameOver)
+        if (gameController.gameOver)
         {
             return;
         }
         Space selectedSpace = board.GetSpace(coordinates);
-        if (Managers.Player.PieceBankEmpty(Managers.Player.currentPlayer))
+        if (playerController.PieceBankEmpty(playerController.currentPlayer))
         {
             if (selectedSpace.piece == null)
             {
@@ -61,7 +58,7 @@ public class BoardController : MonoBehaviour
             }
             else
             {
-                if (selectedSpace.piece.playerNum != Managers.Player.currentPlayer)
+                if (selectedSpace.piece.playerNum != playerController.currentPlayer)
                 {
                     return;
                 }
@@ -91,15 +88,15 @@ public class BoardController : MonoBehaviour
             }
             selectedDestSpace = coordinates;
             selectedSpace.SetActive(true);
-            Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true, Managers.Player.currentPlayer);
+            Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, true, playerController.currentPlayer);
         }
     }
 
     private void OnPieceSelected(PieceType type)
     {
-        if (Managers.Player.GetPieceBank(Managers.Player.currentPlayer)[type] <= 0)
+        if (playerController.GetPieceBank(playerController.currentPlayer)[type] <= 0)
         {
-            Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + Managers.Player.currentPlayer);
+            Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + playerController.currentPlayer);
             return;
         }
         Debug.Log(type.ToString());
@@ -107,9 +104,9 @@ public class BoardController : MonoBehaviour
         move.pieceType = type;
         move.from = null;
         move.to = selectedDestSpace;
-        move.playerNum = Managers.Player.currentPlayer;
-        Managers.Board.ApplyMove(move);
-        Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, Managers.Player.currentPlayer);
+        move.playerNum = playerController.currentPlayer;
+        gameController.ApplyMove(move);
+        Messenger<bool, int>.Broadcast(GameEvent.TOGGLE_PIECE_DRAWER, false, playerController.currentPlayer);
         CleanUpSelections();
     }
 
@@ -123,8 +120,8 @@ public class BoardController : MonoBehaviour
         Move move = new Move();
         move.from = selectedOriginSpace;
         move.to = selectedDestSpace;
-        move.playerNum = Managers.Player.currentPlayer;
-        Managers.Board.ApplyMove(move);
+        move.playerNum = playerController.currentPlayer;
+        gameController.ApplyMove(move);
         Messenger<bool>.Broadcast(GameEvent.TOGGLE_CONFIRM_DRAWER, false);
         CleanUpSelections();
     }
@@ -146,14 +143,14 @@ public class BoardController : MonoBehaviour
 
     private void ApplyMove(Move move)
     {
-        if (move.playerNum != Managers.Player.currentPlayer)
+        if (move.playerNum != playerController.currentPlayer)
         {
-            Debug.LogWarning("Managers.Player.currentPlayer, playernum mismatch");
+            Debug.LogWarning("playerController.currentPlayer, playernum mismatch");
         }
         Piece p;
         if (move.from == null)
         {
-            p = Managers.Player.GetPieceFromBank(move.playerNum, move.pieceType);
+            p = playerController.GetPieceFromBank(move.playerNum, move.pieceType);
         }
         else
         {

@@ -25,6 +25,14 @@ public class Fading : MonoBehaviour
     private int fadeDir = -1;           // the direction to fade: in = -1 or out = 1
     private AsyncOperation Async;
 
+    void Awake()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     void OnGUI()
     {
 
@@ -75,7 +83,7 @@ public class Fading : MonoBehaviour
 
 
     // OnLevelWasLoaded is called when a level is loaded. It takes loaded level index (int) as a parameter so you can limit the fade in to certain scenes
-    void OnLevelWasLoaded()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
         // alpha = 1;			// uncomment this if the alpha is not set to 1 by default

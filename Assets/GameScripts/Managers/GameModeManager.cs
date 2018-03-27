@@ -20,8 +20,6 @@ public class GameModeManager : MonoBehaviour, IGameManager
 
     public void StartGame(GameMode mode)
     {
-        Managers.Board.Reset();
-        Managers.Player.Reset();
         currentGameMode = mode;
         if (mode == GameMode.LOCAL)
         {

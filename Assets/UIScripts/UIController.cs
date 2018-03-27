@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerController playerController;
 
     [SerializeField]
     private HideableDrawer pieceDrawer;
@@ -87,8 +89,8 @@ public class UIController : MonoBehaviour
     {
         if (active)
         {
-            UpdateBankValues(Managers.Player.GetPieceBank(activePlayer), pieceButtons);
-            Color playerColor = Managers.Player.GetPlayer(activePlayer).pieceColor;
+            UpdateBankValues(playerController.GetPieceBank(activePlayer), pieceButtons);
+            Color playerColor = playerController.GetPlayer(activePlayer).pieceColor;
             pieceDrawer.gameObject.GetComponent<PieceColorer>().SetButtonColor(playerColor);
             pieceDrawer.Open();
         }
@@ -126,22 +128,27 @@ public class UIController : MonoBehaviour
         {
             Debug.LogWarning("Active Player Is Not 1 or 2");
         }
-        UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
-        UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+        if (playerController.GetPlayer(1) != null)
+        {
+            UpdateBankValues(playerController.GetPieceBank(1), p1Pieces);
+        }
+        if (playerController.GetPlayer(2) != null)
+        {
+            UpdateBankValues(playerController.GetPieceBank(2), p2Pieces);
+        }
     }
 
     private void OnPlayerInfoChange(int playerNum)
     {
         if (playerNum == 1)
         {
-            Debug.Log(Managers.Player.GetPlayer(1).id);
-            p1Name.SetName(Managers.Player.GetPlayer(1).id);
-            UpdateBankValues(Managers.Player.GetPieceBank(1), p1Pieces);
+            p1Name.SetName(playerController.GetPlayer(1).id);
+            UpdateBankValues(playerController.GetPieceBank(1), p1Pieces);
         }
         else if (playerNum == 2)
         {
-            p2Name.SetName(Managers.Player.GetPlayer(2).id);
-            UpdateBankValues(Managers.Player.GetPieceBank(2), p2Pieces);
+            p2Name.SetName(playerController.GetPlayer(2).id);
+            UpdateBankValues(playerController.GetPieceBank(2), p2Pieces);
         }
     }
 
@@ -166,9 +173,9 @@ public class UIController : MonoBehaviour
 
     private void OnGameOver(int winner)
     {
-        Debug.Log("Winner is " + Managers.Player.GetPlayer(winner).id);
+        Debug.Log("Winner is " + playerController.GetPlayer(winner).id);
         Text winText = winPanel.GetComponentInChildren<Text>();
-        winText.text = Managers.Player.GetPlayer(winner).id + "\n Wins!";
+        winText.text = playerController.GetPlayer(winner).id + "\n Wins!";
         winPanel.SetActive(true);
     }
 
@@ -180,9 +187,7 @@ public class UIController : MonoBehaviour
 
     public void OnRestartGame()
     {
-        Managers.Board.Reset();
-        Managers.Player.Reset();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Managers.GameMode.StartGame(Managers.GameMode.currentGameMode);
     }
 
     public void OnToggleMute(bool value)

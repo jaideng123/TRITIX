@@ -12,7 +12,7 @@ public class PlayerName : MonoBehaviour
     private Image image;
     private Text nameText;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         image = GetComponent<Image>();
         nameText = GetComponentInChildren<Text>();
@@ -22,6 +22,11 @@ public class PlayerName : MonoBehaviour
 
     public void SetActive(bool active)
     {
+        if (image == null)
+        {
+            StartCoroutine(SetActiveWhenReady(active));
+            return;
+        }
         _active = active;
         if (_active)
         {
@@ -31,6 +36,24 @@ public class PlayerName : MonoBehaviour
         {
             image.color = defaultColor;
         }
+    }
+
+    private IEnumerator SetActiveWhenReady(bool value)
+    {
+        while (image == null)
+        {
+            yield return null;
+        }
+        _active = value;
+        if (_active)
+        {
+            image.color = activeColor;
+        }
+        if (!_active)
+        {
+            image.color = defaultColor;
+        }
+
     }
 
     public void SetName(string name)

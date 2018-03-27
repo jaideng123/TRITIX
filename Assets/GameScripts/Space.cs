@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Space : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerController playerController;
     private GameObject _pieceObject;
     private GameObject _pieceTempObject;
     public Piece piece { get; private set; }
@@ -44,7 +46,7 @@ public class Space : MonoBehaviour
         }
         _pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/" + piece.type.ToString()) as GameObject);
         _pieceObject.transform.SetParent(this.transform, false);
-        string pieceMat = Managers.Player.GetPlayer(piece.playerNum).pieceMaterialName;
+        string pieceMat = playerController.GetPlayer(piece.playerNum).pieceMaterialName;
         _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
     }
 
