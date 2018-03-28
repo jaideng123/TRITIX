@@ -7,8 +7,9 @@ public class Player
     public string id;
     public Dictionary<PieceType, int> bank;
     public string pieceMaterialName;
-
     public Color pieceColor;
+
+    public bool isLocal;
 
     public Player()
     {

@@ -9,23 +9,9 @@ public class PlayerController : MonoBehaviour
     private bool initialized = false;
 
 
-    void Start()
+    void Awake()
     {
         players = new Player[] { null, null };
-        Player p = new Player();
-        p.id = "Player 1";
-        Color pieceColor = new Color();
-        ColorUtility.TryParseHtmlString("#FFFFFFDC", out pieceColor);
-        p.pieceColor = pieceColor;
-        p.pieceMaterialName = "Piece-White";
-        SetPlayer(1, p);
-        Player p2 = new Player();
-        p2.id = "Player 2";
-        ColorUtility.TryParseHtmlString("#000000B4", out pieceColor);
-        p2.pieceColor = pieceColor;
-        p2.pieceMaterialName = "Piece-Black";
-        SetPlayer(2, p2);
-        SetActivePlayer(1);
     }
 
     public void SetPlayer(int playerNum, Player player)

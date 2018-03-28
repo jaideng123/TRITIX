@@ -7,14 +7,14 @@ public static class BoardChecker
     public static PieceType[] FindMatches(Piece[][][] board, int playerNum)
     {
         HashSet<PieceType> matches = new HashSet<PieceType>();
-        Debug.Log("Checking For " + playerNum);
+        // Debug.Log("Checking For " + playerNum);
         for (int i = 0; i < 3; i++)
         {
             Piece[][] layer = board[i];
             Piece[][] transLayer = transposeLayer(layer);
             for (int j = 0; j < 3; j++)
             {
-                Debug.Log("Checking Column " + j);
+                // Debug.Log("Checking Column " + j);
                 //Check vertically
                 Piece[] row = layer[j];
                 PieceType type = checkRow(row, playerNum);
@@ -22,7 +22,7 @@ public static class BoardChecker
                 {
                     matches.Add(type);
                 }
-                Debug.Log("Checking Row " + j);
+                // Debug.Log("Checking Row " + j);
                 // check horizontally
                 row = transLayer[j];
                 type = checkRow(row, playerNum);
@@ -66,21 +66,21 @@ public static class BoardChecker
     {
         if (Array.IndexOf(row, null) != -1)
         {
-            Debug.Log("Null Piece");
+            // Debug.Log("Null Piece");
             return PieceType.NONE;
         }
         if (Array.Find(row, p => p.playerNum != playerNum) != null)
         {
-            Debug.Log("MisMatched Players");
+            // Debug.Log("MisMatched Players");
             return PieceType.NONE;
         }
         PieceType type = Array.Find(row, p => p.type != PieceType.WILD).type;
         if (Array.Find(row, p => (p.type != type && p.type != PieceType.WILD)) != null)
         {
-            Debug.Log("Pieces Dont Match");
+            // Debug.Log("Pieces Dont Match");
             return PieceType.NONE;
         }
-        Debug.Log("Found Cross Board!");
+        // Debug.Log("Found Cross Board!");
         return type;
     }
 }

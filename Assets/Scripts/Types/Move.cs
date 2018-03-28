@@ -8,4 +8,9 @@ public class Move
     public PieceType pieceType;
     public Vector3Int from;
     public Vector3Int to;
+
+    public override string ToString()
+    {
+        return string.Format("Player:{0} , Piece:{1}, From:{2} To:{3}", playerNum, pieceType.ToString(), from, to);
+    }
 }

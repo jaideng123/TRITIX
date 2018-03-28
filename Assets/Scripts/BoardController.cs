@@ -39,7 +39,7 @@ public class BoardController : MonoBehaviour
 
     private void OnSpaceSelected(Vector3Int coordinates)
     {
-        if (gameController.gameOver)
+        if (gameController.gameOver || !playerController.GetPlayer(playerController.currentPlayer).isLocal)
         {
             return;
         }
@@ -99,7 +99,7 @@ public class BoardController : MonoBehaviour
             Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + playerController.currentPlayer);
             return;
         }
-        Debug.Log(type.ToString());
+        //Debug.Log(type.ToString());
         Move move = new Move();
         move.pieceType = type;
         move.from = null;
