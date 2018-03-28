@@ -82,7 +82,7 @@ public class Fading : MonoBehaviour
     }
 
 
-    // OnLevelWasLoaded is called when a level is loaded. It takes loaded level index (int) as a parameter so you can limit the fade in to certain scenes
+    // OnSceneLoaded is called when a level is loaded. It takes loaded level index (int) as a parameter so you can limit the fade in to certain scenes
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
@@ -100,7 +100,6 @@ public class Fading : MonoBehaviour
 	 */
     public void LoadScene(string SceneName, float WaitFor = 0.6f)
     {
-
         StartCoroutine(ChangeScene(SceneName, WaitFor));
     }
 

@@ -19,6 +19,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private HideablePanel winPanel;
     [SerializeField]
+    private HideablePanel pauseMenuPanel;
+    [SerializeField]
     private PlayerName p1Name;
     [SerializeField]
     private PieceButton[] p1Pieces;
@@ -53,6 +55,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
         winPanel.SetActive(false);
+        pauseMenuPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -188,6 +191,16 @@ public class UIController : MonoBehaviour
     public void OnRestartGame()
     {
         Managers.GameMode.StartGame(Managers.GameMode.currentGameMode);
+    }
+
+    public void OnExitGame()
+    {
+        Managers.GameMode.StartGame(GameMode.NONE);
+    }
+
+    public void OnOpenPauseMenu(bool open)
+    {
+        pauseMenuPanel.SetActive(open);
     }
 
     public void OnToggleMute(bool value)
