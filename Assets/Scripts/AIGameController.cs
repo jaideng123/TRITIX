@@ -1,10 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 public class AIGameController : GameController
 {
+    [SerializeField]
+    private int minimaxDepth = 2;
+    [SerializeField]
+    private bool useRandom = false;
     private bool planning = false;
+
+    private bool _threadRunning;
+    private Thread _thread;
+    private Move bestMove = null;
     public void Start()
     {
         Player p = new Player();
@@ -27,18 +36,229 @@ public class AIGameController : GameController
 
     public void Update()
     {
-        if (playerController.currentPlayer == 2 && !planning)
+        if (bestMove != null && !planning)
         {
+            ApplyMove(bestMove);
+            bestMove = null;
+        }
+        if (playerController.currentPlayer == 2 && !planning && bestMove == null)
+        {
+            Debug.Log("Lets Start");
             planning = true;
-            StartCoroutine(PlanMove());
+            _thread = new Thread(PlanMove);
+            _thread.Start();
         }
     }
 
-    private IEnumerator PlanMove()
+    private void PlanMove()
     {
-        yield return new WaitForSeconds(.5f);
-        ApplyMove(createRandomMove());
+        Debug.Log("Planning Move");
+        Move bestMove = null;
+        int bestValue = -9999;
+        List<Move> shuffledMoves = FisherYatesCardDeckShuffle(enumerateAvailableMoves(_moves));
+        if (useRandom)
+        {
+            this.bestMove = shuffledMoves[0];
+            planning = false;
+            return;
+        }
+        foreach (Move move in shuffledMoves)
+        {
+            List<Move> moves = new List<Move>(_moves);
+            moves.Add(move);
+            int value = minimax(minimaxDepth, moves, -1000, 1000, true);
+            if (value > bestValue)
+            {
+                Debug.Log(value);
+                Debug.Log(move);
+
+                bestMove = move;
+                bestValue = value;
+            }
+        }
+        this.bestMove = bestMove;
         planning = false;
+    }
+
+    private int minimax(int depth, List<Move> movesPlayed, int alpha, int beta, bool isMaximisingPlayer)
+    {
+        if (depth == 0)
+        {
+            return -getValueFromBoard(movesPlayed);
+        }
+        List<Move> shuffledMoves = FisherYatesCardDeckShuffle(enumerateAvailableMoves(movesPlayed));
+        if (isMaximisingPlayer)
+        {
+            int bestMove = -9999;
+            foreach (Move move in shuffledMoves)
+            {
+                List<Move> newMoves = new List<Move>(movesPlayed);
+                newMoves.Add(move);
+                bestMove = Math.Max(bestMove, minimax(depth - 1, newMoves, alpha, beta, !isMaximisingPlayer));
+                alpha = Math.Max(alpha, bestMove);
+                if (beta <= alpha)
+                {
+                    return bestMove;
+                }
+            }
+            return bestMove;
+        }
+        else
+        {
+            int bestMove = 9999;
+            foreach (Move move in shuffledMoves)
+            {
+                List<Move> newMoves = new List<Move>(movesPlayed);
+                newMoves.Add(move);
+                bestMove = Math.Min(bestMove, minimax(depth - 1, newMoves, alpha, beta, !isMaximisingPlayer));
+                beta = Math.Min(beta, bestMove);
+                if (beta <= alpha)
+                {
+                    return bestMove;
+                }
+            }
+            return bestMove;
+        }
+
+    }
+    public static List<Move> FisherYatesCardDeckShuffle(List<Move> aList)
+    {
+
+        System.Random _random = new System.Random();
+
+        Move myGO;
+
+        int n = aList.Count;
+        for (int i = 0; i < n; i++)
+        {
+            // NextDouble returns a random number between 0 and 1.
+            // ... It is equivalent to Math.random() in Java.
+            int r = i + (int)(_random.NextDouble() * (n - i));
+            myGO = aList[r];
+            aList[r] = aList[i];
+            aList[i] = myGO;
+        }
+
+        return aList;
+    }
+
+    // private Move findBestMove()
+    // {
+    //     Piece[][][] board = GetBoardState(_moves);
+    // }
+
+    private int getValueFromBoard(List<Move> playedMoves)
+    {
+        Piece[][][] board = GetBoardState(playedMoves);
+        int value = 0;
+        foreach (PieceType match in BoardChecker.FindMatches(board, 1))
+        {
+            value++;
+        }
+        foreach (PieceType match in BoardChecker.FindMatches(board, 2))
+        {
+            value--;
+        }
+        return value;
+    }
+
+    private List<Move> enumerateAvailableMoves(List<Move> playedMoves)
+    {
+        List<Move> enumeratedMoves = new List<Move>();
+        int currentPlayer = (playedMoves[playedMoves.Count - 1].playerNum % 2) + 1;
+        Player[] players = getPieceBankFromMoves(playedMoves);
+        List<Vector3Int> vacantSpaces = findVacantBoardSpaces(playedMoves);
+        List<Vector3Int> ownedSpaces = findOwnedBoardSpaces(playedMoves, currentPlayer);
+        bool bankEmpty = true;
+        foreach (PieceType key in players[currentPlayer - 1].bank.Keys)
+        {
+            if (key == PieceType.NONE)
+            {
+                continue;
+            }
+            if (players[currentPlayer - 1].bank[key] > 0)
+            {
+                foreach (Vector3Int space in vacantSpaces)
+                {
+                    Move move = new Move();
+                    move.playerNum = currentPlayer;
+                    move.from = null;
+                    move.pieceType = key;
+                    move.to = space;
+                    enumeratedMoves.Add(move);
+                }
+                bankEmpty = false;
+            }
+        }
+        if (bankEmpty)
+        {
+            foreach (Vector3Int ownedSpace in ownedSpaces)
+            {
+                foreach (Vector3Int emptySpace in vacantSpaces)
+                {
+                    Move move = new Move();
+                    move.playerNum = currentPlayer;
+                    move.from = ownedSpace;
+                    move.to = emptySpace;
+                    enumeratedMoves.Add(move);
+                }
+            }
+        }
+        return enumeratedMoves;
+    }
+
+    private List<Vector3Int> findVacantBoardSpaces(List<Move> playedMoves)
+    {
+        List<Vector3Int> spaces = new List<Vector3Int>();
+        Piece[][][] board = GetBoardState(playedMoves);
+        for (int z = 0; z < 3; z++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    if (board[z][x][y] == null)
+                    {
+                        spaces.Add(new Vector3Int(x, y, z));
+                    }
+                }
+            }
+        }
+        return spaces;
+    }
+
+    private List<Vector3Int> findOwnedBoardSpaces(List<Move> playedMoves, int owner)
+    {
+        List<Vector3Int> spaces = new List<Vector3Int>();
+        Piece[][][] board = GetBoardState(playedMoves);
+        for (int z = 0; z < 3; z++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    if (board[z][x][y] != null && board[z][x][y].playerNum == owner)
+                    {
+                        spaces.Add(new Vector3Int(x, y, z));
+                    }
+                }
+            }
+        }
+        return spaces;
+    }
+
+    private Player[] getPieceBankFromMoves(List<Move> playedMoves)
+    {
+        Player[] players = new Player[] { new Player(), new Player() };
+        foreach (Move move in playedMoves)
+        {
+            if (move.from == null)
+            {
+                players[move.playerNum - 1].bank[move.pieceType] -= 1;
+            }
+        }
+        return players;
+
     }
 
     private Move createRandomMove()
@@ -62,11 +282,6 @@ public class AIGameController : GameController
             {
                 to = new Vector3Int(random.Next(3), random.Next(3), random.Next(3));
             }
-            Debug.Log(to);
-            foreach (Move m in _moves)
-            {
-                Debug.Log(m);
-            }
             for (int x = 0; x < board.Length; x++)
             {
                 for (int y = 0; y < board[x].Length; y++)
@@ -77,7 +292,6 @@ public class AIGameController : GameController
                     }
                 }
             }
-            Debug.Log(board[to.z][to.x][to.y]);
             Move move = new Move();
             move.playerNum = playerController.currentPlayer;
             move.to = to;
