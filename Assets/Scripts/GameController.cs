@@ -82,19 +82,26 @@ public class GameController : MonoBehaviour
         //replay moves over top of board
         foreach (Move move in moves)
         {
-            Piece p = new Piece();
-            if (move.from == null)
-            {
-                p.type = move.pieceType;
-                p.playerNum = move.playerNum;
-            }
-            else
-            {
-                p = board[move.from.z][move.from.x][move.from.y];
-                board[move.from.z][move.from.x][move.from.y] = null;
-            }
-            board[move.to.z][move.to.x][move.to.y] = p;
+            board = AddToBoardState(board, move);
         }
         return board;
+    }
+
+    public Piece[][][] AddToBoardState(Piece[][][] board, Move move)
+    {
+        Piece p = new Piece();
+        if (move.from == null)
+        {
+            p.type = move.pieceType;
+            p.playerNum = move.playerNum;
+        }
+        else
+        {
+            p = board[move.from.z][move.from.x][move.from.y];
+            board[move.from.z][move.from.x][move.from.y] = null;
+        }
+        board[move.to.z][move.to.x][move.to.y] = p;
+        return board;
+
     }
 }

@@ -13,7 +13,7 @@ public class AIGameController : GameController
 
     private bool _threadRunning;
     private Thread _thread;
-    private Move bestMove = null;
+    private Move plannedMove = null;
     public void Start()
     {
         Player p = new Player();
@@ -36,12 +36,12 @@ public class AIGameController : GameController
 
     public void Update()
     {
-        if (bestMove != null && !planning)
+        if (plannedMove != null && !planning)
         {
-            ApplyMove(bestMove);
-            bestMove = null;
+            ApplyMove(plannedMove);
+            plannedMove = null;
         }
-        if (playerController.currentPlayer == 2 && !planning && bestMove == null)
+        if (playerController.currentPlayer == 2 && !planning && plannedMove == null)
         {
             Debug.Log("Lets Start");
             planning = true;
@@ -53,20 +53,23 @@ public class AIGameController : GameController
     private void PlanMove()
     {
         Debug.Log("Planning Move");
+        var watch = System.Diagnostics.Stopwatch.StartNew();
         Move bestMove = null;
         int bestValue = -9999;
         List<Move> shuffledMoves = FisherYatesCardDeckShuffle(enumerateAvailableMoves(_moves));
         if (useRandom)
         {
-            this.bestMove = shuffledMoves[0];
+            plannedMove = shuffledMoves[0];
             planning = false;
+            watch.Stop();
+            Debug.Log("Time Taken: " + watch.ElapsedMilliseconds);
             return;
         }
         foreach (Move move in shuffledMoves)
         {
             List<Move> moves = new List<Move>(_moves);
             moves.Add(move);
-            int value = minimax(minimaxDepth, moves, -1000, 1000, true);
+            int value = minimax(minimaxDepth, moves, -1000, 1000, false);
             if (value > bestValue)
             {
                 Debug.Log(value);
@@ -76,7 +79,9 @@ public class AIGameController : GameController
                 bestValue = value;
             }
         }
-        this.bestMove = bestMove;
+        watch.Stop();
+        Debug.Log("Time Taken: " + watch.ElapsedMilliseconds);
+        plannedMove = bestMove;
         planning = false;
     }
 
@@ -84,9 +89,9 @@ public class AIGameController : GameController
     {
         if (depth == 0)
         {
-            return -getValueFromBoard(movesPlayed);
+            return -GetBoardValue(GetBoardState(movesPlayed));
         }
-        List<Move> shuffledMoves = FisherYatesCardDeckShuffle(enumerateAvailableMoves(movesPlayed));
+        List<Move> shuffledMoves = enumerateAvailableMoves(movesPlayed);
         if (isMaximisingPlayer)
         {
             int bestMove = -9999;
@@ -119,7 +124,6 @@ public class AIGameController : GameController
             }
             return bestMove;
         }
-
     }
     public static List<Move> FisherYatesCardDeckShuffle(List<Move> aList)
     {
@@ -142,24 +146,21 @@ public class AIGameController : GameController
         return aList;
     }
 
-    // private Move findBestMove()
-    // {
-    //     Piece[][][] board = GetBoardState(_moves);
-    // }
-
-    private int getValueFromBoard(List<Move> playedMoves)
+    private int GetBoardValue(Piece[][][] board)
     {
-        Piece[][][] board = GetBoardState(playedMoves);
-        int value = 0;
+        int p1value = 0;
         foreach (PieceType match in BoardChecker.FindMatches(board, 1))
         {
-            value++;
+            p1value += 3;
         }
+        int p2value = 0;
         foreach (PieceType match in BoardChecker.FindMatches(board, 2))
         {
-            value--;
+            p2value += 3;
         }
-        return value;
+        p2value = p2value == 9 ? 100 : p2value;
+        p1value = p1value == 9 ? 100 : p1value;
+        return p1value - p2value;
     }
 
     private List<Move> enumerateAvailableMoves(List<Move> playedMoves)

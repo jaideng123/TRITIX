@@ -4046,7 +4046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 1708262700}
   minimaxDepth: 2
-  useRandom: 1
+  useRandom: 0
 --- !u!1 &603641977
 GameObject:
   m_ObjectHideFlags: 0
