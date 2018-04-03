@@ -102,6 +102,5 @@ public class GameController : MonoBehaviour
         }
         board[move.to.z][move.to.x][move.to.y] = p;
         return board;
-
     }
 }

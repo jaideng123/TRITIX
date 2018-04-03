@@ -41,9 +41,8 @@ public class AIGameController : GameController
             ApplyMove(plannedMove);
             plannedMove = null;
         }
-        if (playerController.currentPlayer == 2 && !planning && plannedMove == null)
+        if (playerController.currentPlayer == 2 && !planning && plannedMove == null && !gameOver)
         {
-            Debug.Log("Lets Start");
             planning = true;
             _thread = new Thread(PlanMove);
             _thread.Start();
@@ -87,7 +86,7 @@ public class AIGameController : GameController
 
     private int minimax(int depth, List<Move> movesPlayed, int alpha, int beta, bool isMaximisingPlayer)
     {
-        if (depth == 0)
+        if (depth == 0 || IsTerminalState(GetBoardState(movesPlayed)))
         {
             return -GetBoardValue(GetBoardState(movesPlayed));
         }
@@ -161,6 +160,22 @@ public class AIGameController : GameController
         p2value = p2value == 9 ? 100 : p2value;
         p1value = p1value == 9 ? 100 : p1value;
         return p1value - p2value;
+    }
+
+    private bool IsTerminalState(Piece[][][] board)
+    {
+        int p1Score = 0;
+        foreach (PieceType match in BoardChecker.FindMatches(board, 1))
+        {
+            p1Score += 1;
+        }
+        int p2Score = 0;
+        foreach (PieceType match in BoardChecker.FindMatches(board, 2))
+        {
+            p2Score += 1;
+        }
+
+        return (p1Score == 3 || p2Score == 3);
     }
 
     private List<Move> enumerateAvailableMoves(List<Move> playedMoves)
