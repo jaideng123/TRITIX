@@ -18,7 +18,7 @@ public class BackdropManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Starting Backdrop Manager");
         SceneManager.activeSceneChanged += OnSceneChange;
-        LoadBackdrop(availableBackdrops[0]);
+        LoadBackdrop(availableBackdrops[1]);
         status = ManagerStatus.Started;
     }
 
