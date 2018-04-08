@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 6868ef9141b4eba4b97570c3f40b69c2
+guid: ee837f71a15a5cf4a974c9637f1c5511
+timeCreated: 1523223073
+licenseType: Free
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,11 +10,10 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Open Sans
+  fontName: Golden Ratio Demo
   fontNames:
-  - Open Sans
-  fallbackFontReferences:
-  - {instanceID: 0}
+  - Golden Ratio Demo
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

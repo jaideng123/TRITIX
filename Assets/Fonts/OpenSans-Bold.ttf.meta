@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 6868ef9141b4eba4b97570c3f40b69c2
+guid: 31148dbb0fb745742a142ff156745f2a
+timeCreated: 1523222942
+licenseType: Free
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -12,7 +14,7 @@ TrueTypeFontImporter:
   fontNames:
   - Open Sans
   fallbackFontReferences:
-  - {instanceID: 0}
+  - {fileID: 12800000, guid: 6868ef9141b4eba4b97570c3f40b69c2, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
