@@ -10,6 +10,11 @@ public class MyLog : MonoBehaviour
     void Start()
     {
         Debug.Log("Logger Started");
+        Debug.Log(" ");
+        Debug.Log(" ");
+        Debug.Log(" ");
+        Debug.Log(" ");
+        Debug.Log(QualitySettings.GetQualityLevel());
     }
 
     void OnEnable()
