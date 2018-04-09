@@ -31,10 +31,12 @@ public class PlayerName : MonoBehaviour
         if (_active)
         {
             image.color = activeColor;
+            nameText.color = defaultColor;
         }
         if (!_active)
         {
             image.color = defaultColor;
+            nameText.color = activeColor;
         }
     }
 
