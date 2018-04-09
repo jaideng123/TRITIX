@@ -21,6 +21,18 @@ public class OrbitCamera : MonoBehaviour
     private Vector3 _offset;
     private Rigidbody _rigidBody;
 
+    private bool _paused;
+
+    void Awake()
+    {
+        Messenger<bool>.AddListener(GameEvent.GAME_PAUSED, OnGamePaused);
+    }
+
+    void OnDestroy()
+    {
+        Messenger<bool>.RemoveListener(GameEvent.GAME_PAUSED, OnGamePaused);
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -40,8 +52,19 @@ public class OrbitCamera : MonoBehaviour
         transform.LookAt(target);
     }
 
+    private void OnGamePaused(bool paused)
+    {
+        _xVelocity = 0;
+        _yVelocity = 0;
+        _paused = paused;
+    }
+
     void LateUpdate()
     {
+        if (_paused)
+        {
+            return;
+        }
         float horInput = Input.GetAxis("Horizontal") * -1;
         float vertInput = Input.GetAxis("Vertical");
         if (horInput == 0 && vertInput == 0)

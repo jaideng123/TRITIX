@@ -180,12 +180,14 @@ public class UIController : MonoBehaviour
         Text winText = winPanel.GetComponentInChildren<Text>();
         winText.text = playerController.GetPlayer(winner).id + "\n Wins!";
         winPanel.SetActive(true);
+        Messenger<bool>.Broadcast(GameEvent.GAME_PAUSED, true);
     }
 
     public void OnViewBoard()
     {
         winPanel.SetActive(false);
         restartDrawer.Open();
+        Messenger<bool>.Broadcast(GameEvent.GAME_PAUSED, false);
     }
 
     public void OnRestartGame()
@@ -201,6 +203,7 @@ public class UIController : MonoBehaviour
     public void OnOpenPauseMenu(bool open)
     {
         pauseMenuPanel.SetActive(open);
+        Messenger<bool>.Broadcast(GameEvent.GAME_PAUSED, open);
     }
 
     public void OnToggleMute(bool value)
