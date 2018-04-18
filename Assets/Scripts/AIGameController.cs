@@ -32,6 +32,21 @@ public class AIGameController : GameController
         p2.isLocal = false;
         playerController.SetPlayer(2, p2);
         playerController.SetActivePlayer(1);
+
+        switch (Managers.GameMode.currentGameMode)
+        {
+            case (GameMode.COM_EASY):
+                useRandom = true;
+                break;
+            case (GameMode.COM_MEDIUM):
+                minimaxDepth = 0;
+                break;
+            case (GameMode.COM_HARD):
+                minimaxDepth = 1;
+                break;
+            default:
+                break;
+        }
     }
 
     public void Update()
@@ -59,9 +74,14 @@ public class AIGameController : GameController
         if (useRandom)
         {
             plannedMove = shuffledMoves[0];
-            planning = false;
             watch.Stop();
-            Debug.Log("Time Taken: " + watch.ElapsedMilliseconds);
+            Debug.Log("Time Taken: " + watch.Elapsed.Milliseconds);
+            if (watch.Elapsed.Milliseconds < 1000)
+            {
+                int delay = 1000 - watch.Elapsed.Milliseconds;
+                Thread.Sleep(delay);
+            }
+            planning = false;
             return;
         }
         foreach (Move move in shuffledMoves)
@@ -80,6 +100,11 @@ public class AIGameController : GameController
         }
         watch.Stop();
         Debug.Log("Time Taken: " + watch.ElapsedMilliseconds);
+        if (watch.Elapsed.Milliseconds < 1000)
+        {
+            int delay = 1000 - watch.Elapsed.Milliseconds;
+            Thread.Sleep(delay);
+        }
         plannedMove = bestMove;
         planning = false;
     }

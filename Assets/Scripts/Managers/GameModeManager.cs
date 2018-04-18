@@ -29,7 +29,7 @@ public class GameModeManager : MonoBehaviour, IGameManager
         {
             GetComponent<Fading>().LoadScene("local_game", .1f);
         }
-        if (mode == GameMode.COM)
+        if (mode == GameMode.COM_EASY || mode == GameMode.COM_MEDIUM || mode == GameMode.COM_HARD)
         {
             GetComponent<Fading>().LoadScene("ai_game", .1f);
         }
