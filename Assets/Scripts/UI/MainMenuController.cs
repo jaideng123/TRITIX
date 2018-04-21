@@ -62,9 +62,10 @@ public class MainMenuController : MonoBehaviour
         Managers.GameMode.StartGame(mode);
     }
 
-    public void OpenSubPanel(string menu)
+    public void Login()
     {
-
+        Managers.Auth.login();
     }
+
 
 }
