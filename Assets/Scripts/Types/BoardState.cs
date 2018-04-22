@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
-
+using Amazon.DynamoDBv2.DataModel;
+//Not currently being used ( but i want to keep it around just in case)
 public class BoardState
 {
     public int activePlayer;
     public Piece[][][] board;
 
-    BoardState()
+    public BoardState()
     {
         activePlayer = 1;
         board = GetEmptyBoard();
     }
-    BoardState(List<Move> moves)
+    public BoardState(List<Move> moves)
     {
         activePlayer = 1;
         board = GetEmptyBoard();

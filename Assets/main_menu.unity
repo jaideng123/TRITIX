@@ -2930,7 +2930,7 @@ GameObject:
   - component: {fileID: 733747523}
   - component: {fileID: 733747529}
   - component: {fileID: 733747530}
-  - component: {fileID: 733747524}
+  - component: {fileID: 733747526}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Manager
@@ -2949,17 +2949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f94e3bfb17cecf4daa3a40728e1ea00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &733747524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 733747522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4571ab711d0c4284299dd90497422cdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &733747525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2973,6 +2962,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1740863293}
   BGMusic: Cleyton RX - Underwater
+--- !u!114 &733747526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 733747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa282ec4a601fa242beb8f76f06db1eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &733747527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3010,10 +3010,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableBackdrops:
-  - name: mars
-    scenePrefab: {fileID: 1090362852193060, guid: c8a378f678392b84aa833b8ad294a8fe,
-      type: 2}
-    skyBox: {fileID: 2100000, guid: 8686280ca355b7642afb276b935d0957, type: 2}
   - name: tomb
     scenePrefab: {fileID: 1009957370462608, guid: d3a0e1e426aef2f4a94d23a35e356d01,
       type: 2}
@@ -3032,7 +3028,7 @@ MonoBehaviour:
   ProgressBar: {fileID: 0}
   ProgressBarBackground: {fileID: 0}
   fadeOutTexture: {fileID: 2800000, guid: 06376c1b900b9b44084d355030a2c3a5, type: 3}
-  fadeSpeed: 2
+  fadeSpeed: 0.8
 --- !u!1 &769671931
 GameObject:
   m_ObjectHideFlags: 0
@@ -3126,7 +3122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ddd7af3a1ee1d4e9dfab55b5845bf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1343620038}
+  target: {fileID: 516386784}
   rotSpeedX: 0
   rotSpeedY: 5
 --- !u!1 &796437199
@@ -5178,16 +5174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4041b8abfec5743a77fa85e0c56d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaces:
-  - {fileID: 939686368}
-  - {fileID: 183202553}
-  - {fileID: 1978185131}
-  - {fileID: 1300578919}
-  - {fileID: 846110420}
-  - {fileID: 1988776615}
-  - {fileID: 1795581003}
-  - {fileID: 66305076}
-  - {fileID: 977199942}
+  spaces: []
 --- !u!4 &1343620038
 Transform:
   m_ObjectHideFlags: 0
@@ -5718,16 +5705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4041b8abfec5743a77fa85e0c56d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaces:
-  - {fileID: 195344093}
-  - {fileID: 1848557043}
-  - {fileID: 910654835}
-  - {fileID: 1534677006}
-  - {fileID: 596183140}
-  - {fileID: 494865846}
-  - {fileID: 200095186}
-  - {fileID: 301828628}
-  - {fileID: 1716754995}
+  spaces: []
 --- !u!4 &1554843621
 Transform:
   m_ObjectHideFlags: 0
@@ -6277,7 +6255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1614601899
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6662,7 +6640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1710986275
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7961,16 +7939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4041b8abfec5743a77fa85e0c56d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaces:
-  - {fileID: 1210945037}
-  - {fileID: 995796312}
-  - {fileID: 126470802}
-  - {fileID: 1706281478}
-  - {fileID: 720258688}
-  - {fileID: 1930646032}
-  - {fileID: 231559510}
-  - {fileID: 310940601}
-  - {fileID: 632800897}
+  spaces: []
 --- !u!4 &1929486972
 Transform:
   m_ObjectHideFlags: 0
@@ -8170,10 +8139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0dfdb29fb105c0409b1f5c920f3bf06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layers:
-  - {fileID: 1554843620}
-  - {fileID: 1343620037}
-  - {fileID: 1929486971}
+  layers: []
 --- !u!4 &1982746354
 Transform:
   m_ObjectHideFlags: 0

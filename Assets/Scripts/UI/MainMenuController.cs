@@ -64,7 +64,7 @@ public class MainMenuController : MonoBehaviour
 
     public void Login()
     {
-        Managers.Auth.login();
+        Managers.Auth.Login();
     }
 
 

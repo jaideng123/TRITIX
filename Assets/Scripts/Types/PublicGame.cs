@@ -1,0 +1,23 @@
+using System.Collections.Generic;
+using Amazon.DynamoDBv2.DataModel;
+
+[DynamoDBTable("PublicGame")]
+public class PublicGame
+{
+    [DynamoDBHashKey]
+    public string id { get; set; }
+    [DynamoDBProperty]
+    public string player1Id { get; set; }
+    [DynamoDBProperty]
+    public string player2Id { get; set; }
+    [DynamoDBProperty]
+    public List<Move> moves { get; set; }
+    //TODO check for GUID collision
+    public PublicGame()
+    {
+        player1Id = null;
+        player2Id = null;
+        moves = new List<Move>();
+        id = System.Guid.NewGuid().ToString();
+    }
+}
