@@ -7,6 +7,7 @@ public class Managers : MonoBehaviour
     public static GameModeManager GameMode;
     public static BackdropManager Backdrop;
     public static AuthManager Auth;
+    public static OnlineManager Online;
     private List<IGameManager> _startSequence;
 
     public bool initialized = false;
@@ -28,11 +29,13 @@ public class Managers : MonoBehaviour
         GameMode = GetComponent<GameModeManager>();
         Backdrop = GetComponent<BackdropManager>();
         Auth = GetComponent<AuthManager>();
+        Online = GetComponent<OnlineManager>();
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Audio);
         _startSequence.Add(GameMode);
         _startSequence.Add(Backdrop);
         _startSequence.Add(Auth);
+        _startSequence.Add(Online);
         StartCoroutine(StartupManagers());
     }
 

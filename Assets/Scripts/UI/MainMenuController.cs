@@ -19,16 +19,6 @@ public class MainMenuController : MonoBehaviour
     }
     [SerializeField]
     private MenuPanel[] menuPanels;
-    // [SerializeField]
-    // private HideablePanel mainMenuPanel;
-    // [SerializeField]
-    // private HideablePanel optionsMenuPanel;
-    // [SerializeField]
-    // private HideablePanel difficultySelectPanel;
-    // [SerializeField]
-    // private HideablePanel howToPlayPanel;
-    // [SerializeField]
-    // private Dictionary<string, HideablePanel> onlinePanel;
     private MenuPanel activePanel = null;
 
     void Awake()
@@ -61,11 +51,5 @@ public class MainMenuController : MonoBehaviour
         GameMode mode = (GameMode)Enum.Parse(typeof(GameMode), modeString);
         Managers.GameMode.StartGame(mode);
     }
-
-    public void Login()
-    {
-        Managers.Auth.Login();
-    }
-
 
 }
