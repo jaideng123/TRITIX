@@ -92,7 +92,8 @@ public class OnlineManager : MonoBehaviour, IGameManager
             TableName = "PublicGame",
             //TODO Limit this search
             FilterExpression = "attribute_not_exists(player2Id)",
-            ProjectionExpression = "id"
+            ProjectionExpression = "id",
+            ConsistentRead = true
         };
 
         client.ScanAsync(request, (result) =>
@@ -158,5 +159,53 @@ public class OnlineManager : MonoBehaviour, IGameManager
                 }
             });
     }
+
+    public void FindActiveGames(Action<List<String>> success = null, Action failure = null)
+    {
+        if (!Managers.Auth.loggedIn)
+        {
+            Debug.LogWarning("User Not Authenticated");
+            if (failure != null)
+            {
+                failure();
+            }
+            return;
+        }
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
+        DynamoDBContext context = new DynamoDBContext(client);
+        var request = new ScanRequest
+        {
+            TableName = "PublicGame",
+            ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
+                        {":id", new AttributeValue { S = Managers.Auth.GetUserId() }},
+                        {":active",new AttributeValue { N = "1" }}
+},
+            FilterExpression = "(player1Id = :id or player2Id = :id) and (active = :active)",
+            ProjectionExpression = "id",
+            ConsistentRead = true
+        };
+
+        client.ScanAsync(request, (result) =>
+        {
+            List<string> openGames = new List<string>();
+            if (result.Exception != null)
+            {
+                Debug.Log(result.Exception);
+                return;
+            }
+            foreach (Dictionary<string, AttributeValue> item
+                     in result.Response.Items)
+            {
+                foreach (var it in item.Keys)
+                {
+                    openGames.Add(item[it].S);
+                    Debug.Log(item[it].S);
+                }
+            }
+            success(openGames);
+        });
+    }
+
+
 
 }

@@ -18,6 +18,8 @@ public class PublicGame
     public DateTime createdAt { get; set; }
     [DynamoDBProperty]
     public DateTime updatedAt { get; set; }
+    [DynamoDBProperty]
+    public bool active { get; set; }
     public PublicGame()
     {
         player1Id = null;
@@ -26,6 +28,7 @@ public class PublicGame
         id = System.Guid.NewGuid().ToString();
         createdAt = DateTime.Now.ToUniversalTime();
         updatedAt = DateTime.Now.ToUniversalTime();
+        active = true;
     }
 
     public int activePlayer()

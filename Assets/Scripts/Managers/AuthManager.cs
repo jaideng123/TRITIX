@@ -65,7 +65,8 @@ public class AuthManager : MonoBehaviour, IGameManager
     {
         if (FB.IsLoggedIn)
         {
-            return Facebook.Unity.AccessToken.CurrentAccessToken.UserId;
+            Debug.Log(credentials.GetIdentityId());
+            return credentials.GetIdentityId();
         }
         else
         {

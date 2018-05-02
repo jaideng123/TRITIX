@@ -32,7 +32,7 @@ public class OnlineMenuController : MonoBehaviour
     public void FindOrCreatePublicGame()
     {
         Debug.Log("Finding Game!");
-        Managers.Online.FindOpenGame(OnFindRecieved);
+        Managers.Online.FindActiveGames(OnFindRecieved);
 
     }
 
