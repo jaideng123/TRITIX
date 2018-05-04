@@ -90,7 +90,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1187,13 +1187,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 297552000}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.84, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 0.33333334, y: 5, z: 0.33333334}
   m_Children: []
   m_Father: {fileID: 1343620038}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &297552002
 Light:
   m_ObjectHideFlags: 0
@@ -1202,11 +1202,11 @@ Light:
   m_GameObject: {fileID: 297552000}
   m_Enabled: 1
   serializedVersion: 8
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 16
-  m_Range: 5
-  m_SpotAngle: 30
+  m_Intensity: 4
+  m_Range: 10
+  m_SpotAngle: 106
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -1222,7 +1222,7 @@ Light:
   m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294962175
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -4888,13 +4888,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1214784736}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.84, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 0.33333334, y: 5, z: 0.33333334}
   m_Children: []
   m_Father: {fileID: 1929486972}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &1214784738
 Light:
   m_ObjectHideFlags: 0
@@ -4903,11 +4903,11 @@ Light:
   m_GameObject: {fileID: 1214784736}
   m_Enabled: 1
   serializedVersion: 8
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 16
-  m_Range: 5
-  m_SpotAngle: 30
+  m_Intensity: 4
+  m_Range: 10
+  m_SpotAngle: 106
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -4923,7 +4923,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294964223
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -5528,7 +5528,7 @@ GameObject:
   - component: {fileID: 1343620040}
   - component: {fileID: 1343620039}
   - component: {fileID: 1343620037}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Layer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6188,7 +6188,7 @@ GameObject:
   - component: {fileID: 1554843623}
   - component: {fileID: 1554843622}
   - component: {fileID: 1554843620}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Layer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7743,13 +7743,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1775022908}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.9, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 0.33333334, y: 5, z: 0.33333334}
   m_Children: []
   m_Father: {fileID: 1554843621}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &1775022910
 Light:
   m_ObjectHideFlags: 0
@@ -7758,11 +7758,11 @@ Light:
   m_GameObject: {fileID: 1775022908}
   m_Enabled: 1
   serializedVersion: 8
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 16
-  m_Range: 5
-  m_SpotAngle: 30
+  m_Intensity: 4
+  m_Range: 10
+  m_SpotAngle: 106
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -7778,7 +7778,7 @@ Light:
   m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294961151
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -8502,7 +8502,7 @@ GameObject:
   - component: {fileID: 1929486974}
   - component: {fileID: 1929486973}
   - component: {fileID: 1929486971}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Layer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

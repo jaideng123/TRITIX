@@ -6,6 +6,8 @@ public class Space : MonoBehaviour
 {
     [SerializeField]
     private PlayerController playerController;
+    private float heightOffset = 3;
+    private float duration = .2f;
     private GameObject _pieceObject;
     private GameObject _pieceTempObject;
     public Piece piece { get; private set; }
@@ -46,8 +48,26 @@ public class Space : MonoBehaviour
         }
         _pieceObject = Instantiate(Resources.Load("Pieces/Prefabs/" + piece.type.ToString()) as GameObject);
         _pieceObject.transform.SetParent(this.transform, false);
+        Vector3 pos = _pieceObject.transform.localPosition;
+        pos.y += heightOffset;
+        _pieceObject.transform.localPosition = pos;
+        StartCoroutine(LowerPiece());
         string pieceMat = playerController.GetPlayer(piece.playerNum).pieceMaterialName;
         _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
+    }
+
+    private IEnumerator LowerPiece()
+    {
+        float target = _pieceObject.transform.localPosition.y - heightOffset;
+        float starting = _pieceObject.transform.localPosition.y;
+        float startTime = Time.time;
+
+        while (_pieceObject.transform.localPosition.y > target)
+        {
+            float t = (Time.time - startTime) / duration;
+            _pieceObject.transform.localPosition = new Vector3(0, Mathf.SmoothStep(starting, target, t), 0);
+            yield return null;
+        }
     }
 
     public void ApplyPieceTemp(PieceType type)

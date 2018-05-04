@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4455455042148592}
   - component: {fileID: 33963570187512696}
   - component: {fileID: 23467596638360782}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FLAT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,6 +54,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ec4d7f398c95fab4780dbe2e993253ee, type: 2}
   m_StaticBatchInfo:
