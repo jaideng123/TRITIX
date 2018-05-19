@@ -39,6 +39,7 @@ public class OrbitCamera : MonoBehaviour
         _rotY = transform.eulerAngles.y;
         _rotX = transform.eulerAngles.x;
         _offset = target.position - transform.position;
+        SetAngle(35, 45);
     }
 
     public void SetAngle(float rotX, float rotY)

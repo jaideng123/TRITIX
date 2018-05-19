@@ -20,6 +20,8 @@ public class PublicGame
     public DateTime updatedAt { get; set; }
     [DynamoDBProperty]
     public bool active { get; set; }
+    [DynamoDBVersion]
+    public int? VersionNumber { get; set; }
     public PublicGame()
     {
         player1Id = null;

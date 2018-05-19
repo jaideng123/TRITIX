@@ -74,8 +74,8 @@ public class OnlineMenuController : MonoBehaviour
             );
             yield return game;
         }
+        LoadGame(game.Result);
         Debug.Log("Player Found!");
-
     }
 
     private void JoinGame(PublicGame game)
@@ -86,8 +86,18 @@ public class OnlineMenuController : MonoBehaviour
             return;
         }
         game.player2Id = Managers.Auth.GetUserId();
-        Managers.Online.UpdateGame(game);
+        Managers.Online.UpdateGame(game, LoadGame, FindOrCreatePublicGame);
+    }
 
+    private void LoadGame(PublicGame game)
+    {
+        int activePlayer = game.player1Id == Managers.Auth.GetUserId() ? 1 : 2;
+        var param = new Dictionary<string, string>()
+        {
+            { "local-player", activePlayer.ToString()},
+            { "game-id",game.id }
+        };
+        Managers.GameMode.StartGame(GameMode.ONLINE, param);
     }
 
 

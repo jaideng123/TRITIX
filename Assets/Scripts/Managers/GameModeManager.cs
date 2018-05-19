@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameModeManager : MonoBehaviour, IGameManager
 {
     public GameMode currentGameMode { get; private set; }
+
+    public Dictionary<string, string> modeParams;
     public ManagerStatus status
     {
         get; private set;
@@ -18,9 +20,10 @@ public class GameModeManager : MonoBehaviour, IGameManager
         status = ManagerStatus.Started;
     }
 
-    public void StartGame(GameMode mode)
+    public void StartGame(GameMode mode, Dictionary<string, string> param = null)
     {
         currentGameMode = mode;
+        modeParams = param;
         if (mode == GameMode.NONE)
         {
             GetComponent<Fading>().LoadScene("main_menu", .1f);
@@ -32,6 +35,10 @@ public class GameModeManager : MonoBehaviour, IGameManager
         if (mode == GameMode.COM_EASY || mode == GameMode.COM_MEDIUM || mode == GameMode.COM_HARD)
         {
             GetComponent<Fading>().LoadScene("ai_game", .1f);
+        }
+        if (mode == GameMode.ONLINE)
+        {
+            GetComponent<Fading>().LoadScene("online_game", .1f);
         }
     }
 

@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
             orthoCamera.Disable();
             activeSnapPosition = null;
             orbitCamera.enabled = true;
-            orbitCamera.SetAngle(10, 0);
+            orbitCamera.SetAngle(30, 0);
         }
         else
         {

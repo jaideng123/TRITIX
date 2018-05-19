@@ -138,7 +138,7 @@ public class OnlineManager : MonoBehaviour, IGameManager
             });
     }
 
-    public void UpdateGame(PublicGame game, Action success = null, Action failure = null)
+    public void UpdateGame(PublicGame game, Action<PublicGame> success = null, Action failure = null)
     {
         AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
         DynamoDBContext context = new DynamoDBContext(client);
@@ -155,7 +155,7 @@ public class OnlineManager : MonoBehaviour, IGameManager
                 }
                 if (success != null)
                 {
-                    success();
+                    success(game);
                 }
             });
     }
