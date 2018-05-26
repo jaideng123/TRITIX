@@ -12,7 +12,7 @@ public class HideableDrawer : MonoBehaviour
     void Start()
     {
         var rectTransform = GetComponent<RectTransform>();
-        hiddenOffset = rectTransform.rect.height;
+        hiddenOffset = rectTransform.rect.height + 10;
         Vector3 pos = transform.position;
         pos.y -= hiddenOffset;
         transform.position = pos;

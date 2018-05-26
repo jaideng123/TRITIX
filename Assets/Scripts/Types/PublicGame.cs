@@ -30,7 +30,7 @@ public class PublicGame
         id = System.Guid.NewGuid().ToString();
         createdAt = DateTime.Now.ToUniversalTime();
         updatedAt = DateTime.Now.ToUniversalTime();
-        active = true;
+        active = false;
     }
 
     public int activePlayer()

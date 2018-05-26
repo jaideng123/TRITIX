@@ -10,30 +10,47 @@ public class OnlineMenuController : MonoBehaviour
     private Button loginButton;
     [SerializeField]
     private Button logoutButton;
+    [SerializeField]
+    private Image loadingImage;
+    [SerializeField]
+    private Button quickGameButton;
+    [SerializeField]
+    private Button cancelSearchButton;
+    [SerializeField]
+    private Button backButton;
+    private bool searching;
+
+    private string openGameId;
 
 
     // Use this for initialization
     void Start()
     {
-        SetLoginButtons();
+        SetInteractableElements();
+        openGameId = null;
     }
 
-    private void SetLoginButtons()
+    private void SetInteractableElements()
     {
         loginButton.gameObject.SetActive(!Managers.Auth.loggedIn);
         logoutButton.gameObject.SetActive(Managers.Auth.loggedIn);
+        quickGameButton.gameObject.SetActive(!searching);
+        quickGameButton.interactable = Managers.Auth.loggedIn;
+        cancelSearchButton.gameObject.SetActive(searching);
+        backButton.gameObject.SetActive(!searching);
+        loadingImage.gameObject.SetActive(searching);
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetLoginButtons();
+        SetInteractableElements();
     }
     public void FindOrCreatePublicGame()
     {
         Debug.Log("Finding Game!");
-        Managers.Online.FindActiveGames(OnFindRecieved);
-
+        searching = true;
+        Managers.Online.FindOpenGame(OnFindRecieved);
     }
 
     private void OnFindRecieved(List<String> gameIds)
@@ -56,6 +73,7 @@ public class OnlineMenuController : MonoBehaviour
     private void OnGameCreated(string id)
     {
         Debug.Log("Created Game: " + id);
+        openGameId = id;
         StartCoroutine(WaitForGameJoin(id));
     }
 
@@ -69,6 +87,7 @@ public class OnlineMenuController : MonoBehaviour
         while (game.Result.player2Id == null)
         {
             Debug.Log("Still Waiting...");
+            yield return new WaitForSeconds(1);
             game = new WaitForCallback<PublicGame>(
                 done => Managers.Online.FindGameById(id, result => done(result))
             );
@@ -97,7 +116,20 @@ public class OnlineMenuController : MonoBehaviour
             { "local-player", activePlayer.ToString()},
             { "game-id",game.id }
         };
+        searching = false;
+        game.active = true;
+        Managers.Online.UpdateGame(game);
         Managers.GameMode.StartGame(GameMode.ONLINE, param);
+    }
+
+    public void OnCancelSearch()
+    {
+        searching = false;
+        if (openGameId != null)
+        {
+            Managers.Online.DeleteGame(openGameId);
+            openGameId = null;
+        }
     }
 
 
@@ -114,6 +146,12 @@ public class OnlineMenuController : MonoBehaviour
     public void LogOut()
     {
         Managers.Auth.LogOut();
+    }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("Application Closed");
+        OnCancelSearch();
     }
 
 }

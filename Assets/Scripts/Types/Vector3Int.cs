@@ -12,6 +12,13 @@ public class Vector3Int
         this.z = z;
     }
 
+    public Vector3Int()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
     public override string ToString()
     {
         return string.Format("[{0},{1},{2}]", x, y, z);

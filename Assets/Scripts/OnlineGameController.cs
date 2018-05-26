@@ -6,9 +6,14 @@ using UnityEngine;
 public class OnlineGameController : GameController
 {
     private string gameId;
+    private PublicGame game;
+
+    private bool syncing;
+
     public void Start()
     {
         gameId = Managers.GameMode.modeParams["game-id"];
+
         Debug.Log(gameId);
         Player p = new Player();
         p.id = "Player 1";
@@ -26,20 +31,41 @@ public class OnlineGameController : GameController
         p2.isLocal = Managers.GameMode.modeParams["local-player"] == "2";
         playerController.SetPlayer(2, p2);
         playerController.SetActivePlayer(1);
+        SyncGame();
     }
 
     public void Update()
     {
-
+        if (syncing)
+        {
+            return;
+        }
+        StartCoroutine(SyncGame());
     }
-
-    private IEnumerator WaitForNetworkResponse()
+    private IEnumerator SyncGame()
     {
-        Debug.Log("Waiting for game join...");
-        var game = new WaitForCallback<PublicGame>(
-            done => Managers.Online.FindGameById(gameId, result => done(result))
-        );
-        yield return game;
+        syncing = true;
+        yield return new WaitForSeconds(1);
+        Managers.Online.FindGameById(gameId, UpdateGame);
+    }
+    private void UpdateGame(PublicGame newGame)
+    {
+        game = newGame;
+        while (_moves.Count < game.moves.Count)
+        {
+            Debug.Log("Catching Up");
+            ApplyMove(game.moves[_moves.Count]);
+        }
+        if (_moves.Count > game.moves.Count)
+        {
+            Debug.Log("Sending Moves To Server");
+            game.moves = _moves;
+            Managers.Online.UpdateGame(game, game => { syncing = false; });
+        }
+        else
+        {
+            syncing = false;
+        }
     }
 
 }

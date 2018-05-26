@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
+using Amazon.Lambda;
+using Amazon.Lambda.Model;
 using UnityEngine;
 // TODO consider refactoring to async/await
 public class OnlineManager : MonoBehaviour, IGameManager
@@ -38,6 +41,9 @@ public class OnlineManager : MonoBehaviour, IGameManager
         AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
         DynamoDBContext context = new DynamoDBContext(client);
         PublicGame game = new PublicGame();
+        Move move = new Move();
+        move.to = new Vector3Int(0, 0, 0);
+        game.moves.Add(move);
         game.player1Id = Managers.Auth.GetUserId();
         context.SaveAsync(game, (result) =>
         {
@@ -71,7 +77,28 @@ public class OnlineManager : MonoBehaviour, IGameManager
         }
         AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
         DynamoDBContext context = new DynamoDBContext(client);
-        Debug.Log("Searching");
+        // var client = new AmazonLambdaClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
+        // var request = new InvokeRequest()
+        // {
+        //     FunctionName = "FindOpenGames",
+        //     Payload = "{}",
+        //     InvocationType = InvocationType.RequestResponse
+        // };
+        // Debug.Log("Searching Lambda");
+        // client.InvokeAsync(request, (result) =>
+        // {
+        //     List<string> openGames = new List<string>();
+        //     if (result.Exception == null)
+        //     {
+
+        //         Debug.Log(Encoding.ASCII.GetString(result.Response.Payload.ToArray()));
+        //         success(openGames);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError(result.Exception);
+        //     }
+        // });
         // This didn't work but it should have
         // AsyncSearch<PublicGame> search = context.ScanAsync<PublicGame>(new ScanCondition("player1Id", ScanOperator.Equal, "10209697164105086"));
         // Debug.Log("Got Search");
@@ -92,8 +119,7 @@ public class OnlineManager : MonoBehaviour, IGameManager
             TableName = "PublicGame",
             //TODO Limit this search
             FilterExpression = "attribute_not_exists(player2Id)",
-            ProjectionExpression = "id",
-            ConsistentRead = true
+            ProjectionExpression = "id"
         };
 
         client.ScanAsync(request, (result) =>
@@ -104,6 +130,7 @@ public class OnlineManager : MonoBehaviour, IGameManager
                 Debug.Log(result.Exception);
                 return;
             }
+            Debug.Log(result);
             foreach (Dictionary<string, AttributeValue> item
                      in result.Response.Items)
             {
@@ -158,6 +185,35 @@ public class OnlineManager : MonoBehaviour, IGameManager
                     success(game);
                 }
             });
+    }
+
+    public void DeleteGame(string gameId, Action success = null, Action failure = null)
+    {
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
+        DynamoDBContext context = new DynamoDBContext(client);
+        context.DeleteAsync<PublicGame>(gameId, (res) =>
+            {
+                if (res.Exception != null)
+                {
+                    Debug.Log(res.Exception);
+                    if (failure != null)
+                    {
+                        failure();
+                    }
+                    return;
+                }
+                if (success != null)
+                {
+                    success();
+                }
+            });
+    }
+
+    public void DeleteInactiveGames(string gameId, Action success = null, Action failure = null)
+    {
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
+        DynamoDBContext context = new DynamoDBContext(client);
+
     }
 
     public void FindActiveGames(Action<List<String>> success = null, Action failure = null)
