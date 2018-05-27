@@ -22,6 +22,8 @@ public class OnlineMenuController : MonoBehaviour
 
     private string openGameId;
 
+    private const float ACTIVE_WAIT_SECONDS = 10f;
+
 
     // Use this for initialization
     void Start()
@@ -97,12 +99,42 @@ public class OnlineMenuController : MonoBehaviour
         Debug.Log("Player Found!");
     }
 
+    private IEnumerator WaitForGameActive(string id)
+    {
+        float start = Time.time;
+        Debug.Log("Waiting for game join...");
+        var game = new WaitForCallback<PublicGame>(
+            done => Managers.Online.FindGameById(id, result => done(result))
+        );
+        yield return game;
+        while (game.Result.active == false && (Time.time - start) < ACTIVE_WAIT_SECONDS)
+        {
+            Debug.Log("Still Waiting...");
+            yield return new WaitForSeconds(1);
+            game = new WaitForCallback<PublicGame>(
+                done => Managers.Online.FindGameById(id, result => done(result))
+            );
+            yield return game;
+        }
+        if (game.Result.active)
+        {
+            LoadGame(game.Result);
+            Debug.Log("Game Confirmed!");
+        }
+        else
+        {
+            Debug.Log("Wait For Active Timed Out");
+            Managers.Online.DeleteGame(id);
+            FindOrCreatePublicGame();
+        }
+    }
+
     private void JoinGame(PublicGame game)
     {
         if (game.player2Id != null)
         {
             Debug.LogWarning("Game " + game.id + " Is already full");
-            return;
+            FindOrCreatePublicGame();//try again
         }
         game.player2Id = Managers.Auth.GetUserId();
         Managers.Online.UpdateGame(game, LoadGame, FindOrCreatePublicGame);

@@ -41,9 +41,6 @@ public class OnlineManager : MonoBehaviour, IGameManager
         AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
         DynamoDBContext context = new DynamoDBContext(client);
         PublicGame game = new PublicGame();
-        Move move = new Move();
-        move.to = new Vector3Int(0, 0, 0);
-        game.moves.Add(move);
         game.player1Id = Managers.Auth.GetUserId();
         context.SaveAsync(game, (result) =>
         {
