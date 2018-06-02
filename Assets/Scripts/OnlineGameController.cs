@@ -33,10 +33,11 @@ public class OnlineGameController : GameController
         playerController.SetActivePlayer(1);
         SyncGame();
     }
-
+    // TODO: Optimize this sync loop
+    // TODO: Add forfeit system
     public void Update()
     {
-        if (syncing)
+        if (syncing || gameOver)
         {
             return;
         }
@@ -46,10 +47,15 @@ public class OnlineGameController : GameController
     {
         syncing = true;
         yield return new WaitForSeconds(1);
-        Managers.Online.FindGameById(gameId, UpdateGame);
+        Managers.Online.FindGameById(gameId, UpdateGame, () => { Managers.GameMode.StartGame(GameMode.NONE); });
     }
     private void UpdateGame(PublicGame newGame)
     {
+        if (newGame == null)
+        {
+            Managers.GameMode.StartGame(GameMode.NONE);
+            return;
+        }
         game = newGame;
         while (_moves.Count < game.moves.Count)
         {
@@ -60,12 +66,17 @@ public class OnlineGameController : GameController
         {
             Debug.Log("Sending Moves To Server");
             game.moves = _moves;
-            Managers.Online.UpdateGame(game, game => { syncing = false; });
+            Managers.Online.UpdateGame(game, game => { syncing = false; }, () => { Managers.GameMode.StartGame(GameMode.NONE); });
         }
         else
         {
             syncing = false;
         }
+    }
+
+    public void LeaveGame()
+    {
+        Managers.Online.DeleteGame(gameId, () => { Managers.GameMode.StartGame(GameMode.NONE); }, () => { Managers.GameMode.StartGame(GameMode.NONE); });
     }
 
 }
