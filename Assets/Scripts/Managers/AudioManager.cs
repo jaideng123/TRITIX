@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Starting Audio Manager");
         DontDestroyOnLoad(musicSource);
+        musicSource.volume = .25f;
         PlayBackgroundMusic();
         status = ManagerStatus.Started;
     }

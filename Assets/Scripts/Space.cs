@@ -8,6 +8,9 @@ public class Space : MonoBehaviour
     private PlayerController playerController;
     private float heightOffset = 3;
     private float duration = .2f;
+    private const string soundEffectName = "FOOTSTEP - Metal Board Walk Barefoot Male - 2";
+    private AudioClip soundEffect;
+    private AudioSource _audioSource;
     private GameObject _pieceObject;
     private GameObject _pieceTempObject;
     public Piece piece { get; private set; }
@@ -17,6 +20,16 @@ public class Space : MonoBehaviour
     void Start()
     {
         _touchBox = GetComponentInChildren<TouchTarget>().gameObject;
+        soundEffect = Resources.Load("Sounds/" + soundEffectName) as AudioClip;
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource != null)
+        {
+            _audioSource.clip = soundEffect;
+            _audioSource.minDistance = 10;
+            _audioSource.maxDistance = 500;
+            _audioSource.pitch = .7f;
+            _audioSource.playOnAwake = false;
+        }
         piece = null;
     }
 
@@ -67,6 +80,10 @@ public class Space : MonoBehaviour
             float t = (Time.time - startTime) / duration;
             _pieceObject.transform.localPosition = new Vector3(0, Mathf.SmoothStep(starting, target, t), 0);
             yield return null;
+        }
+        if (_audioSource)
+        {
+            _audioSource.Play();
         }
     }
 
