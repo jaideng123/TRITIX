@@ -9,8 +9,6 @@ public class OnlineMenuController : MonoBehaviour
     [SerializeField]
     private Button loginButton;
     [SerializeField]
-    private Button logoutButton;
-    [SerializeField]
     private Image loadingImage;
     [SerializeField]
     private Button quickGameButton;
@@ -35,7 +33,6 @@ public class OnlineMenuController : MonoBehaviour
     private void SetInteractableElements()
     {
         loginButton.gameObject.SetActive(!Managers.Auth.loggedIn);
-        logoutButton.gameObject.SetActive(Managers.Auth.loggedIn);
         quickGameButton.gameObject.SetActive(!searching);
         quickGameButton.interactable = Managers.Auth.loggedIn;
         cancelSearchButton.gameObject.SetActive(searching);
@@ -173,11 +170,6 @@ public class OnlineMenuController : MonoBehaviour
     public void Login()
     {
         Managers.Auth.Login();
-    }
-
-    public void LogOut()
-    {
-        Managers.Auth.LogOut();
     }
 
     void OnApplicationQuit()
