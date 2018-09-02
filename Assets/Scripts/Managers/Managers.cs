@@ -8,6 +8,7 @@ public class Managers : MonoBehaviour
     public static BackdropManager Backdrop;
     public static AuthManager Auth;
     public static OnlineManager Online;
+    public static QualityManager Quality;
     private List<IGameManager> _startSequence;
 
     public bool initialized = false;
@@ -36,6 +37,7 @@ public class Managers : MonoBehaviour
         _startSequence.Add(Backdrop);
         _startSequence.Add(Auth);
         _startSequence.Add(Online);
+        _startSequence.Add(Quality);
         StartCoroutine(StartupManagers());
     }
 

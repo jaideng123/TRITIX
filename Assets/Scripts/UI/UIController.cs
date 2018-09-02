@@ -206,6 +206,7 @@ public class UIController : MonoBehaviour
         Messenger<bool>.Broadcast(GameEvent.GAME_PAUSED, open);
     }
 
+    // TODO: pull state from Manager
     public void OnToggleMute(bool value)
     {
         if (value)

@@ -13,6 +13,16 @@ public class AudioManager : MonoBehaviour, IGameManager
         get; private set;
     }
 
+    public bool musicMuted
+    {
+        get; private set;
+    }
+
+    public bool soundEffectsMuted
+    {
+        get; private set;
+    }
+
     public void Startup()
     {
         Debug.Log("Starting Audio Manager");
