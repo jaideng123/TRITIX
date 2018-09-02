@@ -90,7 +90,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3941,7 +3941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableBackdrops:
   - name: tomb
-    scenePrefab: {fileID: 1009957370462608, guid: d3a0e1e426aef2f4a94d23a35e356d01,
+    scenePrefab: {fileID: 1051485808921342, guid: d3a0e1e426aef2f4a94d23a35e356d01,
       type: 2}
     skyBox: {fileID: 2100000, guid: 8686280ca355b7642afb276b935d0957, type: 2}
 --- !u!114 &733747530
@@ -8351,7 +8351,8 @@ AudioSource:
   m_GameObject: {fileID: 1740863292}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243797592315726640, guid: 71914631e6878ca41a28950ad348c139,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.505
