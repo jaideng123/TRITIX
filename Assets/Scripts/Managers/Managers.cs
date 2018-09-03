@@ -31,6 +31,7 @@ public class Managers : MonoBehaviour
         Backdrop = GetComponent<BackdropManager>();
         Auth = GetComponent<AuthManager>();
         Online = GetComponent<OnlineManager>();
+        Quality = GetComponent<QualityManager>();
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Audio);
         _startSequence.Add(GameMode);

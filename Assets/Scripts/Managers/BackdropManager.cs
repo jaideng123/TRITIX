@@ -7,6 +7,8 @@ public class BackdropManager : MonoBehaviour, IGameManager
 {
     public Backdrop currentBackdrop { get; private set; }
     [SerializeField]
+    public Backdrop blankBackdrop;
+    [SerializeField]
     public Backdrop[] availableBackdrops;
     private GameObject backdropObject;
     public ManagerStatus status
@@ -18,11 +20,21 @@ public class BackdropManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Starting Backdrop Manager");
         SceneManager.activeSceneChanged += OnSceneChange;
-        LoadBackdrop(availableBackdrops[0]);
+        LoadDefaultBackdrop();
         status = ManagerStatus.Started;
     }
 
-    public void LoadBackdrop(Backdrop backdrop)
+    public void LoadBlankBackdrop()
+    {
+        LoadBackdrop(blankBackdrop);
+    }
+
+    public void LoadDefaultBackdrop()
+    {
+        LoadBackdrop(availableBackdrops[0]);
+    }
+
+    private void LoadBackdrop(Backdrop backdrop)
     {
         GetComponent<Fading>().BeginFade(1);
         if (backdropObject != null)
@@ -30,8 +42,11 @@ public class BackdropManager : MonoBehaviour, IGameManager
             Destroy(backdropObject);
         }
         currentBackdrop = backdrop;
-        backdropObject = Instantiate(currentBackdrop.scenePrefab, Vector3.zero, Quaternion.identity);
-        DontDestroyOnLoad(backdropObject);
+        if (currentBackdrop.scenePrefab != null)
+        {
+            backdropObject = Instantiate(currentBackdrop.scenePrefab, Vector3.zero, Quaternion.identity);
+            DontDestroyOnLoad(backdropObject);
+        }
         RenderSettings.skybox = currentBackdrop.skyBox;
         GetComponent<Fading>().BeginFade(-1);
     }

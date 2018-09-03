@@ -10,11 +10,6 @@ public class SettingsMenuController : MonoBehaviour
     private Button logoutButton;
     [SerializeField]
     private Toggle batterySaverToggle;
-    [SerializeField]
-    private Toggle musicToggle;
-    [SerializeField]
-    private Toggle soundEffectsToggle;
-
     // Use this for initialization
     void Start()
     {
@@ -25,36 +20,24 @@ public class SettingsMenuController : MonoBehaviour
     {
         logoutButton.gameObject.SetActive(Managers.Auth.loggedIn);
         batterySaverToggle.isOn = Managers.Quality.batterySaverOn;
-        musicToggle.isOn = !Managers.Audio.musicMuted;
-        soundEffectsToggle.isOn = !Managers.Audio.soundEffectsMuted;
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetInteractableElements();
+        // SetInteractableElements();
     }
 
     public void ToggleBatterySaver(bool toggle)
     {
-        Managers.Quality.SetBatterySaver(toggle);
-    }
-
-    public void ToggleBackgroundMusic(bool toggle)
-    {
         if (toggle)
         {
-            Managers.Audio.UnMuteBackgroundMusic();
+            Managers.Quality.TurnBatterySaverOn();
         }
         else
         {
-            Managers.Audio.MuteBackgroundMusic();
+            Managers.Quality.TurnBatterySaverOff();
         }
-    }
-
-    public void ToggleSoundEffects(bool toggle)
-    {
-        // TODO: Implement This
     }
 
     public void LogOut()

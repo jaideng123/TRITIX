@@ -584,7 +584,7 @@ Prefab:
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 794351290}
+      objectReference: {fileID: 130119606}
     - target: {fileID: 114996972880301356, guid: 69c5e705f9fea604eac0b7d087a4e041,
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -633,6 +633,22 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69c5e705f9fea604eac0b7d087a4e041, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &130119605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1292464735850034, guid: 69c5e705f9fea604eac0b7d087a4e041,
+    type: 2}
+  m_PrefabInternal: {fileID: 130119604}
+--- !u!114 &130119606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 130119605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b15baf4624f02840897195c62b672c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &135135779
 GameObject:
   m_ObjectHideFlags: 0
@@ -8350,7 +8366,8 @@ AudioSource:
   m_GameObject: {fileID: 1659926985}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243797592315726640, guid: 71914631e6878ca41a28950ad348c139,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.505
@@ -9071,6 +9088,7 @@ GameObject:
   - component: {fileID: 1912788718}
   - component: {fileID: 1912788717}
   - component: {fileID: 1912788716}
+  - component: {fileID: 1912788724}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Manager
@@ -9155,6 +9173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1659926986}
   BGMusic: Cleyton RX - Underwater
+  audioMixer: {fileID: 24100000, guid: 71914631e6878ca41a28950ad348c139, type: 2}
 --- !u!114 &1912788722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9180,6 +9199,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1912788724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1912788715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d83b64b7c10af4da166a5658d9c384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1931619594 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224483255810958114, guid: 60b255d7d2b15c248adfeed422788e0b,

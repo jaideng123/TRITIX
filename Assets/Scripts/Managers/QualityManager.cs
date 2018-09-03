@@ -17,11 +17,26 @@ public class QualityManager : MonoBehaviour, IGameManager
     public void Startup()
     {
         Debug.Log("Starting Quality Manager");
+        Application.targetFrameRate = 60;
+        if (PlayerPrefs.HasKey("BATTERY_SAVER_ON") && PlayerPrefs.GetInt("BATTERY_SAVER_ON") == 1)
+        {
+            TurnBatterySaverOn();
+        }
         status = ManagerStatus.Started;
     }
 
-    public void SetBatterySaver(bool toggle)
+    public void TurnBatterySaverOn()
     {
-        batterySaverOn = toggle;
+        Application.targetFrameRate = 30;
+        Managers.Backdrop.LoadBlankBackdrop();
+        batterySaverOn = true;
+        PlayerPrefs.SetInt("BATTERY_SAVER_ON", 1);
+    }
+    public void TurnBatterySaverOff()
+    {
+        Application.targetFrameRate = 60;
+        Managers.Backdrop.LoadDefaultBackdrop();
+        batterySaverOn = false;
+        PlayerPrefs.SetInt("BATTERY_SAVER_ON", 0);
     }
 }

@@ -91,7 +91,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 112000002, guid: e1593919e6e152740bcdab9481d670e8,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2508,6 +2508,7 @@ GameObject:
   - component: {fileID: 447509737}
   - component: {fileID: 447509736}
   - component: {fileID: 447509730}
+  - component: {fileID: 447509738}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Manager
@@ -2570,6 +2571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1222943399}
   BGMusic: Cleyton RX - Underwater
+  audioMixer: {fileID: 24100000, guid: 71914631e6878ca41a28950ad348c139, type: 2}
 --- !u!114 &447509734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2615,6 +2617,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa282ec4a601fa242beb8f76f06db1eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &447509738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 447509729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d83b64b7c10af4da166a5658d9c384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &465353656
@@ -5253,7 +5266,7 @@ Prefab:
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 780937553}
+      objectReference: {fileID: 1091021021}
     - target: {fileID: 114996972880301356, guid: 69c5e705f9fea604eac0b7d087a4e041,
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -5307,6 +5320,22 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224200660430984230, guid: 69c5e705f9fea604eac0b7d087a4e041,
     type: 2}
   m_PrefabInternal: {fileID: 1091021018}
+--- !u!1 &1091021020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1292464735850034, guid: 69c5e705f9fea604eac0b7d087a4e041,
+    type: 2}
+  m_PrefabInternal: {fileID: 1091021018}
+--- !u!114 &1091021021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091021020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b15baf4624f02840897195c62b672c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1141979756
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,7 +5649,8 @@ AudioSource:
   m_GameObject: {fileID: 1222943398}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243797592315726640, guid: 71914631e6878ca41a28950ad348c139,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25

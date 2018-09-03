@@ -2633,8 +2633,9 @@ Transform:
   - {fileID: 1443571624}
   - {fileID: 1071150552}
   - {fileID: 517202662}
+  - {fileID: 1479241983}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &511246120
 GameObject:
@@ -2934,7 +2935,7 @@ RectTransform:
   - {fileID: 1709279104}
   - {fileID: 374343454}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3486,7 +3487,7 @@ Prefab:
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 517202661}
+      objectReference: {fileID: 640416612}
     - target: {fileID: 114996972880301356, guid: 69c5e705f9fea604eac0b7d087a4e041,
         type: 2}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -3535,6 +3536,22 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69c5e705f9fea604eac0b7d087a4e041, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &640416611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1292464735850034, guid: 69c5e705f9fea604eac0b7d087a4e041,
+    type: 2}
+  m_PrefabInternal: {fileID: 640416610}
+--- !u!114 &640416612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 640416611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b15baf4624f02840897195c62b672c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &671841514
 GameObject:
   m_ObjectHideFlags: 0
@@ -7322,6 +7339,7 @@ GameObject:
   - component: {fileID: 1465321093}
   - component: {fileID: 1465321098}
   - component: {fileID: 1465321096}
+  - component: {fileID: 1465321101}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Manager
@@ -7395,6 +7413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 2024342044}
   BGMusic: Cleyton RX - Underwater
+  audioMixer: {fileID: 24100000, guid: 71914631e6878ca41a28950ad348c139, type: 2}
 --- !u!114 &1465321098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7429,8 +7448,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465321101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1465321092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d83b64b7c10af4da166a5658d9c384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1468076867 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114943383780639990, guid: c057efe9389448d469734f1cbfca1b1d,
@@ -7492,12 +7522,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1479241980}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.808915, y: -5.8612123, z: 0.0045502717}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 502833944}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1490839268 stripped
 MonoBehaviour:
@@ -7963,7 +7993,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!1 &1596258005
 GameObject:
@@ -8632,7 +8662,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 60, y: 180, z: 0}
 --- !u!1 &1809783381
 GameObject:
@@ -9193,7 +9223,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2087126598
 GameObject:

@@ -205,17 +205,4 @@ public class UIController : MonoBehaviour
         pauseMenuPanel.SetActive(open);
         Messenger<bool>.Broadcast(GameEvent.GAME_PAUSED, open);
     }
-
-    // TODO: pull state from Manager
-    public void OnToggleMute(bool value)
-    {
-        if (value)
-        {
-            Managers.Audio.UnMuteBackgroundMusic();
-        }
-        else
-        {
-            Managers.Audio.MuteBackgroundMusic();
-        }
-    }
 }
