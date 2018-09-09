@@ -21,14 +21,14 @@ public class AudioManager : MonoBehaviour, IGameManager
         get; private set;
     }
 
-    private float musicVolume;
+    private const float musicVolume = 0f;
 
     public bool soundEffectsMuted
     {
         get; private set;
     }
 
-    private float soundEffectsVolume;
+    private const float soundEffectsVolume = 0f;
 
     public void Startup()
     {
@@ -36,7 +36,24 @@ public class AudioManager : MonoBehaviour, IGameManager
         DontDestroyOnLoad(musicSource);
         musicSource.volume = .25f;
         StartBackgroundMusic();
+        StartCoroutine(InitializePreviousSettings());
         status = ManagerStatus.Started;
+    }
+
+    private IEnumerator InitializePreviousSettings()
+    {
+        // We have to wait at least a frame so audio mixer can get set up
+        yield return null;
+        if (PlayerPrefs.HasKey("MUSIC_MUTED") && PlayerPrefs.GetInt("MUSIC_MUTED") == 1)
+        {
+            Debug.Log("Muting Background Music");
+            MuteBackgroundMusic();
+        }
+        if (PlayerPrefs.HasKey("SOUND_EFFECTS_MUTED") && PlayerPrefs.GetInt("SOUND_EFFECTS_MUTED") == 1)
+        {
+            Debug.Log("Muting Sound Effects");
+            MuteSoundEffects();
+        }
     }
 
     public void StartBackgroundMusic()
@@ -47,28 +64,28 @@ public class AudioManager : MonoBehaviour, IGameManager
 
     public void MuteBackgroundMusic()
     {
-        audioMixer.GetFloat("Music Volume", out musicVolume);
-
         audioMixer.SetFloat("Music Volume", -80f);
         musicMuted = true;
+        PlayerPrefs.SetInt("MUSIC_MUTED", 1);
     }
     public void UnMuteBackgroundMusic()
     {
         audioMixer.SetFloat("Music Volume", musicVolume);
         musicMuted = false;
+        PlayerPrefs.SetInt("MUSIC_MUTED", 0);
     }
 
     public void MuteSoundEffects()
     {
-        audioMixer.GetFloat("Sound Effects Volume", out soundEffectsVolume);
-
         audioMixer.SetFloat("Sound Effects Volume", -80f);
         soundEffectsMuted = true;
+        PlayerPrefs.SetInt("SOUND_EFFECTS_MUTED", 1);
     }
     public void UnMuteSoundEffects()
     {
         audioMixer.SetFloat("Sound Effects Volume", soundEffectsVolume);
         soundEffectsMuted = false;
+        PlayerPrefs.SetInt("SOUND_EFFECTS_MUTED", 0);
     }
 
 
