@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour
 
     public void CheckMatches(int playerNum)
     {
-        Piece[][][] b = GetBoardState(_moves);
+        Piece[][][] b = BoardStateUtils.GenerateBoardState(_moves);
         PieceType[] matchArray = BoardChecker.FindMatches(b, playerNum);
         foreach (PieceType match in matchArray)
         {
@@ -65,42 +65,5 @@ public class GameController : MonoBehaviour
             gameOver = true;
             Messenger<int>.Broadcast(GameEvent.GAME_OVER, playerNum);
         }
-    }
-
-    public Piece[][][] GetBoardState(List<Move> moves)
-    {
-        //initialize empty board
-        Piece[][][] board = new Piece[3][][];
-        for (int i = 0; i < board.Length; i++)
-        {
-            board[i] = new Piece[3][];
-            for (int j = 0; j < board[i].Length; j++)
-            {
-                board[i][j] = new Piece[3];
-            }
-        }
-        //replay moves over top of board
-        foreach (Move move in moves)
-        {
-            board = AddToBoardState(board, move);
-        }
-        return board;
-    }
-
-    public Piece[][][] AddToBoardState(Piece[][][] board, Move move)
-    {
-        Piece p = new Piece();
-        if (move.from == null)
-        {
-            p.type = move.pieceType;
-            p.playerNum = move.playerNum;
-        }
-        else
-        {
-            p = board[move.from.z][move.from.x][move.from.y];
-            board[move.from.z][move.from.x][move.from.y] = null;
-        }
-        board[move.to.z][move.to.x][move.to.y] = p;
-        return board;
     }
 }
