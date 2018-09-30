@@ -10,14 +10,12 @@ public class OrbitCamera : MonoBehaviour
     public float rotSpeed = 1.5f;
     [Range(0, 1)]
     public float smoothingScale = .05f;
-    public float drag = .3f;
-    public float maxVelocity = 30f;
     public float minXAngle = -75f;
     public float maxXAngle = 80f;
     private float _rotY;
-    private float _yVelocity;
     private float _rotX;
-    private float _xVelocity;
+    private float _currentY;
+    private float _currentX;
     private Vector3 _offset;
     private Rigidbody _rigidBody;
 
@@ -38,6 +36,8 @@ public class OrbitCamera : MonoBehaviour
     {
         _rotY = transform.eulerAngles.y;
         _rotX = transform.eulerAngles.x;
+        _currentY = transform.eulerAngles.y;
+        _currentX = transform.eulerAngles.x;
         _offset = target.position - transform.position;
         SetAngle(35, 45);
     }
@@ -48,15 +48,11 @@ public class OrbitCamera : MonoBehaviour
         _rotY = rotY;
         Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
         transform.position = target.position - (rotation * _offset);
-        _xVelocity = 0;
-        _yVelocity = 0;
         transform.LookAt(target);
     }
 
     private void OnGamePaused(bool paused)
     {
-        _xVelocity = 0;
-        _yVelocity = 0;
         _paused = paused;
     }
 
@@ -87,30 +83,21 @@ public class OrbitCamera : MonoBehaviour
             }
             else if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                horInput = Input.GetAxis("Mouse X") * 3 + .00000001f;
-                vertInput = Input.GetAxis("Mouse Y") * 3 + .00000001f;
+                horInput = Input.GetAxis("Mouse X") * 3;
+                vertInput = Input.GetAxis("Mouse Y") * 3;
             }
         }
-        if (horInput != 0 || vertInput != 0)
-        {
-            _yVelocity = Mathf.Clamp(horInput * rotSpeed, -maxVelocity, maxVelocity);
-            _xVelocity = Mathf.Clamp(vertInput * rotSpeed * -1, -maxVelocity, maxVelocity);
-        }
-        _rotY += _yVelocity * Time.deltaTime;
-        _rotX += _xVelocity * Time.deltaTime;
-        _rotX = Mathf.Clamp(_rotX, minXAngle, maxXAngle);
 
-        Quaternion rotation = Quaternion.Euler(_rotX, _rotY, 0);
+        _rotY += horInput * rotSpeed;
+        _rotX += vertInput * rotSpeed * -1;
+        _rotX = Mathf.Clamp(_rotX, minXAngle, maxXAngle);
+        _currentY += (_rotY - _currentY) * smoothingScale;
+        _currentX += (_rotX - _currentX) * smoothingScale;
+        Quaternion rotation = Quaternion.Euler(_currentX, _currentY, 0);
         Vector3 targetPos = target.position - (rotation * _offset);
-        transform.position += (targetPos - transform.position) * smoothingScale * Time.timeScale;
+        transform.position = targetPos;
 
         transform.LookAt(target);
-        float yDirection = _yVelocity < 0 ? -1 : 1;
-        float xDirection = _xVelocity < 0 ? -1 : 1;
-        _yVelocity = Mathf.Max(Mathf.Abs(_yVelocity) - drag * Time.deltaTime, 0);
-        _yVelocity *= yDirection;
-        _xVelocity = Mathf.Max(Mathf.Abs(_xVelocity) - drag * Time.deltaTime, 0);
-        _xVelocity *= xDirection;
     }
     // Update is called once per frame
     void Update()

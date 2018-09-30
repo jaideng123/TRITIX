@@ -91,7 +91,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 112000002, guid: e1593919e6e152740bcdab9481d670e8,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1865,11 +1865,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 693432610}
-  rotSpeed: 50
-  smoothingScale: 0.973
-  drag: 30
-  maxVelocity: 110
-  minXAngle: -40
+  rotSpeed: 2
+  smoothingScale: 0.176
+  minXAngle: -20
   maxXAngle: 80
 --- !u!81 &326526273
 AudioListener:
@@ -2542,6 +2540,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9313a439458548e448b86de152ca2d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blankBackdrop:
+    name: 
+    scenePrefab: {fileID: 0}
+    skyBox: {fileID: 0}
   availableBackdrops:
   - name: tomb
     scenePrefab: {fileID: 1051485808921342, guid: d3a0e1e426aef2f4a94d23a35e356d01,

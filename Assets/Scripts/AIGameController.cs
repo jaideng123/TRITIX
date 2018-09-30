@@ -14,7 +14,7 @@ public class AIGameController : GameController
     private bool _threadRunning;
     private Thread _thread;
     private Move plannedMove = null;
-    public void Start()
+    public new void Start()
     {
         Player p = new Player();
         p.id = "Player 1";

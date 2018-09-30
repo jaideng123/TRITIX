@@ -10,10 +10,9 @@ public class OnlineGameController : GameController
 
     private bool syncing;
 
-    public void Start()
+    public new void Start()
     {
         gameId = Managers.GameMode.modeParams["game-id"];
-
         Debug.Log(gameId);
         Player p = new Player();
         p.id = "Player 1";
@@ -53,6 +52,7 @@ public class OnlineGameController : GameController
     {
         if (newGame == null)
         {
+            Debug.LogError("Game is null");
             Managers.GameMode.StartGame(GameMode.NONE);
             return;
         }

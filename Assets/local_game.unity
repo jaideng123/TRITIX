@@ -1994,11 +1994,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 892715258}
-  rotSpeed: 50
-  smoothingScale: 0.973
-  drag: 30
-  maxVelocity: 110
-  minXAngle: -40
+  rotSpeed: 2
+  smoothingScale: 0.176
+  minXAngle: -20
   maxXAngle: 80
 --- !u!81 &432234277
 AudioListener:
@@ -7373,6 +7371,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9313a439458548e448b86de152ca2d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blankBackdrop:
+    name: 
+    scenePrefab: {fileID: 0}
+    skyBox: {fileID: 0}
   availableBackdrops:
   - name: tomb
     scenePrefab: {fileID: 1051485808921342, guid: d3a0e1e426aef2f4a94d23a35e356d01,
