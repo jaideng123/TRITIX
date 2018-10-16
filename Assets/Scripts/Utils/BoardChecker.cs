@@ -4,34 +4,38 @@ using UnityEngine;
 
 public static class BoardChecker
 {
-    public static PieceType[] FindMatches(Piece[][][] board, int playerNum)
+    public static Match[] FindMatches(Piece[][][] board, int playerNum)
     {
-        HashSet<PieceType> matches = new HashSet<PieceType>();
-        // Debug.Log("Checking For " + playerNum);
+        List<Match> matches = new List<Match>();
         for (int i = 0; i < 3; i++)
         {
             Piece[][] layer = board[i];
             Piece[][] transLayer = transposeLayer(layer);
             for (int j = 0; j < 3; j++)
             {
-                // Debug.Log("Checking Column " + j);
                 //Check vertically
                 Piece[] row = layer[j];
                 PieceType type = checkRow(row, playerNum);
                 if (type != PieceType.NONE)
                 {
-                    matches.Add(type);
+                    Match match = new Match();
+                    match.pieceType = type;
+                    match.coordinates = new List<Vector3Int> { new Vector3Int(j, 0, i), new Vector3Int(j, 1, i), new Vector3Int(j, 2, i) };
+                    matches.Add(match);
                 }
-                // Debug.Log("Checking Row " + j);
                 // check horizontally
                 row = transLayer[j];
                 type = checkRow(row, playerNum);
                 if (type != PieceType.NONE)
                 {
-                    matches.Add(type);
+                    Match match = new Match();
+                    match.pieceType = type;
+                    match.coordinates = new List<Vector3Int> { new Vector3Int(0, j, i), new Vector3Int(1, j, i), new Vector3Int(2, j, i) };
+                    matches.Add(match);
                 }
             }
         }
+        // check between layers
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -40,13 +44,14 @@ public static class BoardChecker
                 PieceType type = checkRow(row, playerNum);
                 if (type != PieceType.NONE)
                 {
-                    matches.Add(type);
+                    Match match = new Match();
+                    match.pieceType = type;
+                    match.coordinates = new List<Vector3Int> { new Vector3Int(i, j, 0), new Vector3Int(i, j, 1), new Vector3Int(i, j, 2) };
+                    matches.Add(match);
                 }
             }
         }
-        PieceType[] matchArray = new PieceType[matches.Count];
-        matches.CopyTo(matchArray);
-        return matchArray;
+        return matches.ToArray();
     }
 
     private static Piece[][] transposeLayer(Piece[][] layer)

@@ -53,13 +53,14 @@ public class GameController : MonoBehaviour
     public void CheckMatches(int playerNum)
     {
         Piece[][][] b = BoardStateUtils.GenerateBoardState(_moves);
-        PieceType[] matchArray = BoardChecker.FindMatches(b, playerNum);
-        foreach (PieceType match in matchArray)
+
+        Match[] matches = BoardChecker.FindMatches(b, playerNum);
+        foreach (Match match in matches)
         {
             Debug.Log("Match Found For " + playerNum + " " + match.ToString());
         }
-        Messenger<PieceType[], int>.Broadcast(GameEvent.PIECES_MATCHED, matchArray, playerNum);
-        if (matchArray.Length == 3)
+        Messenger<Match[], int>.Broadcast(GameEvent.PIECES_MATCHED, matches, playerNum);
+        if (matches.Length == 3)
         {
             Debug.Log("All Pieces Matched!");
             gameOver = true;

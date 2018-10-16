@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ public class UIController : MonoBehaviour
         Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger<int>.AddListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
-        Messenger<PieceType[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<Match[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.AddListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
@@ -48,7 +49,7 @@ public class UIController : MonoBehaviour
         Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger<int>.RemoveListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
-        Messenger<PieceType[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<Match[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.RemoveListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
@@ -155,12 +156,13 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void onPiecesMatched(PieceType[] types, int playerNum)
+    private void onPiecesMatched(Match[] matches, int playerNum)
     {
         PieceButton[] pieces = playerNum == 1 ? p1Pieces : p2Pieces;
+        PieceType[] matchedTypes = matches.Select(match => match.pieceType).ToArray();
         foreach (PieceButton pieceIndicator in pieces)
         {
-            if (Array.IndexOf(types, pieceIndicator.pieceType) != -1)
+            if (Array.IndexOf<PieceType>(matchedTypes, pieceIndicator.pieceType) != -1)
             {
                 pieceIndicator.SetMatched(true);
             }

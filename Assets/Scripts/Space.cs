@@ -64,21 +64,22 @@ public class Space : MonoBehaviour
         Vector3 pos = _pieceObject.transform.localPosition;
         pos.y += heightOffset;
         _pieceObject.transform.localPosition = pos;
-        StartCoroutine(LowerPiece());
+        StartCoroutine(LowerPiece(_pieceObject));
         string pieceMat = playerController.GetPlayer(piece.playerNum).pieceMaterialName;
         _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
+        _pieceObject.GetComponentInChildren<Outline>().gameObject.SetActive(false);
     }
 
-    private IEnumerator LowerPiece()
+    private IEnumerator LowerPiece(GameObject piece)
     {
-        float target = _pieceObject.transform.localPosition.y - heightOffset;
-        float starting = _pieceObject.transform.localPosition.y;
+        float target = piece.transform.localPosition.y - heightOffset;
+        float starting = piece.transform.localPosition.y;
         float startTime = Time.time;
 
-        while (_pieceObject.transform.localPosition.y > target)
+        while (piece.transform.localPosition.y > target)
         {
             float t = (Time.time - startTime) / duration;
-            _pieceObject.transform.localPosition = new Vector3(0, Mathf.SmoothStep(starting, target, t), 0);
+            piece.transform.localPosition = new Vector3(0, Mathf.SmoothStep(starting, target, t), 0);
             yield return null;
         }
         if (_audioSource)

@@ -48,12 +48,12 @@ public static class MiniMax
     private static int GetBoardValue(Piece[][][] board)
     {
         int p1value = 0;
-        foreach (PieceType match in BoardChecker.FindMatches(board, 1))
+        foreach (Match match in BoardChecker.FindMatches(board, 1))
         {
             p1value += 3;
         }
         int p2value = 0;
-        foreach (PieceType match in BoardChecker.FindMatches(board, 2))
+        foreach (Match match in BoardChecker.FindMatches(board, 2))
         {
             p2value += 3;
         }
@@ -65,12 +65,12 @@ public static class MiniMax
     private static bool IsTerminalState(Piece[][][] board)
     {
         int p1Score = 0;
-        foreach (PieceType match in BoardChecker.FindMatches(board, 1))
+        foreach (Match match in BoardChecker.FindMatches(board, 1))
         {
             p1Score += 1;
         }
         int p2Score = 0;
-        foreach (PieceType match in BoardChecker.FindMatches(board, 2))
+        foreach (Match match in BoardChecker.FindMatches(board, 2))
         {
             p2Score += 1;
         }

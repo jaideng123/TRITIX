@@ -1,6 +1,6 @@
 using System.Collections.Specialized;
 using UnityEngine;
-
+// TODO: refactor this to make it less confusing
 public class Vector3Int
 {
     public int x, y, z;
