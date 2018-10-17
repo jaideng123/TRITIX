@@ -13,20 +13,20 @@ public class BoardController : MonoBehaviour
     [SerializeField]
     private GameObject boardObject;
     private Board board;
-    private Vector3Int selectedDestSpace;
-    private Vector3Int selectedOriginSpace;
+    private BoardCoordinates selectedDestSpace;
+    private BoardCoordinates selectedOriginSpace;
     private List<Move> appliedMoves;
     // Use this for initialization
     void Awake()
     {
-        Messenger<Vector3Int>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
+        Messenger<BoardCoordinates>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.AddListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.AddListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
     }
     void OnDestroy()
     {
-        Messenger<Vector3Int>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
+        Messenger<BoardCoordinates>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.RemoveListener(GameEvent.MOVE_APPLIED, ApplyMove);
         Messenger.RemoveListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
@@ -37,7 +37,7 @@ public class BoardController : MonoBehaviour
         appliedMoves = new List<Move>();
     }
 
-    private void OnSpaceSelected(Vector3Int coordinates)
+    private void OnSpaceSelected(BoardCoordinates coordinates)
     {
         if (gameController.gameOver || !playerController.GetPlayer(playerController.currentPlayer).isLocal)
         {

@@ -2118,7 +2118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3249d7bbd6cde4094b8249270ce08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1382169752}
+  _camera: {fileID: 1382169752}
   top: {fileID: 1295597305}
   mid: {fileID: 694595062}
   snapPositions:

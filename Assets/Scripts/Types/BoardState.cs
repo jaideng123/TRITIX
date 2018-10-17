@@ -40,10 +40,10 @@ public class BoardState
         }
         else
         {
-            p = original[move.from.z][move.from.x][move.from.y];
-            original[move.from.z][move.from.x][move.from.y] = null;
+            p = original[move.from.layer][move.from.column][move.from.row];
+            original[move.from.layer][move.from.column][move.from.row] = null;
         }
-        original[move.to.z][move.to.x][move.to.y] = p;
+        original[move.to.layer][move.to.column][move.to.row] = p;
         return original;
     }
 

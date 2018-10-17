@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     private OrbitCamera orbitCamera;
     private OrthoCamera orthoCamera;
     [SerializeField]
-    private Camera camera;
+    private Camera _camera;
     [SerializeField]
     private GameObject top;
     [SerializeField]
@@ -31,8 +31,8 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        orbitCamera = camera.GetComponent<OrbitCamera>();
-        orthoCamera = camera.GetComponent<OrthoCamera>();
+        orbitCamera = _camera.GetComponent<OrbitCamera>();
+        orthoCamera = _camera.GetComponent<OrthoCamera>();
     }
 
     // Update is called once per frame
@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
         else
         {
             orbitCamera.enabled = false;
-            activeSnapPosition = FindNearestPosition(snapPositions, camera.transform);
+            activeSnapPosition = FindNearestPosition(snapPositions, _camera.transform);
             float direction = activeSnapPosition.transform.position.z < 0 ? 1 : -1;
             MoveLayers(direction);
             orthoCamera.Activate(activeSnapPosition);

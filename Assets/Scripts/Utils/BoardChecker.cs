@@ -20,7 +20,7 @@ public static class BoardChecker
                 {
                     Match match = new Match();
                     match.pieceType = type;
-                    match.coordinates = new List<Vector3Int> { new Vector3Int(j, 0, i), new Vector3Int(j, 1, i), new Vector3Int(j, 2, i) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, j, 0), new BoardCoordinates(i, j, 1), new BoardCoordinates(i, j, 2) };
                     matches.Add(match);
                 }
                 // check horizontally
@@ -30,7 +30,7 @@ public static class BoardChecker
                 {
                     Match match = new Match();
                     match.pieceType = type;
-                    match.coordinates = new List<Vector3Int> { new Vector3Int(0, j, i), new Vector3Int(1, j, i), new Vector3Int(2, j, i) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j) };
                     matches.Add(match);
                 }
             }
@@ -46,7 +46,7 @@ public static class BoardChecker
                 {
                     Match match = new Match();
                     match.pieceType = type;
-                    match.coordinates = new List<Vector3Int> { new Vector3Int(i, j, 0), new Vector3Int(i, j, 1), new Vector3Int(i, j, 2) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(0, 1, j), new BoardCoordinates(1, i, j), new BoardCoordinates(2, i, j) };
                     matches.Add(match);
                 }
             }

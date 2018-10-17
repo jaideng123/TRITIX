@@ -34,10 +34,10 @@ public static class BoardStateUtils
         }
         else
         {
-            p = board[move.from.z][move.from.x][move.from.y];
-            board[move.from.z][move.from.x][move.from.y] = null;
+            p = board[move.from.layer][move.from.column][move.from.row];
+            board[move.from.layer][move.from.column][move.from.row] = null;
         }
-        board[move.to.z][move.to.x][move.to.y] = p;
+        board[move.to.layer][move.to.column][move.to.row] = p;
         return board;
     }
 
@@ -46,8 +46,8 @@ public static class BoardStateUtils
         List<Move> enumeratedMoves = new List<Move>();
         int currentPlayer = (playedMoves[playedMoves.Count - 1].playerNum % 2) + 1;
         Player[] players = getPieceBankFromMoves(playedMoves);
-        List<Vector3Int> vacantSpaces = findVacantBoardSpaces(playedMoves);
-        List<Vector3Int> ownedSpaces = findOwnedBoardSpaces(playedMoves, currentPlayer);
+        List<BoardCoordinates> vacantSpaces = findVacantBoardSpaces(playedMoves);
+        List<BoardCoordinates> ownedSpaces = findOwnedBoardSpaces(playedMoves, currentPlayer);
         bool bankEmpty = true;
         foreach (PieceType key in players[currentPlayer - 1].bank.Keys)
         {
@@ -57,7 +57,7 @@ public static class BoardStateUtils
             }
             if (players[currentPlayer - 1].bank[key] > 0)
             {
-                foreach (Vector3Int space in vacantSpaces)
+                foreach (BoardCoordinates space in vacantSpaces)
                 {
                     Move move = new Move();
                     move.playerNum = currentPlayer;
@@ -71,9 +71,9 @@ public static class BoardStateUtils
         }
         if (bankEmpty)
         {
-            foreach (Vector3Int ownedSpace in ownedSpaces)
+            foreach (BoardCoordinates ownedSpace in ownedSpaces)
             {
-                foreach (Vector3Int emptySpace in vacantSpaces)
+                foreach (BoardCoordinates emptySpace in vacantSpaces)
                 {
                     Move move = new Move();
                     move.playerNum = currentPlayer;
@@ -86,9 +86,9 @@ public static class BoardStateUtils
         return enumeratedMoves;
     }
 
-    private static List<Vector3Int> findVacantBoardSpaces(List<Move> playedMoves)
+    private static List<BoardCoordinates> findVacantBoardSpaces(List<Move> playedMoves)
     {
-        List<Vector3Int> spaces = new List<Vector3Int>();
+        List<BoardCoordinates> spaces = new List<BoardCoordinates>();
         Piece[][][] board = GenerateBoardState(playedMoves);
         for (int z = 0; z < 3; z++)
         {
@@ -98,7 +98,7 @@ public static class BoardStateUtils
                 {
                     if (board[z][x][y] == null)
                     {
-                        spaces.Add(new Vector3Int(x, y, z));
+                        spaces.Add(new BoardCoordinates(z, x, y));
                     }
                 }
             }
@@ -106,9 +106,9 @@ public static class BoardStateUtils
         return spaces;
     }
 
-    private static List<Vector3Int> findOwnedBoardSpaces(List<Move> playedMoves, int owner)
+    private static List<BoardCoordinates> findOwnedBoardSpaces(List<Move> playedMoves, int owner)
     {
-        List<Vector3Int> spaces = new List<Vector3Int>();
+        List<BoardCoordinates> spaces = new List<BoardCoordinates>();
         Piece[][][] board = GenerateBoardState(playedMoves);
         for (int z = 0; z < 3; z++)
         {
@@ -118,7 +118,7 @@ public static class BoardStateUtils
                 {
                     if (board[z][x][y] != null && board[z][x][y].playerNum == owner)
                     {
-                        spaces.Add(new Vector3Int(x, y, z));
+                        spaces.Add(new BoardCoordinates(z, x, y));
                     }
                 }
             }

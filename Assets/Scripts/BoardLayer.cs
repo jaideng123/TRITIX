@@ -6,25 +6,16 @@ using UnityEngine;
 public class BoardLayer : MonoBehaviour
 {
     public Space[] spaces;
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void SpaceSelected(Space space)
     {
-        int i = Array.IndexOf(spaces, space);
+        int spaceIndex = Array.IndexOf(spaces, space);
         Board board = transform.GetComponentInParent<Board>();
         if (board != null)
         {
-            board.LayerSelected(this, transformLayerIndex(i));
+            int row = transformIndexToRow(spaceIndex);
+            int column = transformIndexToColumn(spaceIndex);
+            board.LayerSelected(this, row, column);
         }
         else
         {
@@ -32,30 +23,17 @@ public class BoardLayer : MonoBehaviour
         }
     }
 
-    public Space GetSpace(Vector2Int coordinates)
+    public Space GetSpace(int row, int column)
     {
-        int i = transformLayerCoordinate(coordinates);
-        return spaces[i];
+        return spaces[row + (column * 3)];
     }
 
-    public Piece[][] GetLayerModel()
+    private int transformIndexToRow(int index)
     {
-        Piece[][] layer = {new Piece[3], new Piece[3], new Piece[3] };
-        for (int i = 0; i < 9; i++)
-        {
-            Vector2Int v = transformLayerIndex(i);
-            layer[v.x][v.y] = GetSpace(v).piece;
-        }
-        return layer;
+        return index % 3;
     }
-
-    private Vector2Int transformLayerIndex(int index)
+    private int transformIndexToColumn(int index)
     {
-        return new Vector2Int(index % 3, Mathf.FloorToInt(index / 3));
-    }
-
-    private int transformLayerCoordinate(Vector2Int coordinates)
-    {
-        return coordinates.x + coordinates.y * 3;
+        return Mathf.FloorToInt(index / 3);
     }
 }
