@@ -97,6 +97,7 @@ public class Space : MonoBehaviour
         _pieceTempObject = Instantiate(Resources.Load("Pieces/Prefabs/" + type.ToString()) as GameObject);
         _pieceTempObject.transform.SetParent(this.transform, false);
         _pieceTempObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/TempPieceMat") as Material;
+        _pieceTempObject.GetComponentInChildren<Outline>().gameObject.SetActive(false);
     }
     public void ClearPieceTemp()
     {

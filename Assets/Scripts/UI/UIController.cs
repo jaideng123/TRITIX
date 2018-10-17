@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
         Messenger<bool>.AddListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.AddListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger<int>.AddListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
-        Messenger<Match[], int>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<Match[]>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.AddListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
@@ -49,7 +49,7 @@ public class UIController : MonoBehaviour
         Messenger<bool>.RemoveListener(GameEvent.TOGGLE_CONFIRM_DRAWER, OnConfirmDrawerToggle);
         Messenger<int>.RemoveListener(GameEvent.ACTIVE_PLAYER_CHANGED, OnActivePlayerChanged);
         Messenger<int>.RemoveListener(GameEvent.PLAYER_INFO_CHANGED, OnPlayerInfoChange);
-        Messenger<Match[], int>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
+        Messenger<Match[]>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger<int>.RemoveListener(GameEvent.GAME_OVER, OnGameOver);
 
     }
@@ -156,13 +156,28 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void onPiecesMatched(Match[] matches, int playerNum)
+    private void onPiecesMatched(Match[] matches)
     {
-        PieceButton[] pieces = playerNum == 1 ? p1Pieces : p2Pieces;
-        PieceType[] matchedTypes = matches.Select(match => match.pieceType).ToArray();
-        foreach (PieceButton pieceIndicator in pieces)
+        PieceType[] p1MatchedTypes = matches.Where(match => match.playerNum == 1).Select(match => match.pieceType).ToArray();
+        foreach (PieceButton pieceIndicator in p1Pieces)
         {
-            if (Array.IndexOf<PieceType>(matchedTypes, pieceIndicator.pieceType) != -1)
+            if (Array.IndexOf<PieceType>(p1MatchedTypes, pieceIndicator.pieceType) != -1)
+            {
+                pieceIndicator.SetMatched(true);
+            }
+            else
+            {
+                if (pieceIndicator.pieceType != PieceType.WILD)
+                {
+                    pieceIndicator.SetMatched(false);
+                }
+            }
+        }
+
+        PieceType[] p2MatchedTypes = matches.Where(match => match.playerNum == 2).Select(match => match.pieceType).ToArray();
+        foreach (PieceButton pieceIndicator in p2Pieces)
+        {
+            if (Array.IndexOf<PieceType>(p2MatchedTypes, pieceIndicator.pieceType) != -1)
             {
                 pieceIndicator.SetMatched(true);
             }

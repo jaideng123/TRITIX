@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class MiniMax
@@ -47,16 +48,9 @@ public static class MiniMax
 
     private static int GetBoardValue(Piece[][][] board)
     {
-        int p1value = 0;
-        foreach (Match match in BoardChecker.FindMatches(board, 1))
-        {
-            p1value += 3;
-        }
-        int p2value = 0;
-        foreach (Match match in BoardChecker.FindMatches(board, 2))
-        {
-            p2value += 3;
-        }
+        Match[] matches = BoardChecker.FindMatches(board);
+        int p1value = matches.Where(match => match.playerNum == 1).Count() * 3;
+        int p2value = matches.Where(match => match.playerNum == 2).Count() * 3;
         p2value = p2value == 9 ? 100 : p2value;
         p1value = p1value == 9 ? 100 : p1value;
         return p1value - p2value;
@@ -64,16 +58,9 @@ public static class MiniMax
 
     private static bool IsTerminalState(Piece[][][] board)
     {
-        int p1Score = 0;
-        foreach (Match match in BoardChecker.FindMatches(board, 1))
-        {
-            p1Score += 1;
-        }
-        int p2Score = 0;
-        foreach (Match match in BoardChecker.FindMatches(board, 2))
-        {
-            p2Score += 1;
-        }
+        Match[] matches = BoardChecker.FindMatches(board);
+        int p1Score = matches.Where(match => match.playerNum == 1).Count();
+        int p2Score = matches.Where(match => match.playerNum == 2).Count();
 
         return (p1Score == 3 || p2Score == 3);
     }

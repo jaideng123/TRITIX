@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -54,13 +55,14 @@ public class GameController : MonoBehaviour
     {
         Piece[][][] b = BoardStateUtils.GenerateBoardState(_moves);
 
-        Match[] matches = BoardChecker.FindMatches(b, playerNum);
+        Match[] matches = BoardChecker.FindMatches(b);
         foreach (Match match in matches)
         {
             Debug.Log("Match Found For " + playerNum + " " + match.ToString());
         }
-        Messenger<Match[], int>.Broadcast(GameEvent.PIECES_MATCHED, matches, playerNum);
-        if (matches.Length == 3)
+        Messenger<Match[]>.Broadcast(GameEvent.PIECES_MATCHED, matches);
+        Match[] currentPlayerMatches = matches.Where(match => match.playerNum == playerNum).ToArray();
+        if (currentPlayerMatches.Length == 3)
         {
             Debug.Log("All Pieces Matched!");
             gameOver = true;

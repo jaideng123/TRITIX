@@ -99,7 +99,6 @@ public class BoardController : MonoBehaviour
             Debug.Log("No More Pieces Left Of Type " + type.ToString() + " For Player " + playerController.currentPlayer);
             return;
         }
-        //Debug.Log(type.ToString());
         Move move = new Move();
         move.pieceType = type;
         move.from = null;

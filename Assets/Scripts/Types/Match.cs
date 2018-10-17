@@ -4,4 +4,5 @@ public class Match
 {
     public PieceType pieceType;
     public List<BoardCoordinates> coordinates;
+    public int playerNum;
 }
