@@ -67,7 +67,7 @@ public class Space : MonoBehaviour
         StartCoroutine(LowerPiece(_pieceObject));
         string pieceMat = playerController.GetPlayer(piece.playerNum).pieceMaterialName;
         _pieceObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/" + pieceMat) as Material;
-        _pieceObject.GetComponentInChildren<Outline>().gameObject.SetActive(false);
+        _pieceObject.GetComponentInChildren<Outline>().SetVisible(false);
     }
 
     private IEnumerator LowerPiece(GameObject piece)
@@ -97,7 +97,7 @@ public class Space : MonoBehaviour
         _pieceTempObject = Instantiate(Resources.Load("Pieces/Prefabs/" + type.ToString()) as GameObject);
         _pieceTempObject.transform.SetParent(this.transform, false);
         _pieceTempObject.GetComponent<Renderer>().material = Resources.Load("Pieces/Materials/TempPieceMat") as Material;
-        _pieceTempObject.GetComponentInChildren<Outline>().gameObject.SetActive(false);
+        _pieceTempObject.GetComponentInChildren<Outline>().SetVisible(false);
     }
     public void ClearPieceTemp()
     {
@@ -124,5 +124,23 @@ public class Space : MonoBehaviour
             _touchBox.GetComponent<Renderer>().material = Resources.Load("Spaces/Materials/SpaceTarget") as Material;
         }
         _active = active;
+    }
+
+    public void SetMatched(bool active)
+    {
+        if (_pieceObject == null)
+        {
+            Debug.LogWarning("No Piece Object Set");
+            return;
+        }
+        Outline outline = _pieceObject.GetComponentInChildren<Outline>();
+        if (active)
+        {
+            outline.SetVisible(true);
+        }
+        else
+        {
+            outline.SetVisible(false);
+        }
     }
 }

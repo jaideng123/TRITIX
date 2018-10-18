@@ -20,4 +20,17 @@ public class Board : MonoBehaviour
         Space space = layer.GetSpace(coordinates.column, coordinates.row);
         return space;
     }
+
+    public Space[] GetAllSpaces()
+    {
+        List<Space> spaces = new List<Space>();
+        foreach (BoardLayer layer in layers)
+        {
+            foreach (Space space in layer.spaces)
+            {
+                spaces.Add(space);
+            }
+        }
+        return spaces.ToArray();
+    }
 }

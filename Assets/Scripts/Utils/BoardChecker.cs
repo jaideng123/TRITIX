@@ -33,6 +33,7 @@ public static class BoardChecker
                     match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, j, 0), new BoardCoordinates(i, j, 1), new BoardCoordinates(i, j, 2) };
                     matches.Add(match);
                 }
+
                 // check horizontally
                 row = transLayer[j];
                 type = checkRow(row, 1);
@@ -41,7 +42,7 @@ public static class BoardChecker
                     Match match = new Match();
                     match.pieceType = type;
                     match.playerNum = 1;
-                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 1, j), new BoardCoordinates(i, 2, j) };
                     matches.Add(match);
                 }
                 type = checkRow(row, 2);
@@ -50,7 +51,7 @@ public static class BoardChecker
                     Match match = new Match();
                     match.pieceType = type;
                     match.playerNum = 2;
-                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 0, j) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(i, 0, j), new BoardCoordinates(i, 1, j), new BoardCoordinates(i, 2, j) };
                     matches.Add(match);
                 }
             }
@@ -67,7 +68,7 @@ public static class BoardChecker
                     Match match = new Match();
                     match.pieceType = type;
                     match.playerNum = 1;
-                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(0, 1, j), new BoardCoordinates(1, i, j), new BoardCoordinates(2, i, j) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(0, i, j), new BoardCoordinates(1, i, j), new BoardCoordinates(2, i, j) };
                     matches.Add(match);
                 }
                 type = checkRow(row, 2);
@@ -76,7 +77,7 @@ public static class BoardChecker
                     Match match = new Match();
                     match.pieceType = type;
                     match.playerNum = 2;
-                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(0, 1, j), new BoardCoordinates(1, i, j), new BoardCoordinates(2, i, j) };
+                    match.coordinates = new List<BoardCoordinates> { new BoardCoordinates(0, i, j), new BoardCoordinates(1, i, j), new BoardCoordinates(2, i, j) };
                     matches.Add(match);
                 }
             }

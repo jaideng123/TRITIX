@@ -22,6 +22,7 @@ public class BoardController : MonoBehaviour
         Messenger<BoardCoordinates>.AddListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.AddListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.AddListener(GameEvent.MOVE_APPLIED, ApplyMove);
+        Messenger<Match[]>.AddListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger.AddListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
     }
     void OnDestroy()
@@ -29,6 +30,7 @@ public class BoardController : MonoBehaviour
         Messenger<BoardCoordinates>.RemoveListener(GameEvent.SPACE_SELECTED, OnSpaceSelected);
         Messenger<PieceType>.RemoveListener(GameEvent.PIECE_SELECTED, OnPieceSelected);
         Messenger<Move>.RemoveListener(GameEvent.MOVE_APPLIED, ApplyMove);
+        Messenger<Match[]>.RemoveListener(GameEvent.PIECES_MATCHED, onPiecesMatched);
         Messenger.RemoveListener(GameEvent.MOVE_CONFIRMED, OnMoveConfirmed);
     }
     void Start()
@@ -157,5 +159,21 @@ public class BoardController : MonoBehaviour
             board.GetSpace(move.from).ClearPiece();
         }
         board.GetSpace(move.to).ApplyPiece(p);
+    }
+
+    private void onPiecesMatched(Match[] matches)
+    {
+        Space[] spaces = board.GetAllSpaces();
+        foreach (Space space in spaces)
+        {
+            space.SetMatched(false);
+        }
+        foreach (Match match in matches)
+        {
+            foreach (BoardCoordinates coordinates in match.coordinates)
+            {
+                board.GetSpace(coordinates).SetMatched(true);
+            }
+        }
     }
 }
