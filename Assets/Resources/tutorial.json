@@ -1,0 +1,36 @@
+{
+    "pages": [
+        {
+            "description": "Triplex is a game played by 2 people over 3 connected boards",
+            "imagePath": "Images/base-tut-1"
+        },
+        {
+            "description": "The goal of both players is to make a row of 3 with each type of piece",
+            "imagePath": "Images/base-tut-2"
+        },
+        {
+            "description": "Pieces can be matched horizontally on each board and vertically between boards",
+            "imagePath": "Images/base-tut-3"
+        },
+        {
+            "description": "Diagonals are not allowed in any direction",
+            "imagePath": "Images/base-tut-4"
+        },
+        {
+            "description": "Each player has 3 of each kind of piece as well as a wild piece that can function as any other piece",
+            "imagePath": "Images/base-tut-5"
+        },
+        {
+            "description": "Players take turns placing pieces until all their pieces are on the board",
+            "imagePath": "Images/base-tut-6"
+        },
+        {
+            "description": "After all the pieces are placed, players take turns moving their pieces to empty spaces on the board",
+            "imagePath": "Images/base-tut-7"
+        },
+        {
+            "description": "Once a player matches all 3 types of pieces they win the match!",
+            "imagePath": "Images/base-tut-8"
+        }
+    ]
+}
