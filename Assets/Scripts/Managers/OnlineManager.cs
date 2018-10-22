@@ -2,14 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Amazon;
-using Amazon.CognitoIdentity;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda;
-using Amazon.Lambda.Model;
+using GameSparks.Api.Messages;
+using GameSparks.Api.Requests;
+using GameSparks.Api.Responses;
+using GameSparks.Core;
+using Newtonsoft.Json;
 using UnityEngine;
 // TODO consider refactoring to async/await
 public class OnlineManager : MonoBehaviour, IGameManager
@@ -31,234 +28,139 @@ public class OnlineManager : MonoBehaviour, IGameManager
 
 
 
-    public void CreateNewGame(Action<string> success = null, Action failure = null)
+    public void CreateMatchMakingRequest(Action<String, String> success = null, Action failure = null)
     {
         if (!Managers.Auth.loggedIn)
         {
             Debug.LogWarning("User Not Authenticated");
             return;
         }
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        PublicGame game = new PublicGame();
-        game.player1Id = Managers.Auth.GetUserId();
-        context.SaveAsync(game, (result) =>
+        ChallengeStartedMessage.Listener = (message) =>
         {
-            if (result.Exception != null)
-            {
-                Debug.Log(result.Exception);
-                if (failure != null)
-                {
-                    failure();
-                }
-                return;
-            }
-            Debug.Log("Saved Successfully");
-            if (success != null)
-            {
-                success(game.id);
-            }
-        });
-    }
-
-    public void FindOpenGame(Action<List<String>> success, Action failure = null)
-    {
-        if (!Managers.Auth.loggedIn)
-        {
-            Debug.LogWarning("User Not Authenticated");
-            if (failure != null)
-            {
-                failure();
-            }
-            return;
-        }
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        // var client = new AmazonLambdaClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        // var request = new InvokeRequest()
-        // {
-        //     FunctionName = "FindOpenGames",
-        //     Payload = "{}",
-        //     InvocationType = InvocationType.RequestResponse
-        // };
-        // Debug.Log("Searching Lambda");
-        // client.InvokeAsync(request, (result) =>
-        // {
-        //     List<string> openGames = new List<string>();
-        //     if (result.Exception == null)
-        //     {
-
-        //         Debug.Log(Encoding.ASCII.GetString(result.Response.Payload.ToArray()));
-        //         success(openGames);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError(result.Exception);
-        //     }
-        // });
-        // This didn't work but it should have
-        // AsyncSearch<PublicGame> search = context.ScanAsync<PublicGame>(new ScanCondition("player1Id", ScanOperator.Equal, "10209697164105086"));
-        // Debug.Log("Got Search");
-        // Debug.Log(search.IsDone);
-        // search.GetNextSetAsync((result) =>
-        // {
-        //     if (result.Exception == null)
-        //     {
-        //         foreach (PublicGame gri in result.Result)
-        //         {
-        //             Debug.Log("query gri: " + gri.id);
-        //         }
-        //     }
-        // });
-
-        var request = new ScanRequest
-        {
-            TableName = "PublicGame",
-            //TODO Limit this search
-            FilterExpression = "attribute_not_exists(player2Id)",
-            ProjectionExpression = "id"
+            success(message.Challenge.ChallengeId, message.Challenge.NextPlayer);
+            // We only want to listen to this once
+            ClearStartedMessageListener();
         };
-
-        client.ScanAsync(request, (result) =>
+        new MatchmakingRequest().SetMatchShortCode("DefaultMatch").SetSkill(0).Send((response) =>
         {
-            List<string> openGames = new List<string>();
-            if (result.Exception != null)
-            {
-                Debug.Log(result.Exception);
-                return;
-            }
-            Debug.Log(result);
-            foreach (Dictionary<string, AttributeValue> item
-                     in result.Response.Items)
-            {
-                foreach (var it in item.Keys)
-                {
-                    openGames.Add(item[it].S);
-                    Debug.Log(item[it].S);
-                }
-            }
-            success(openGames);
+        }, (error) =>
+        {
+            Debug.LogError("Error Creating MatchMaking Request");
+            ClearStartedMessageListener();
+            GSData errors = error.Errors;
+            Debug.LogError(errors.JSON);
+            failure();
         });
     }
 
-    public void FindGameById(string id, Action<PublicGame> success, Action failure = null)
-    {
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        Debug.Log("Finding Game");
-        context.LoadAsync<PublicGame>(id, (result) =>
-            {
-                if (result.Exception != null)
-                {
-                    Debug.Log(result.Exception);
-                    if (failure != null)
-                    {
-                        failure();
-                    }
-                    return;
-                }
-                PublicGame game = result.Result as PublicGame;
-                success(game);
-            });
-    }
-
-    public void UpdateGame(PublicGame game, Action<PublicGame> success = null, Action failure = null)
-    {
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        context.SaveAsync<PublicGame>(game, (res) =>
-            {
-                if (res.Exception != null)
-                {
-                    Debug.Log(res.Exception);
-                    if (failure != null)
-                    {
-                        failure();
-                    }
-                    return;
-                }
-                if (success != null)
-                {
-                    success(game);
-                }
-            });
-    }
-
-    public void DeleteGame(string gameId, Action success = null, Action failure = null)
-    {
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        context.DeleteAsync<PublicGame>(gameId, (res) =>
-            {
-                if (res.Exception != null)
-                {
-                    Debug.Log(res.Exception);
-                    if (failure != null)
-                    {
-                        failure();
-                    }
-                    return;
-                }
-                if (success != null)
-                {
-                    success();
-                }
-            });
-    }
-
-    public void DeleteInactiveGames(string gameId, Action success = null, Action failure = null)
-    {
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-
-    }
-
-    public void FindActiveGames(Action<List<String>> success = null, Action failure = null)
+    public void CancelMatchMaking(Action success = null, Action failure = null)
     {
         if (!Managers.Auth.loggedIn)
         {
             Debug.LogWarning("User Not Authenticated");
-            if (failure != null)
-            {
-                failure();
-            }
             return;
         }
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(Managers.Auth.credentials, RegionEndpoint.USWest2);
-        DynamoDBContext context = new DynamoDBContext(client);
-        var request = new ScanRequest
+        ClearStartedMessageListener();
+        new MatchmakingRequest().SetAction("cancel").SetMatchShortCode("DefaultMatch").Send((response) =>
         {
-            TableName = "PublicGame",
-            ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
-                        {":id", new AttributeValue { S = Managers.Auth.GetUserId() }},
-                        {":active",new AttributeValue { N = "1" }}
-},
-            FilterExpression = "(player1Id = :id or player2Id = :id) and (active = :active)",
-            ProjectionExpression = "id",
-            ConsistentRead = true
-        };
-
-        client.ScanAsync(request, (result) =>
+            success();
+        }, (error) =>
         {
-            List<string> openGames = new List<string>();
-            if (result.Exception != null)
-            {
-                Debug.Log(result.Exception);
-                return;
-            }
-            foreach (Dictionary<string, AttributeValue> item
-                     in result.Response.Items)
-            {
-                foreach (var it in item.Keys)
-                {
-                    openGames.Add(item[it].S);
-                    Debug.Log(item[it].S);
-                }
-            }
-            success(openGames);
+            Debug.LogError("Error Creating MatchMaking Request");
+            failure();
         });
     }
 
+    private void ClearStartedMessageListener()
+    {
+        ChallengeStartedMessage.Listener = (m) => { };
+    }
+
+    public void MakeMove(string challengeId, Move move, Action success = null, Action failure = null)
+    {
+        if (!Managers.Auth.loggedIn)
+        {
+            Debug.LogWarning("User Not Authenticated");
+            return;
+        }
+        string moveJson = JsonConvert.SerializeObject(move);
+        GSRequestData moveData = new GSRequestData(moveJson);
+        Debug.Log(moveJson);
+        new LogChallengeEventRequest()
+        .SetChallengeInstanceId(challengeId)
+        .SetEventKey("MakeMove")
+        .SetEventAttribute("move", moveData).Send((response) =>
+         {
+             Debug.Log("Sent Move To Server");
+             success();
+         }, (error) =>
+         {
+             Debug.LogError("Error Sending Move To Server");
+             Debug.LogError(error.Errors.JSON);
+             failure();
+         });
+    }
+
+    public void ForfeitGame(string challengeId, Action success = null, Action failure = null)
+    {
+        if (!Managers.Auth.loggedIn)
+        {
+            Debug.LogWarning("User Not Authenticated");
+            return;
+        }
+        new LogEventRequest()
+        .SetEventAttribute("challengeInstanceId", challengeId)
+        .SetEventKey("ForfeitGame")
+        .Send((response) =>
+         {
+             Debug.Log("Sent Forfeit To Server");
+             success();
+         }, (error) =>
+         {
+             Debug.LogError("Error Sending Forfeit To Server");
+             Debug.LogError(error.Errors.JSON);
+             failure();
+         });
+    }
+    public void SetMoveHandler(Action<Move[]> success = null, Action failure = null)
+    {
+        if (!Managers.Auth.loggedIn)
+        {
+            Debug.LogWarning("User Not Authenticated");
+            return;
+        }
+        ChallengeTurnTakenMessage.Listener = (response) =>
+        {
+            Debug.Log("Getting Move From Handler");
+            List<GSData> data = response.Challenge.ScriptData.GetGSDataList("BOARD");
+            List<Move> moves = new List<Move>();
+            foreach (var rawMove in data)
+            {
+                Move move = JsonConvert.DeserializeObject<Move>(rawMove.JSON);
+                moves.Add(move);
+            }
+            success(moves.ToArray());
+        };
+    }
+
+    public void SetForfeitHandler(Action success = null, Action failure = null)
+    {
+        if (!Managers.Auth.loggedIn)
+        {
+            Debug.LogWarning("User Not Authenticated");
+            return;
+        }
+        ChallengeWonMessage.Listener = (response) =>
+        {
+            Debug.Log("Winner leaving");
+            success();
+        };
+        ChallengeLostMessage.Listener = (response) =>
+        {
+            Debug.Log("Loser leaving");
+            success();
+        };
+    }
 
 
 }

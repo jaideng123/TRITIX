@@ -130,7 +130,6 @@ public class Space : MonoBehaviour
     {
         if (_pieceObject == null)
         {
-            Debug.LogWarning("No Piece Object Set");
             return;
         }
         Outline outline = _pieceObject.GetComponentInChildren<Outline>();

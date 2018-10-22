@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Specialized;
 using UnityEngine;
+[Serializable]
 public class BoardCoordinates
 {
     public int layer, column, row;

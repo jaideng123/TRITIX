@@ -42,8 +42,8 @@ public class GameController : MonoBehaviour
 
     public void ApplyMove(Move move)
     {
-        Messenger<Move>.Broadcast(GameEvent.MOVE_APPLIED, move);
         _moves.Add(move);
+        Messenger<Move>.Broadcast(GameEvent.MOVE_APPLIED, move);
         CheckMatches(move.playerNum);
         if (!gameOver)
         {
@@ -56,10 +56,6 @@ public class GameController : MonoBehaviour
         Piece[][][] b = BoardStateUtils.GenerateBoardState(_moves);
 
         Match[] matches = BoardChecker.FindMatches(b);
-        foreach (Match match in matches)
-        {
-            Debug.Log("Match Found For " + playerNum + " " + match.ToString());
-        }
         Messenger<Match[]>.Broadcast(GameEvent.PIECES_MATCHED, matches);
         Match[] currentPlayerMatches = matches.Where(match => match.playerNum == playerNum).ToArray();
         if (currentPlayerMatches.Length == 3)

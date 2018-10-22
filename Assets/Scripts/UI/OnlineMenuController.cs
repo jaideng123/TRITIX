@@ -18,8 +18,6 @@ public class OnlineMenuController : MonoBehaviour
     private Button backButton;
     private bool searching;
 
-    private string openGameId;
-
     private const float ACTIVE_WAIT_SECONDS = 10f;
 
 
@@ -27,7 +25,6 @@ public class OnlineMenuController : MonoBehaviour
     void Start()
     {
         SetInteractableElements();
-        openGameId = null;
     }
 
     private void SetInteractableElements()
@@ -49,116 +46,29 @@ public class OnlineMenuController : MonoBehaviour
     {
         Debug.Log("Finding Game!");
         searching = true;
-        Managers.Online.FindOpenGame(OnFindRecieved);
+        Managers.Online.CreateMatchMakingRequest(MatchFound, OnCancelSearch);
     }
-
-    private void OnFindRecieved(List<String> gameIds)
+    private void MatchFound(string gameId, string hostId)
     {
-        Debug.Log("Find Recieved");
-        Debug.Log(gameIds.Count);
-        if (gameIds.Count > 0)
-        {
-            Managers.Online.FindGameById(gameIds[0], JoinGame);
-        }
-        else
-        {
-            Managers.Online.CreateNewGame(OnGameCreated);
-        }
-        // foreach (string id in gameIds)
-        // {
-        //     Managers.Online.FindGameById(id, PrintGame);
-        // }
-    }
-    private void OnGameCreated(string id)
-    {
-        Debug.Log("Created Game: " + id);
-        openGameId = id;
-        StartCoroutine(WaitForGameJoin(id));
-    }
-
-    private IEnumerator WaitForGameJoin(string id)
-    {
-        Debug.Log("Waiting for game join...");
-        var game = new WaitForCallback<PublicGame>(
-            done => Managers.Online.FindGameById(id, result => done(result))
-        );
-        yield return game;
-        while (game.Result.player2Id == null)
-        {
-            Debug.Log("Still Waiting...");
-            yield return new WaitForSeconds(1);
-            game = new WaitForCallback<PublicGame>(
-                done => Managers.Online.FindGameById(id, result => done(result))
-            );
-            yield return game;
-        }
-        LoadGame(game.Result);
-        Debug.Log("Player Found!");
-    }
-
-    private IEnumerator WaitForGameActive(string id)
-    {
-        float start = Time.time;
-        Debug.Log("Waiting for game join...");
-        var game = new WaitForCallback<PublicGame>(
-            done => Managers.Online.FindGameById(id, result => done(result))
-        );
-        yield return game;
-        while (game.Result.active == false && (Time.time - start) < ACTIVE_WAIT_SECONDS)
-        {
-            Debug.Log("Still Waiting...");
-            yield return new WaitForSeconds(1);
-            game = new WaitForCallback<PublicGame>(
-                done => Managers.Online.FindGameById(id, result => done(result))
-            );
-            yield return game;
-        }
-        if (game.Result.active)
-        {
-            LoadGame(game.Result);
-            Debug.Log("Game Confirmed!");
-        }
-        else
-        {
-            Debug.Log("Wait For Active Timed Out");
-            Managers.Online.DeleteGame(id);
-            FindOrCreatePublicGame();
-        }
-    }
-
-    private void JoinGame(PublicGame game)
-    {
-        if (game.player2Id != null)
-        {
-            Debug.LogWarning("Game " + game.id + " Is already full");
-            FindOrCreatePublicGame();//try again
-        }
-        game.player2Id = Managers.Auth.GetUserId();
-        Managers.Online.UpdateGame(game, LoadGame, FindOrCreatePublicGame);
-    }
-
-    private void LoadGame(PublicGame game)
-    {
-        int activePlayer = game.player1Id == Managers.Auth.GetUserId() ? 1 : 2;
-        var param = new Dictionary<string, string>()
-        {
-            { "local-player", activePlayer.ToString()},
-            { "game-id",game.id }
-        };
-        searching = false;
-        game.active = true;
-        Managers.Online.UpdateGame(game);
-        Managers.GameMode.StartGame(GameMode.ONLINE, param);
+        LoadGame(gameId, hostId);
     }
 
     public void OnCancelSearch()
     {
         searching = false;
-        if (openGameId != null)
+        Managers.Online.CancelMatchMaking();
+    }
+
+    private void LoadGame(string gameId, string hostId)
+    {
+        int activePlayer = Managers.Auth.userId == hostId ? 1 : 2;
+        var param = new Dictionary<string, string>()
         {
-            Managers.Online.DeleteGame(openGameId);
-            openGameId = null;
-        }
+            { "local-player", activePlayer.ToString()},
+            { "game-id",gameId }
+        };
+        searching = false;
+        Managers.GameMode.StartGame(GameMode.ONLINE, param);
     }
 
 
