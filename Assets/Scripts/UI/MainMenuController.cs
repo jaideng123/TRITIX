@@ -52,4 +52,9 @@ public class MainMenuController : MonoBehaviour
         Managers.GameMode.StartGame(mode);
     }
 
+    public void OpenLink(string link)
+    {
+        Application.OpenURL(link);
+    }
+
 }
