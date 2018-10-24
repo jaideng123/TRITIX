@@ -2830,7 +2830,7 @@ MonoBehaviour:
   - name: tomb
     scenePrefab: {fileID: 1051485808921342, guid: d3a0e1e426aef2f4a94d23a35e356d01,
       type: 2}
-    skyBox: {fileID: 2100000, guid: 8686280ca355b7642afb276b935d0957, type: 2}
+    skyBox: {fileID: 0}
 --- !u!114 &447509732
 MonoBehaviour:
   m_ObjectHideFlags: 0

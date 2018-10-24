@@ -71,12 +71,6 @@ public class OnlineMenuController : MonoBehaviour
         Managers.GameMode.StartGame(GameMode.ONLINE, param);
     }
 
-
-    private void PrintGame(PublicGame game)
-    {
-        Debug.Log(game.player1Id);
-    }
-
     public void Login()
     {
         Managers.Auth.Login();

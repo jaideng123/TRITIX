@@ -6,7 +6,6 @@ using UnityEngine;
 public class OnlineGameController : GameController
 {
     private string gameId;
-    private PublicGame game;
 
     private bool syncing;
 

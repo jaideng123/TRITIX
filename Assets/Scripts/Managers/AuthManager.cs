@@ -1,11 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Amazon;
-using Amazon.CognitoIdentity;
-using Amazon.CognitoSync;
-using Amazon.CognitoSync.SyncManager;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
 using Facebook.Unity;
 using GameSparks.Api.Requests;
 using GameSparks.Core;
