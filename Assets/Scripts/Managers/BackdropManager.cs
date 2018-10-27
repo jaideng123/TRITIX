@@ -21,7 +21,24 @@ public class BackdropManager : MonoBehaviour, IGameManager
     {
         Debug.Log("Starting Backdrop Manager");
         SceneManager.activeSceneChanged += OnSceneChange;
-        LoadDefaultBackdrop();
+        if (PlayerPrefs.HasKey("SAVED_BACKDROP"))
+        {
+            string backdropName = PlayerPrefs.GetString("SAVED_BACKDROP");
+            List<Backdrop> results = availableBackdrops.Where(bd => bd.name == backdropName).ToList();
+            if (results.Count > 0)
+            {
+                Backdrop savedBackdrop = results[0];
+                LoadBackdrop(savedBackdrop);
+            }
+            else
+            {
+                LoadDefaultBackdrop();
+            }
+        }
+        else
+        {
+            LoadDefaultBackdrop();
+        }
         status = ManagerStatus.Started;
     }
 
@@ -54,6 +71,7 @@ public class BackdropManager : MonoBehaviour, IGameManager
             DontDestroyOnLoad(backdropObject);
         }
         RenderSettings.skybox = currentBackdrop.skyBox;
+        PlayerPrefs.SetString("SAVED_BACKDROP", currentBackdrop.name);
         GetComponent<Fading>().BeginFade(-1);
     }
 

@@ -30,6 +30,22 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player " + player.id + " Registered");
     }
 
+    public void SetPlayerName(int playerNum, string name)
+    {
+        if (playerNum != 1 && playerNum != 2)
+        {
+            Debug.LogWarning("Player Does Not Exist!");
+            return;
+        }
+        if (players[playerNum - 1] == null)
+        {
+            Debug.LogWarning("Player Not Set");
+        }
+        players[playerNum - 1].id = name;
+        Messenger<int>.Broadcast(GameEvent.PLAYER_INFO_CHANGED, playerNum);
+    }
+
+
     public Player GetPlayer(int playerNum)
     {
         if (playerNum != 1 && playerNum != 2)

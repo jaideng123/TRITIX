@@ -15,5 +15,5 @@ MonoBehaviour:
   apiKey: a371246awsAW
   credential: device
   apiSecret: BjJwb8FSJ6kCn11WCTUb3jf2ajY1Gtj0
-  previewBuild: 1
+  previewBuild: 0
   debugBuild: 0
