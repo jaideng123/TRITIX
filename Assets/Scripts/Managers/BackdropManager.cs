@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +35,12 @@ public class BackdropManager : MonoBehaviour, IGameManager
         LoadBackdrop(availableBackdrops[0]);
     }
 
-    private void LoadBackdrop(Backdrop backdrop)
+    public int getBackdropIndex(Backdrop backdrop)
+    {
+        return availableBackdrops.ToList().IndexOf(backdrop);
+    }
+
+    public void LoadBackdrop(Backdrop backdrop)
     {
         GetComponent<Fading>().BeginFade(1);
         if (backdropObject != null)
