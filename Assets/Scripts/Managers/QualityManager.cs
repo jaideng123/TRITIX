@@ -34,7 +34,6 @@ public class QualityManager : MonoBehaviour, IGameManager
     public void TurnBatterySaverOff()
     {
         Application.targetFrameRate = 60;
-        Managers.Backdrop.LoadDefaultBackdrop();
         batterySaverOn = false;
         PlayerPrefs.SetInt("BATTERY_SAVER_ON", 0);
     }
