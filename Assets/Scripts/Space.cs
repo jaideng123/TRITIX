@@ -7,7 +7,7 @@ public class Space : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
     private float heightOffset = 3;
-    private float duration = .2f;
+    private float duration = .3f;
     private const string soundEffectName = "FOOTSTEP - Metal Board Walk Barefoot Male - 2";
     private AudioClip soundEffect;
     private AudioSource _audioSource;
