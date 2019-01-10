@@ -85,11 +85,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blankBackdrop:
     name: Blank
-    scenePrefab: {fileID: 0}
+    scenePrefab: {fileID: 1489205122406114, guid: a1ae3d485f135c846ba305acd9352e6e,
+      type: 2}
     skyBox: {fileID: 2100000, guid: 4ddf6565b1ac3bb418af5b3352f9ce2c, type: 2}
   availableBackdrops:
   - name: Endless Void
-    scenePrefab: {fileID: 0}
+    scenePrefab: {fileID: 1489205122406114, guid: a1ae3d485f135c846ba305acd9352e6e,
+      type: 2}
     skyBox: {fileID: 2100000, guid: 4ddf6565b1ac3bb418af5b3352f9ce2c, type: 2}
   - name: Ancient Tomb
     scenePrefab: {fileID: 1051485808921342, guid: d3a0e1e426aef2f4a94d23a35e356d01,

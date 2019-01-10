@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Camera))]
 public class PointerSelect : MonoBehaviour
 {
-    public float timeToDrag = .5f;
     private Camera _camera;
-    private float _startTime = 0f;
+    private Vector2 pastPosition;
+
+    private const float epsilon = 10f;
 
     // Use this for initialization
     void Start()
@@ -16,21 +17,34 @@ public class PointerSelect : MonoBehaviour
         _camera = GetComponent<Camera>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.touchCount == 0 && (Input.GetAxis("Mouse Y") > 0 || Input.GetAxis("Mouse X") > 0))
+            if (Input.touchCount == 0)
             {
-                return;
+                pastPosition = Input.mousePosition;
             }
-            _startTime = Time.time;
-        }
-        if (Input.GetMouseButtonUp(0) && Time.time - _startTime < timeToDrag)
-        {
-            if (Input.touchCount > 0 && Input.GetTouch(0).deltaPosition != Vector2.zero)
+            else
             {
+                pastPosition = Input.GetTouch(0).position;
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Vector2 currentPosition;
+            if (Input.touchCount > 0)
+            {
+                currentPosition = Input.GetTouch(0).position;
+            }
+            else
+            {
+                currentPosition = Input.mousePosition;
+            }
+
+            if (TouchMoved(pastPosition, currentPosition))
+            {
+                Debug.LogWarning("TOUCH SKIPPED");
                 return;
             }
 
@@ -40,6 +54,34 @@ public class PointerSelect : MonoBehaviour
             {
                 hit.transform.SendMessage("Triggered", SendMessageOptions.DontRequireReceiver);
             }
+        }
+    }
+
+    private bool DeltaChanged(Vector2 delta, float epsilon)
+    {
+        if (Mathf.Max(Mathf.Abs(delta.x), Mathf.Abs(delta.y)) > epsilon)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool TouchMoved(Vector2 initial, Vector2 current)
+    {
+        if (Mathf.Abs(initial.x - current.x) > epsilon)
+        {
+            return true;
+        }
+        else if (Mathf.Abs(initial.y - current.y) > epsilon)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
