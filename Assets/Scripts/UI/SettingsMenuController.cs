@@ -18,7 +18,6 @@ public class SettingsMenuController : MonoBehaviour
 
     private void SetInteractableElements()
     {
-        logoutButton.gameObject.SetActive(Managers.Auth.loggedIn);
         batterySaverToggle.isOn = Managers.Quality.batterySaverOn;
     }
 
@@ -38,10 +37,5 @@ public class SettingsMenuController : MonoBehaviour
         {
             Managers.Quality.TurnBatterySaverOff();
         }
-    }
-
-    public void LogOut()
-    {
-        Managers.Auth.LogOut();
     }
 }

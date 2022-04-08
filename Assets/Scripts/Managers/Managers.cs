@@ -6,8 +6,6 @@ public class Managers : MonoBehaviour
     public static AudioManager Audio;
     public static GameModeManager GameMode;
     public static BackdropManager Backdrop;
-    public static AuthManager Auth;
-    public static OnlineManager Online;
     public static QualityManager Quality;
     private List<IGameManager> _startSequence;
 
@@ -29,15 +27,11 @@ public class Managers : MonoBehaviour
         Audio = GetComponent<AudioManager>();
         GameMode = GetComponent<GameModeManager>();
         Backdrop = GetComponent<BackdropManager>();
-        Auth = GetComponent<AuthManager>();
-        Online = GetComponent<OnlineManager>();
         Quality = GetComponent<QualityManager>();
         _startSequence = new List<IGameManager>();
         _startSequence.Add(Audio);
         _startSequence.Add(GameMode);
         _startSequence.Add(Backdrop);
-        _startSequence.Add(Auth);
-        _startSequence.Add(Online);
         _startSequence.Add(Quality);
         StartCoroutine(StartupManagers());
     }

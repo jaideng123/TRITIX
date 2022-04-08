@@ -245,7 +245,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/JJJai/Documents/Unity Projects/Triplex3D/prod.keystore
+  AndroidKeystoreName: C:/Users/JJJai/Dropbox/Jaiden/Game Assets/App Keystores DO
+    NOT DELETE/triplex.keystore
   AndroidKeyaliasName: prod
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1

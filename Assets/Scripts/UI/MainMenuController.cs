@@ -25,7 +25,10 @@ public class MainMenuController : MonoBehaviour
     {
         foreach (MenuPanel panel in menuPanels)
         {
-            panel.panel.SetActive(false);
+            if (panel.panel)
+            {
+                panel.panel.SetActive(false);
+            }
         }
         activePanel = menuPanels[0];
         activePanel.panel.SetActive(true);
